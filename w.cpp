@@ -1,85 +1,62 @@
-/**
- *    author:  tourist
- *    created: 19.03.2020 17:42:13       
-**/
+//https://codeforces.com/contest/1323/problem/B
 #include <bits/stdc++.h>
-
 using namespace std;
 
-template <typename T>
-vector<int> manacher(int n, const T &s) {
-  if (n == 0) {
-    return vector<int>();
-  }
-  vector<int> res(2 * n - 1, 0);
-  int l = -1, r = -1;
-  for (int z = 0; z < 2 * n - 1; z++) {
-    int i = (z + 1) >> 1;
-    int j = z >> 1;
-    int p = (i >= r ? 0 : min(r - i, res[2 * (l + r) - z]));
-    while (j + p + 1 < n && i - p - 1 >= 0) {
-      if (!(s[j + p + 1] == s[i - p - 1])) {
-        break;
-      }
-      p++;
-    }
-    if (j + p > r) {
-      l = i - p;
-      r = j + p;
-    }
-    res[z] = p;
-  }
-  return res;
-}
+#define FASTIO ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL)
+#define LL long long 
+#define ar32(x) array<int, x> 
+#define ar64(x) array<LL, x>
+// Infinity xP
+const int oo = 1e9 + 5;
+// const int MOD = 1e9 + 7;
+const LL ooll = 1e18;
+// const int MOD = 998244353;
+const int MOD = 1e9 + 7;
+const int N = 1e5 + 5;
 
-template <typename T>
-vector<int> manacher(const T &s) {
-  return manacher((int) s.size(), s);
-}
+int v[N], w[N], xwin[N], ywin[N];
+void solve() {
+    int n, m, k, i, j;
+    cin >> n >> m >> k;
+    for (i=0;i<n;i++) cin >> v[i];
+    for (i=0;i<m;i++) cin >> w[i];
+    for (i=0;i<=n;i++) xwin[i] = 0;
+    for (i=0;i<=m;i++) ywin[i] = 0;
 
+    j = -1;
+    for (i=0;i<n;i++) {
+        j = max(j, i);
+        while(j < n && v[j] == 1) j++;
+        int len = j - i;
+        xwin[1]++; xwin[len+1]--;
+    }
+
+    j = -1;
+    for (i=0;i<m;i++) {
+        j = max(j, i);
+        while(j < m && w[j] == 1) j++;
+        int len = j - i;
+        ywin[1]++; ywin[len+1]--;
+    }
+    
+    for (i=1;i<=n;i++) {xwin[i] += xwin[i-1]; cout<<xwin[i]<<" ";} cout<<endl;
+    for (i=1;i<=m;i++) {ywin[i] += ywin[i-1];cout<<ywin[i]<<" ";}
+
+    LL ans = 0;
+    for (i=1;i<=n;i++) if (k % i == 0) {
+        int j = k / i;
+        if (j <= m) {
+            ans += xwin[i] * 1LL * ywin[j];
+    
+        }
+    }
+    cout << ans << '\n';
+}
+ 
 int main() {
-  ios::sync_with_stdio(false);
-  cin.tie(0);
-  int tt;
-  cin >> tt;
-  while (tt--) {
-    string s;
-    cin >> s;
-    int n = (int) s.size();
-    vector<int> res = manacher(s);
-    int match = 0;
-    while (2 * match + 2 <= n && s[match] == s[n - 1 - match]) {
-      match += 1;
-    }
-    int ans = 0;
-    int afrom = 0;
-    for (int z = 0; z <= 2 * n - 2; z++) {
-      int i = (z + 1) >> 1;
-      int j = z >> 1;
-      if (i > j && res[z] == 0) {
-        continue;
-      }
-      int from = i - res[z];
-      int to = j + res[z];
-      if (from < match) {
-        int shift = match - from;
-        from += shift;
-        to -= shift;
-      }
-      if (to >= n - match) {
-        int shift = to - (n - match) + 1;
-        from += shift;
-        to -= shift;
-      }
-      if (from != match && to != n - match - 1) {
-        continue;
-      }
-      if (to - from + 1 > ans) {
-        ans = to - from + 1;
-        afrom = from;
-      }
-    }
-    cout << (s.substr(0, match) + s.substr(afrom, ans) + s.substr(n - match, match)) << '\n';
-  }
-  return 0;
+    FASTIO;
+    int t = 1;
+    // cin >> t;
+    while(t--) solve();
+    return 0;
 }

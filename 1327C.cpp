@@ -14,16 +14,23 @@ int main(){
     fastio;
     int n,m,k; cin>>n>>m>>k;
     vector<pair<int,int>>s;
-    vector<vector<int>>v(k+1,vector<int>(2,0));
     FOR(i,0,k){
         int x,y; cin>>x>>y;
         s.push_back({x,y});
     }
-    FOR(i,0,k){
-        int x,y; cin>>x>>y;
-         v[i][0]+=x-s[i].first;
-         v[i][1]+=y-s[i].second;
+      string p="";
+    p.append(n-1,'L'); p.append(m-1,'U');
+    p.append(m-1,'R');
+    FOR(i,1,n){    
+        if(i&1){
+           p+='D';
+           p.append(m-1,'L');
+        }
+        else{
+            p+='D';
+            p.append(m-1,'R');
+        }
     }
-    string p="";
+    cout<<p; 
     
 }
