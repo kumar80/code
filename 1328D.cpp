@@ -1,4 +1,3 @@
-//https://codeforces.com/contest/1328/problem/D
 #include<bits/stdc++.h>
 using namespace std;
  
@@ -10,27 +9,43 @@ using namespace std;
  
 const long long INF = 1e18;
 const long long MAX = 1e5+10;
-int col[2*MAX]={0};
-vector<int>adj[MAX];
+
 int main(){
     fastio;
-    int t; cin>>t;
+    int t; cin>>t; 
     while(t--){
-        int n; cin>>n;
-        vector<int>a(n+1); cin>>a[0];
-        FOR(i,1,n) { cin>>a[i]; adj[a[i-1]].push_back(a[i]); } a[n]=a[0];
-        vector<int>temp = a;
-        auto it = unique(temp.begin(),temp.end());
-        temp.resize(distance(temp.begin(),it));
-        int c=1;col[temp[0]]=1;
-        FOR(i,1,temp.size()) {
-            if(col[temp[i]]==0){
-                
-            }
+        int n; cin>>n; int a[n+1]; set<int>s;
+        FOR(i,0,n) {cin>>a[i];s.insert(a[i]);} a[n]=a[0];
+        if(s.size()==1){
+            cout<<1<<"\n";
+            FOR(i,0,n) cout<<1<<" ";
         }
-        cout<<c<<"\n";
-        FOR(i,0,n) cout<<col[a[i]]<<" ";
-        cout<<"\n"; 
-        FOR(i,0,temp.size()) {adj[temp[i]].clear();col[a[i]]=0;}
+       else if(n%2==0){
+            cout<<2<<"\n";
+            FOR(i,0,n/2) cout<<1<<" "<<2<<" ";
+        }
+       else if(n & 1){
+            bool x =true;int j=-1;
+            FOR(i,1,n+1) if(a[i]==a[i-1]){ x=false; j=i-1; break; }     // cout<<j<<"S";     
+            if(x) {
+                cout<<3<<"\n";
+                FOR(i,0,n/2) cout<<1<<" "<<2<<" ";
+                cout<<3;
+                }
+            else {
+                cout<<2<<"\n";
+                FOR(i,0,j) if(i%2==0) cout<<1<<" "; else cout<<2<<" ";
+                if(j%2) {
+                    cout<<2<<" ";
+                FOR(i,j+1,n) if(i%2==0) cout<<2<<" "; else cout<<1<<" ";
+                    }
+                else {
+                    cout<<1<<" ";
+                FOR(i,j+1,n) if(i%2==0) cout<<2<<" "; else cout<<1<<" ";
+                    }
+            }
+
+        }   
+        cout<<"\n";
     }
 }
