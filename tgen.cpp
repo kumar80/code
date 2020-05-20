@@ -1,6 +1,14 @@
 // CPP Program to generate random alphabets 
-#include <bits/stdc++.h> 
-using namespace std; 
+#include<bits/stdc++.h>
+using namespace std;
+ 
+#define fastio ios_base::sync_with_stdio(0); cin.tie(0)
+#define LL long long 
+#define mod 998244353 
+#define FOR(i, j, k) for (int i=j ; i<k ; i++)
+#define ROF(i, j, k) for (int i=j ; i>=k ; i--) 
+ 
+const long long INF = 1e18;
 
 const int MAX = 26; 
 
@@ -22,12 +30,12 @@ string printRandomString(int n)
 
 // Driver code 
 int main() 
-{ 
-srand(time(NULL)); 
-int t=100;
-while(t--){
-int n = rand()%25; 
-cout << printRandomString(n)<<"\n"; 
-}
+{ 	int t = 1 + rand()%50;
+	while(t--){
+	int n  = 2 + rand()%5;
+	cout<<n<<"\n";
+	FOR(i,0,n) cout<<1+rand()%120<<" ";
+	cout<<"\n\n";
+	}
 return 0; 
 } 

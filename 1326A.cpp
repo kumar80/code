@@ -12,16 +12,30 @@ const long long MAX = 1e5+10;
 
 int main(){
     fastio;
-    int t; cin>>t;
-    while (t--)
-    {
-        int n; cin>>n;
-        if(n==1) cout<<-1;
-        else {
-            cout<<2;
-            FOR(i,1,n) cout<<9;
+    // int t; cin>>t;
+    // while (t--)
+    // {
+    //     int n; cin>>n;
+    //     if(n==1) cout<<-1;
+    //     else {
+    //         cout<<2;
+    //         FOR(i,1,n) cout<<9;
+    //     }
+    //     cout<<"\n";
+    // }
+    deque<int>d{1,2,3,4,5,6,7,8,9};
+    auto it = d.begin();
+    while(!d.empty()){
+        if((*it)%2==0){
+          cout<<*it<<"#"; d.erase(it); cout<<*it<<"!";
+            it++;
         }
-        cout<<"\n";
+        else {
+           cout<<*it<<":: ";
+           it++;
+        }
+       // for(auto itt =d.begin();itt!=d.end();itt++) cout<<*itt<<" ";
+        cout<<endl;
     }
     
 }
