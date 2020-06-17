@@ -16,7 +16,11 @@
         "unordered_map": "cpp",
         "unordered_set": "cpp",
         "vector": "cpp",
-        "random": "cpp"
+        "random": "cpp",
+        "chrono": "cpp",
+        "limits": "cpp",
+        "cmath": "cpp",
+        "complex": "cpp"
     },
     "competitive-programming-helper.firstTime": false
 }

@@ -57,35 +57,49 @@ using namespace std;
 #define fastio ios_base::sync_with_stdio(0); cin.tie(0)
 #define LL long long 
 #define mod 1000000007 
-#define FOR(i, j, k) for (LL i=j ; i<k ; i++)
+#define FOR(i, j, k) for (int i=j ; i<k ; i++)
 #define ROF(i, j, k) for (int i=j ; i>=k ; i--) 
 #define debug(...) fprintf(stderr, __VA_ARGS__), fflush(stderr)
 #define time__(d) for(long blockTime = 0; (blockTime == 0 ? (blockTime=clock()) != 0 : false); debug("%s time : %.4fs", d, (double)(clock() - blockTime) / CLOCKS_PER_SEC))
 
 const long long INF = 1e18;
 const long long MAX = 1e5+10;
+#define V 9 
+int mindis(vector<int>&dis,vector<int> &vis){
+      int mn=INT16_MAX,mn_idx;
+      FOR(i,0,V){
+        if(vis[i]==0 && dis[i]<=mn)
+          mn=dis[i],mn_idx=i;
+      }
+      return mn_idx;
+}
+void dijkstra(int graph[V][V],int s ){
+  vector<int>dis(100,999999),vis(100,0);
+  dis[s]=0;
+  FOR(i,0,V-1){
+    int u = mindis(dis,vis);
+    FOR(j,0,V){
+      if(!vis[j] && graph[i][j])
+           dis[j]=min(dis[j],dis[i]+graph[i][j]);
+    }
+  }
+  FOR(i,0,V+1) cout<<dis[i]<<" ";
+}
 int main(){
     fastio;
     int t=1; //cin>>t;
     while(t--){
-        LL a,b,c,d; LL res = 0,k;
-        cin>>a>>b>>c>>d; 
-        FOR(i,c,d+1){
-            LL x =i-c+1; k = c-b+1;
-            if(x>=a && x<=b){
-              x=b-x+1;
-              if(x>k) res+=x*(x+1)/2-(x-k)*(x-k+1)/2;
-              else res+=x*(x+1)/2;
-            }else if(x<=b) {// cout<<i<<", ";
-              res+=(b-a+1)*min(k,a-x);
-              LL C = c-a+x;
-              if(C>=b) {
-                x=b-a+1; k= C-b+1;
-              if(x>k) res+=x*(x+1)/2-(x-k)*(x-k+1)/2;
-              else res+=x*(x+1)/2;
-              }
-            }
-        }
-        cout<<res;
+      int graph[V][V] = { { 0, -1, 0, 0, 0, 0, 0, 8, 0 }, 
+                        { 4, 0, 8, 0, 0, 0, 0, 11, 0 }, 
+                        { 0, 8, 0, 7, 0, 4, 0, 0, 2 }, 
+                        { 0, 0, 7, 0, 9, 14, 0, 0, 0 }, 
+                        { 0, 0, 0, 9, 0, 10, 0, 0, 0 }, 
+                        { 0, 0, 4, 14, 10, 0, 2, 0, 0 }, 
+                        { 0, 0, 0, 0, 0, 2, 0, 1, 6 }, 
+                        { 8, 11, 0, 0, 0, 0, 1, 0, 7 }, 
+                        { 0, 0, 2, 0, 0, 0, 6, 7, 0 } }; 
+  
+    dijkstra(graph, 0); 
+  
     }
 }

@@ -57,35 +57,43 @@ using namespace std;
 #define fastio ios_base::sync_with_stdio(0); cin.tie(0)
 #define LL long long 
 #define mod 1000000007 
-#define FOR(i, j, k) for (LL i=j ; i<k ; i++)
+#define FOR(i, j, k) for (int i=j ; i<k ; i++)
 #define ROF(i, j, k) for (int i=j ; i>=k ; i--) 
 #define debug(...) fprintf(stderr, __VA_ARGS__), fflush(stderr)
 #define time__(d) for(long blockTime = 0; (blockTime == 0 ? (blockTime=clock()) != 0 : false); debug("%s time : %.4fs", d, (double)(clock() - blockTime) / CLOCKS_PER_SEC))
 
 const long long INF = 1e18;
 const long long MAX = 1e5+10;
+vector<vector<int>>vis(600,vector<int>(600,0));
+vector<vector<char>>mz(600,vector<char>(600));
+vector<pair<int,int>>v;
+void dfs(int i,int j ){
+    vis[i][j]=1;
+        if(mz[i-1][j]=='.' && !vis[i-1][j]) dfs(i-1,j);
+        if(mz[i+1][j]=='.' && !vis[i+1][j]) dfs(i+1,j);
+        if(mz[i][j-1]=='.' && !vis[i][j-1]) dfs(i,j-1);
+        if(mz[i][j+1]=='.' && !vis[i][j+1]) dfs(i,j+1);
+    v.push_back({i,j});
+}
 int main(){
     fastio;
     int t=1; //cin>>t;
     while(t--){
-        LL a,b,c,d; LL res = 0,k;
-        cin>>a>>b>>c>>d; 
-        FOR(i,c,d+1){
-            LL x =i-c+1; k = c-b+1;
-            if(x>=a && x<=b){
-              x=b-x+1;
-              if(x>k) res+=x*(x+1)/2-(x-k)*(x-k+1)/2;
-              else res+=x*(x+1)/2;
-            }else if(x<=b) {// cout<<i<<", ";
-              res+=(b-a+1)*min(k,a-x);
-              LL C = c-a+x;
-              if(C>=b) {
-                x=b-a+1; k= C-b+1;
-              if(x>k) res+=x*(x+1)/2-(x-k)*(x-k+1)/2;
-              else res+=x*(x+1)/2;
-              }
+        int n,m,k; cin>>n>>m>>k;
+        FOR(i,0,m+2) mz[0][i] = '#';
+        FOR(i,0,m+2) mz[n+1][i] = '#';
+        FOR(i,0,n+2) mz[i][0]='#';
+        FOR(i,0,n+2) mz[i][m+1]='#';
+        FOR(i,1,n+1) FOR(j,1,m+1) cin>>mz[i][j];
+        FOR(i,1,n+1)
+            FOR(j,1,m+1){
+                if(mz[i][j]=='.' && !vis[i][j]) dfs(i,j);
             }
+        FOR(i,0,k) mz[v[i].first][v[i].second]='X';
+        FOR(i,1,n+1) {
+            FOR(j,1,m+1) cout<<mz[i][j]; 
+            cout<<"\n";
         }
-        cout<<res;
     }
+
 }
