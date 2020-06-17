@@ -57,7 +57,7 @@ using namespace std;
 #define fastio ios_base::sync_with_stdio(0); cin.tie(0)
 #define LL long long 
 #define mod 1000000007 
-#define FOR(i, j, k) for (LL i=j ; i<k ; i++)
+#define FOR(i, j, k) for (int i=j ; i<k ; i++)
 #define ROF(i, j, k) for (int i=j ; i>=k ; i--) 
 #define debug(...) fprintf(stderr, __VA_ARGS__), fflush(stderr)
 #define time__(d) for(long blockTime = 0; (blockTime == 0 ? (blockTime=clock()) != 0 : false); debug("%s time : %.4fs", d, (double)(clock() - blockTime) / CLOCKS_PER_SEC))
@@ -68,24 +68,31 @@ int main(){
     fastio;
     int t=1; //cin>>t;
     while(t--){
-        LL a,b,c,d; LL res = 0,k;
-        cin>>a>>b>>c>>d; 
-        FOR(i,c,d+1){
-            LL x =i-c+1; k = c-b+1;
-            if(x>=a && x<=b){
-              x=b-x+1;
-              if(x>k) res+=x*(x+1)/2-(x-k)*(x-k+1)/2;
-              else res+=x*(x+1)/2;
-            }else if(x<=b) {// cout<<i<<", ";
-              res+=(b-a+1)*min(k,a-x);
-              LL C = c-a+x;
-              if(C>=b) {
-                x=b-a+1; k= C-b+1;
-              if(x>k) res+=x*(x+1)/2-(x-k)*(x-k+1)/2;
-              else res+=x*(x+1)/2;
-              }
-            }
+        int nn; cin>>nn;  int a[nn]; 
+        int p=0,n=0,z=0;
+        FOR(i,0,nn) {
+            cin>>a[i];
+            if(a[i]==0) z++;
+            if(a[i]>0) p++;
+            if(a[i]<0) n++;
         }
-        cout<<res;
+        if(n%2==0){
+            LL cost=0;
+            FOR(i,0,nn) {
+                if(a[i]>0)  cost+= (a[i]-1);
+                else cost+= abs((a[i]+1)); 
+            }
+            cout<<cost;
+        }else {
+            LL cost=0;
+            FOR(i,0,nn) {
+                if(a[i]>0)  cost+= (a[i]-1);
+                else cost+= abs((a[i]+1)); 
+            }
+            if(z==0){
+                cost+=2;
+            }
+            cout<<cost;
+        }
     }
 }

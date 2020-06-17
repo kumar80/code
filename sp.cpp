@@ -57,7 +57,7 @@ using namespace std;
 #define fastio ios_base::sync_with_stdio(0); cin.tie(0)
 #define LL long long 
 #define mod 1000000007 
-#define FOR(i, j, k) for (LL i=j ; i<k ; i++)
+#define FOR(i, j, k) for (int i=j ; i<k ; i++)
 #define ROF(i, j, k) for (int i=j ; i>=k ; i--) 
 #define debug(...) fprintf(stderr, __VA_ARGS__), fflush(stderr)
 #define time__(d) for(long blockTime = 0; (blockTime == 0 ? (blockTime=clock()) != 0 : false); debug("%s time : %.4fs", d, (double)(clock() - blockTime) / CLOCKS_PER_SEC))
@@ -66,26 +66,29 @@ const long long INF = 1e18;
 const long long MAX = 1e5+10;
 int main(){
     fastio;
-    int t=1; //cin>>t;
+    int t=1; cin>>t;
     while(t--){
-        LL a,b,c,d; LL res = 0,k;
-        cin>>a>>b>>c>>d; 
-        FOR(i,c,d+1){
-            LL x =i-c+1; k = c-b+1;
-            if(x>=a && x<=b){
-              x=b-x+1;
-              if(x>k) res+=x*(x+1)/2-(x-k)*(x-k+1)/2;
-              else res+=x*(x+1)/2;
-            }else if(x<=b) {// cout<<i<<", ";
-              res+=(b-a+1)*min(k,a-x);
-              LL C = c-a+x;
-              if(C>=b) {
-                x=b-a+1; k= C-b+1;
-              if(x>k) res+=x*(x+1)/2-(x-k)*(x-k+1)/2;
-              else res+=x*(x+1)/2;
-              }
-            }
+        int n,m; cin>>n>>m;
+        vector<string>v(n);
+        FOR(i,0,n)cin>>v[i];  string re=v[0]; bool  df=false;
+        FOR(s,0,1){  
+          FOR(i,0,m){
+               FOR(c,0,26){
+                  re=v[s]; re[i]='a'+c;
+                   int l=0;
+                   FOR(j,0,n) {
+                       int cnt=0;
+                       FOR(k,0,m) if(re[k]!=v[j][k]) cnt++;
+                       if(cnt<=1) l++;
+                   }
+                   if(l==n) {df=true; break;}
+                }
+                if(df) break;
         }
-        cout<<res;
+        if(df) break;
+    }
+    
+        if(df) cout<<re<<"\n";
+        else cout<<-1<<"\n";
     }
 }

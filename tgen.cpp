@@ -30,12 +30,11 @@ string printRandomString(int n)
 
 // Driver code 
 int main() 
-{ 	int t = 1 + rand()%50;
+{ 	int t = 1 + rand()%100; cout<<t<<"\n";
 	while(t--){
-	int n  = 2 + rand()%5;
-	cout<<n<<"\n";
-	FOR(i,0,n) cout<<1+rand()%120<<" ";
-	cout<<"\n\n";
+	int n  = 1 + rand()%10000,k  = 1 + rand()%10000;
+	cout<<n<<" "<<k<<"\n";
+	//FOR(i,0,n) cout<<1+rand()%10<<" "<<1+rand()%10<<"\n";
 	}
 return 0; 
 } 
