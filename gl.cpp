@@ -64,22 +64,28 @@ using namespace std;
 
 const long long INF = 1e18;
 const long long MAX = 1e5+10;
-vector<int>adj[MAX],vis(MAX,0),f(MAX,0);
-
-
 int main(){
     fastio;
-    int t=1; //cin>>t;
+    int t=1;// cin>>t;
     while(t--){
-        LL n; cin>>n;  n++; cout<<n*3+1<<"\n";    
-        cout<<0<<" "<<0<<"\n";
-        int cnt = 0,i=1,j=1;
-        while(n--){
-            cout<<i<<" "<<j<<"\n";
-            cout<<i<<" "<<j-1<<"\n";
-            cout<<i-1<<" "<<j<<"\n";
-            i++,j++;
+        string s = "codeforces"; LL k; cin>>k;
+        vector<LL>p(20,1);LL pr = 1;
+        FOR(i,2,50){
+            FOR(j,0,10){
+                if(pr<k) {pr/=p[j],p[j]++,pr*=p[j];}
+            }
         }
+        // ROF(i,9,0){
+        //     while(p[i]>1){
+        //      if((pr/p[i])*(p[i]-1) > k) pr=(pr/p[i])*(p[i]-1),p[i]--;
+        //      else break;
+        //      }
+        // } 
+       // cout<<pr<<"\n";
+       // FOR(i,0,10) cout<<p[i]<<" "; 
+        FOR(i,0,10){ 
+            FOR(j,0,p[i]) cout<<s[i];
+        }
+        cout<<"\n";
     }
 }
-

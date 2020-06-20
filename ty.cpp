@@ -68,23 +68,34 @@ int main(){
     fastio;
     int t=1; cin>>t;
     while(t--){
-        string s ;cin>>s;
-        int m ; cin>>m; vector<pair<int ,int >>b(m);
-        FOR(i,0,m) {cin>>b[i].first; b[i].second=i;}
-        string t(m,'0');
-        int n = s.size();
-        vector<int>cnt(30,0); sort(b.begin(),b.end());
-        FOR(i,0,n) cnt[s[i]-'a']++;      
+        string s ;cin>>s; 
+        int m ,n=s.size(); cin>>m; 
+        vector<LL>b(m); FOR(i,0,m) cin>>b[i];
+        vector<int>cn(30,0);
+        FOR(i,0,n) cn[s[i]-'a']++;
+        string t(m,'0'); int cc=0;
+        while(1){
+            int j = 0; vector<int>zer;
+            FOR(i,0,m) if(b[i]==0) zer.push_back(i),b[i]=INT_MIN;
+            ROF(i,25,0) if(cn[i]>=zer.size()) {j=i;break; }
+            for(auto i : zer) t[i]='a'+j;
+            FOR(i,j,30) cn[i]=0;
+            for(auto i : zer) {
+                FOR(k,0,m) b[k]-=abs(i-k);
+            }        
 
-        FOR(i,0,m) {
-            ROF(j,25,0) {
-                if(cnt[j]>0) {t[b[i].second]='a'+j,cnt[j]--;  break;}
-            }
+       //     for(auto i : b) cout<<i<<" "; cout<<"\n";
+            bool pos = 1;
+            FOR(i,0,m) if(t[i]=='0') pos=0;
+            if(pos) break;
         }
-        FOR(i,0,m) {
-            if(t[i]=='0') cout<<"z";
-            else cout<<t[i];
-        }
+        // FOR(i,0,t.size())
+        // {
+        //     int cnt  =0;
+        //     FOR(j,0,t.size()) if(t[j]>t[i]) cnt+=abs(j-i);
+        //     cout<<cnt<<" ";
+        // }
+        cout<<t;            
         cout<<"\n";
     }
 }

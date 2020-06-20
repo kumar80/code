@@ -64,22 +64,23 @@ using namespace std;
 
 const long long INF = 1e18;
 const long long MAX = 1e5+10;
-vector<int>adj[MAX],vis(MAX,0),f(MAX,0);
-
-
 int main(){
     fastio;
-    int t=1; //cin>>t;
+    int t=1;// cin>>t;
     while(t--){
-        LL n; cin>>n;  n++; cout<<n*3+1<<"\n";    
-        cout<<0<<" "<<0<<"\n";
-        int cnt = 0,i=1,j=1;
-        while(n--){
-            cout<<i<<" "<<j<<"\n";
-            cout<<i<<" "<<j-1<<"\n";
-            cout<<i-1<<" "<<j<<"\n";
-            i++,j++;
-        }
+         int n; cin>>n; int a[n],b[n+7]; memset(b,-1,sizeof(b));     int cnt[n+10]={0}; 
+         FOR(i,0,n) cin>>a[i],cnt[a[i]]++;
+         int j = 0;
+         FOR(i,0,n){
+             if(b[i]==-1){
+                while(cnt[j]>0) j++;
+                b[i]=j ; j++;  
+             }--cnt[a[i]];
+             if(cnt[a[i]]==0) {
+                b[i+1]=a[i];
+                j = max(j,a[i]+1);
+             }
+         }
+         FOR(i,0,n) cout<<b[i]<<" ";
     }
 }
-

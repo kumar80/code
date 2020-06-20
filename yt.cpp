@@ -64,22 +64,22 @@ using namespace std;
 
 const long long INF = 1e18;
 const long long MAX = 1e5+10;
-vector<int>adj[MAX],vis(MAX,0),f(MAX,0);
-
-
 int main(){
     fastio;
-    int t=1; //cin>>t;
+    int t=1; cin>>t;
     while(t--){
-        LL n; cin>>n;  n++; cout<<n*3+1<<"\n";    
-        cout<<0<<" "<<0<<"\n";
-        int cnt = 0,i=1,j=1;
-        while(n--){
-            cout<<i<<" "<<j<<"\n";
-            cout<<i<<" "<<j-1<<"\n";
-            cout<<i-1<<" "<<j<<"\n";
-            i++,j++;
-        }
+        int n ; cin>>n;  vector<int>o,e;
+        FOR(i,0,2*n){
+            int c; cin>>c;
+            if(c&1)o.push_back(i+1);
+            else e.push_back(i+1);
+        } 
+        if(o.size()&1 && e.size()&1) {o.pop_back(); e.pop_back();}
+        else if(o.size()>2) { o.pop_back();o.pop_back(); }
+        else { e.pop_back();e.pop_back(); }
+        vector<pair<int,int>>ans;
+        for(int i = 0;i<o.size();i+=2) if(ans.size()<n-1) ans.push_back({o[i],o[i+1]});
+        for(int i = 0;i<e.size();i+=2) if(ans.size() < n-1) ans.push_back({e[i],e[i+1]});
+        for(auto i : ans ) cout<<i.first<<" "<<i.second<<"\n";
     }
 }
-
