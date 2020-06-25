@@ -20,7 +20,8 @@
         "chrono": "cpp",
         "limits": "cpp",
         "cmath": "cpp",
-        "complex": "cpp"
+        "complex": "cpp",
+        "ostream": "cpp"
     },
     "competitive-programming-helper.firstTime": false
 }
