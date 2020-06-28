@@ -66,15 +66,21 @@ const long long INF = 1e18;
 const long long MAX = 1e5+10;
 int main(){
     fastio;
-    int t=1; cin>>t;
+    int t=1;// cin>>t;
     while(t--){
-        LL a,b,c; cin>>a>>b>>c;
-        if(a<c){
-            cout<<1<<" ";
-            if(c<b*a) cout<<b<<" ";
-            else cout<<-1;
-        }else {
-            cout<<-1<<" "<<b;
-        }cout<<"\n";
+        int n,m,d; cin>>n>>m>>d; vector<int>v(n*m);
+        set<int>s;
+        FOR(i,0,n*m) cin>>v[i],s.insert(v[i]%d);
+        if(n*m==1) {cout<<0; return 0;}
+        if(s.size()!=1)  {cout<<-1; return 0;}
+        sort(v.begin(),v.end());
+        int x=v[(n*m)/2],ax=0,y=v[(n*m)/2-1],ay=0;
+        FOR(i,0,n*m){
+            ax+=abs(v[i]-x)/d;
+            ay+=abs(v[i]-y)/d;
+        }
+        cout<<ax;
+
+
     }
 }

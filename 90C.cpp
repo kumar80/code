@@ -68,13 +68,15 @@ int main(){
     fastio;
     int t=1; cin>>t;
     while(t--){
-        LL a,b,c; cin>>a>>b>>c;
-        if(a<c){
-            cout<<1<<" ";
-            if(c<b*a) cout<<b<<" ";
-            else cout<<-1;
-        }else {
-            cout<<-1<<" "<<b;
-        }cout<<"\n";
+        string s; cin>>s; int n=s.size();
+        LL net[n+1]; net[0]=0;
+        FOR(i,1,n+1) {net[i] = net[i-1]; if(s[i-1]=='+') net[i]++; else net[i]--;}
+        LL ans=0,cur=0;
+        
+        FOR(i,1,n+1) {
+            if(net[i]+cur<0) ans+=((-net[i]-cur)*i),cur+=(-net[i]-cur);
+           // cout<<net[i]<<" ";
+        }ans+=s.size();
+        cout<<ans<<"\n";
     }
 }

@@ -66,15 +66,9 @@ const long long INF = 1e18;
 const long long MAX = 1e5+10;
 int main(){
     fastio;
-    int t=1; cin>>t;
+    int t=1;// cin>>t;
     while(t--){
-        LL a,b,c; cin>>a>>b>>c;
-        if(a<c){
-            cout<<1<<" ";
-            if(c<b*a) cout<<b<<" ";
-            else cout<<-1;
-        }else {
-            cout<<-1<<" "<<b;
-        }cout<<"\n";
+        int n; cin>>n; LL a[n]; LL x=0; FOR(i,0,n) cin>>a[i],x^=a[i];
+        FOR(i,0,n) cout<<(x^a[i])<<" ";
     }
 }

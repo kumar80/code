@@ -66,15 +66,15 @@ const long long INF = 1e18;
 const long long MAX = 1e5+10;
 int main(){
     fastio;
-    int t=1; cin>>t;
+    int t=1; //cin>>t;
     while(t--){
-        LL a,b,c; cin>>a>>b>>c;
-        if(a<c){
-            cout<<1<<" ";
-            if(c<b*a) cout<<b<<" ";
-            else cout<<-1;
-        }else {
-            cout<<-1<<" "<<b;
-        }cout<<"\n";
+        LL n; cin>>n;
+        string s;
+        while(n){
+            n--;
+            s+='a'+n%26;
+            n/=26;
+        }reverse(s.begin(),s.end());
+        cout<<s;
     }
 }

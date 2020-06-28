@@ -68,13 +68,13 @@ int main(){
     fastio;
     int t=1; cin>>t;
     while(t--){
-        LL a,b,c; cin>>a>>b>>c;
-        if(a<c){
-            cout<<1<<" ";
-            if(c<b*a) cout<<b<<" ";
-            else cout<<-1;
-        }else {
-            cout<<-1<<" "<<b;
-        }cout<<"\n";
+        string s; cin>>s;
+        stack<char>st; int ti=0;
+        FOR(i,0,s.size()){
+            if(!st.empty() && (st.top()-'0' +s[i]-'0')==1) ti++,st.pop();
+            else st.push(s[i]);
+        }
+        if(ti&1) cout<<"DA"<<"\n";
+        else cout<<"NET"<<"\n";
     }
 }

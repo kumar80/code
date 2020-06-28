@@ -68,13 +68,17 @@ int main(){
     fastio;
     int t=1; cin>>t;
     while(t--){
-        LL a,b,c; cin>>a>>b>>c;
-        if(a<c){
-            cout<<1<<" ";
-            if(c<b*a) cout<<b<<" ";
-            else cout<<-1;
-        }else {
-            cout<<-1<<" "<<b;
-        }cout<<"\n";
+        LL n,k,x;  cin>>n>>k;map<LL,LL>m;
+        int  cnt=0;
+        FOR(i,0,n){ 
+            cin>>x;
+            if(x%k==0) {cnt++ ; continue;}
+            m[k - x%k]++;
+        } if(cnt==n) {cout<<0<<"\n"; continue;}
+        LL ans = 0,mx=0,j=0;
+        for(auto i : m){
+            if(mx<=i.second) mx=i.second,j=i.first;
+        }    
+        cout<<(mx-1)*k + j+1<<"\n";
     }
 }

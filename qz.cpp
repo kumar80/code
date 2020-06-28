@@ -66,15 +66,15 @@ const long long INF = 1e18;
 const long long MAX = 1e5+10;
 int main(){
     fastio;
-    int t=1; cin>>t;
+    int t=1; //cin>>t;
     while(t--){
-        LL a,b,c; cin>>a>>b>>c;
-        if(a<c){
-            cout<<1<<" ";
-            if(c<b*a) cout<<b<<" ";
-            else cout<<-1;
-        }else {
-            cout<<-1<<" "<<b;
-        }cout<<"\n";
+        int n ; cin>>n;
+        
+        for(LL i = 1; (i*i+i)/2 <= n ; i++){
+            double N= n-(i*i+i)/2; 
+            LL sq = sqrt(1+8*N);
+            if(((sq*sq == (1 +8*N  )&& (-1+sq)%2==0)) && N>0) {cout<<"YES"; return 0;}
+        }
+        cout<<"NO";
     }
 }

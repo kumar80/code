@@ -68,13 +68,11 @@ int main(){
     fastio;
     int t=1; cin>>t;
     while(t--){
-        LL a,b,c; cin>>a>>b>>c;
-        if(a<c){
-            cout<<1<<" ";
-            if(c<b*a) cout<<b<<" ";
-            else cout<<-1;
-        }else {
-            cout<<-1<<" "<<b;
-        }cout<<"\n";
+        int n; cin>>n;
+        int th=0,si=0;
+        while(n%6==0) n/=6,si++;
+        while(n%3==0) th++,n/=3;
+        if(n==1) {cout<<th*2 + si<<"\n"; }
+        else cout<<"-1\n";
     }
 }
