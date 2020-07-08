@@ -57,26 +57,41 @@ using namespace std;
 #define fastio ios_base::sync_with_stdio(0); cin.tie(0)
 #define LL long long 
 #define mod 1000000007 
-#define FOR(i, j, k) for (int i=j ; i<k ; i++)
-#define ROF(i, j, k) for (int i=j ; i>=k ; i--) 
+#define FOR(i, j, k) for (auto i=j ; i<k ; i++)
+#define ROF(i, j, k) for (auto i=j ; i>=k ; i--) 
 #define debug(...) fprintf(stderr, __VA_ARGS__), fflush(stderr)
 #define time__(d) for(long blockTime = 0; (blockTime == 0 ? (blockTime=clock()) != 0 : false); debug("%s time : %.4fs", d, (double)(clock() - blockTime) / CLOCKS_PER_SEC))
 
 const long long INF = 1e18;
 const long long MAX = 1e5+10;
+bool cmp(pair<int,int>a,pair<int,int>b){
+     return abs(a.first)+abs(a.second)<abs(b.first)+abs(b.second);
+}
 int main(){
     fastio;
-    int t=1; //cin>>t;
-    while(t--){ 
-        int n ; cin>>n;vector<LL>a(n+1,0); FOR(i,1,n+1) cin>>a[i];
-        map<LL,LL>m; vector<LL>s=a; m[a[n]]++;
-        ROF(i,n-1,1) s[i]+=s[i+1],m[s[i]]++;
-        LL cnt=0; LL l=a[1],tot=s[1]; m[s[1]]--;
-        FOR(i,2,n){
-            LL r = tot-l;m[s[i]]--;
-            if(r%2==0 && r/2==l) cnt+=m[r/2];
-            l+=a[i]; 
-        }
-        cout<<cnt;
+    int t=1;// cin>>t;
+    while(t--){
+        int n; cin>>n;  vector<pair<int,int>>xy1;         LL tot=0;
+         FOR(i,0,n ){
+            int x,y; cin>>x>>y; 
+             xy1.push_back({x,y}); 
+            if(x!=0) tot+=2;
+            if(y!=0) tot+=2;
+            tot+=2;
+            }
+        sort(xy1.begin(),xy1.end(),cmp);
+
+        cout<<tot<<"\n";
+        FOR(i,0,xy1.size() ){
+            int x=xy1[i].first,y=xy1[i].second;
+            if(x!=0) cout<<1<<" "<<abs(x)<<" "<<(x>0?'R':'L')<<"\n";
+            if(y!=0) cout<<1<<" "<<abs(y)<<" "<<(y>0?'U':'D')<<"\n";  
+            cout<<2<<"\n";
+            if(x!=0) cout<<1<<" "<<abs(x)<<" "<<(x<0?'R':'L')<<"\n";
+            if(y!=0) cout<<1<<" "<<abs(y)<<" "<<(y<0?'U':'D')<<"\n";    
+            cout<<3<<"\n";
+        }   
+       
+
     }
 }

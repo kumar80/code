@@ -57,26 +57,54 @@ using namespace std;
 #define fastio ios_base::sync_with_stdio(0); cin.tie(0)
 #define LL long long 
 #define mod 1000000007 
-#define FOR(i, j, k) for (int i=j ; i<k ; i++)
-#define ROF(i, j, k) for (int i=j ; i>=k ; i--) 
+#define FOR(i, j, k) for (auto i=j ; i<k ; i++)
+#define ROF(i, j, k) for (auto i=j ; i>=k ; i--) 
 #define debug(...) fprintf(stderr, __VA_ARGS__), fflush(stderr)
 #define time__(d) for(long blockTime = 0; (blockTime == 0 ? (blockTime=clock()) != 0 : false); debug("%s time : %.4fs", d, (double)(clock() - blockTime) / CLOCKS_PER_SEC))
 
 const long long INF = 1e18;
 const long long MAX = 1e5+10;
+int mn =INT_MAX;int D,P; 
+
 int main(){
     fastio;
     int t=1; //cin>>t;
-    while(t--){ 
-        int n ; cin>>n;vector<LL>a(n+1,0); FOR(i,1,n+1) cin>>a[i];
-        map<LL,LL>m; vector<LL>s=a; m[a[n]]++;
-        ROF(i,n-1,1) s[i]+=s[i+1],m[s[i]]++;
-        LL cnt=0; LL l=a[1],tot=s[1]; m[s[1]]--;
-        FOR(i,2,n){
-            LL r = tot-l;m[s[i]]--;
-            if(r%2==0 && r/2==l) cnt+=m[r/2];
-            l+=a[i]; 
+    while(t--){
+        cin>>P>>D;
+        vector<vector<int>>a(D+1,vector<int>(P+1));
+        FOR(i,1,D+1) FOR(j,1,P+1) cin>>a[i][j],a[i][j]+=a[i][j-1];
+        vector<vector<LL>>dp(10000,vector<LL>(P+1,INT_MAX));
+        FOR(i,1,P+1) dp[0][i]=INT_MAX;
+        FOR(i,0,1<<D) dp[i][0]=0;
+        LL ans = INT_MAX;
+
+        FOR(i,1,1<<D){
+            FOR(j,0,11) {
+                if(i&(1<<j)) {
+                    int mask =   i&(~(1<<j));  
+                    FOR(p,0,P+1){
+                        FOR(k,0,p)
+                        dp[i][p] = min(dp[mask][k]+a[j+1][p]-a[j+1][k], dp[i][p]);
+                    }
+                }
+            }ans = min(dp[i][P],ans);
         }
-        cout<<cnt;
+
+            cout<<ans<<"\n";
     }
 }
+/*
+4 3
+1 2 1 0
+2 3 0 1
+3 1 4 2
+
+4 2
+2 2 2 2
+3 1 2 3
+
+2 3
+1 2
+2 3
+3 1
+*/

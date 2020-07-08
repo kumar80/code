@@ -57,26 +57,31 @@ using namespace std;
 #define fastio ios_base::sync_with_stdio(0); cin.tie(0)
 #define LL long long 
 #define mod 1000000007 
-#define FOR(i, j, k) for (int i=j ; i<k ; i++)
-#define ROF(i, j, k) for (int i=j ; i>=k ; i--) 
+ #define ROF(i, j, k) for (auto i=j ; i>=k ; i--) 
 #define debug(...) fprintf(stderr, __VA_ARGS__), fflush(stderr)
 #define time__(d) for(long blockTime = 0; (blockTime == 0 ? (blockTime=clock()) != 0 : false); debug("%s time : %.4fs", d, (double)(clock() - blockTime) / CLOCKS_PER_SEC))
 
 const long long INF = 1e18;
 const long long MAX = 1e5+10;
+string ans;
+void f(int n,int *a,string t){
+    // cout<<t<<" ";
+    if(ans.size()<t.size()) ans=t;
+    else if(ans.size()==t.size()) ans=max(ans,t);
+    if(n<=0) return ;
+    ROF(i,9,1){
+            char ch = '0'+i;
+            if(n>=a[i]) f(n-a[i],a,t+ch); 
+        }
+}
 int main(){
     fastio;
     int t=1; //cin>>t;
-    while(t--){ 
-        int n ; cin>>n;vector<LL>a(n+1,0); FOR(i,1,n+1) cin>>a[i];
-        map<LL,LL>m; vector<LL>s=a; m[a[n]]++;
-        ROF(i,n-1,1) s[i]+=s[i+1],m[s[i]]++;
-        LL cnt=0; LL l=a[1],tot=s[1]; m[s[1]]--;
-        FOR(i,2,n){
-            LL r = tot-l;m[s[i]]--;
-            if(r%2==0 && r/2==l) cnt+=m[r/2];
-            l+=a[i]; 
-        }
-        cout<<cnt;
-    }
+    while(t--){
+        int n; cin>>n; int a[10]; FOR(i,1,10)  cin>>a[ i];
+        f(n,a,"");
+        if(ans.size())cout<<ans;
+        else cout<<-1;
+    }   
 }
+

@@ -54,29 +54,31 @@
 #include<bits/stdc++.h>
 using namespace std;
  
-#define fastio ios_base::sync_with_stdio(0); cin.tie(0)
-#define LL long long 
-#define mod 1000000007 
-#define FOR(i, j, k) for (int i=j ; i<k ; i++)
-#define ROF(i, j, k) for (int i=j ; i>=k ; i--) 
-#define debug(...) fprintf(stderr, __VA_ARGS__), fflush(stderr)
-#define time__(d) for(long blockTime = 0; (blockTime == 0 ? (blockTime=clock()) != 0 : false); debug("%s time : %.4fs", d, (double)(clock() - blockTime) / CLOCKS_PER_SEC))
 
-const long long INF = 1e18;
-const long long MAX = 1e5+10;
+#define FOR(i, j, k) for (auto i=j ; i<k ; i++)
+#define ROF(i, j, k) for (auto i=j ; i>=k ; i--) 
+
+
 int main(){
-    fastio;
-    int t=1; //cin>>t;
-    while(t--){ 
-        int n ; cin>>n;vector<LL>a(n+1,0); FOR(i,1,n+1) cin>>a[i];
-        map<LL,LL>m; vector<LL>s=a; m[a[n]]++;
-        ROF(i,n-1,1) s[i]+=s[i+1],m[s[i]]++;
-        LL cnt=0; LL l=a[1],tot=s[1]; m[s[1]]--;
-        FOR(i,2,n){
-            LL r = tot-l;m[s[i]]--;
-            if(r%2==0 && r/2==l) cnt+=m[r/2];
-            l+=a[i]; 
+    ios_base::sync_with_stdio(0); cin.tie(0);
+    int t; cin>>t;
+    while(t--){
+        int n,m; cin>>n>>m;
+        int a[n][m]; FOR(i,0,n) FOR(j,0,m) cin>>a[i][j];
+        bool is = true;
+        FOR(i,0,n) if(a[i][0]>3 || a[i][m-1]>3) is =false;
+        FOR(j,0,m) if(a[0][j]>3 || a[n-1][j]>3) is = false;
+        FOR(i,1,n) FOR(j,1,m) if(a[i][j]>4) is= false;
+        if(a[0][0] >2 || a[n-1][m-1]>2 || a[0][m-1]>2 || a[n-1][0]>2) is =false;
+        if(!is) {cout<<"NO\n"; continue;}
+        FOR(i,0,n) a[i][0] = a[i][m-1]=3;
+        FOR(j,0,m) a[0][j] = a[n-1][j] = 3;
+        FOR(i,1,n-1) FOR(j,1,m-1) a[i][j] =4;
+        a[0][0] = a[n-1][m-1]= a[0][m-1]= a[n-1][0] =2;
+        cout<<"YES\n";
+        FOR(i,0,n) {
+            FOR(j,0,m) cout<<a[i][j]<<" ";
+            cout<<"\n";
         }
-        cout<<cnt;
-    }
+     }
 }

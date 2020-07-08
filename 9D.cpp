@@ -57,8 +57,8 @@ using namespace std;
 #define fastio ios_base::sync_with_stdio(0); cin.tie(0)
 #define LL long long 
 #define mod 1000000007 
-#define FOR(i, j, k) for (int i=j ; i<k ; i++)
-#define ROF(i, j, k) for (int i=j ; i>=k ; i--) 
+#define FOR(i, j, k) for (auto i=j ; i<k ; i++)
+#define ROF(i, j, k) for (auto i=j ; i>=k ; i--) 
 #define debug(...) fprintf(stderr, __VA_ARGS__), fflush(stderr)
 #define time__(d) for(long blockTime = 0; (blockTime == 0 ? (blockTime=clock()) != 0 : false); debug("%s time : %.4fs", d, (double)(clock() - blockTime) / CLOCKS_PER_SEC))
 
@@ -66,17 +66,26 @@ const long long INF = 1e18;
 const long long MAX = 1e5+10;
 int main(){
     fastio;
-    int t=1; //cin>>t;
-    while(t--){ 
-        int n ; cin>>n;vector<LL>a(n+1,0); FOR(i,1,n+1) cin>>a[i];
-        map<LL,LL>m; vector<LL>s=a; m[a[n]]++;
-        ROF(i,n-1,1) s[i]+=s[i+1],m[s[i]]++;
-        LL cnt=0; LL l=a[1],tot=s[1]; m[s[1]]--;
-        FOR(i,2,n){
-            LL r = tot-l;m[s[i]]--;
-            if(r%2==0 && r/2==l) cnt+=m[r/2];
-            l+=a[i]; 
+    int t=1; cin>>t;
+    while(t--){
+        int n; cin>>n; int a[n+1],b[5000]={0}; FOR(i,1,n+1) cin>>a[i],b[a[i]]=i;
+        vector<int>ans;
+        FOR(i,0,n) {
+            int mxe,k=-1;
+            if(a[i+1]==i) continue  ;
+            FOR(j,0,5000) if(!b[j]) {mxe=j;break;}
+            FOR(j,1,n+1) if(a[j]==i) {k=j;break;}
+            if(k>0) {
+                ans.push_back(k); b[i]=0;
+                a[k] = mxe; b[mxe]=k;   i--;
+            }else {k=i+1;
+                ans.push_back(k); b[a[k]]=0;
+                a[k] = mxe; b[mxe]=k;
+            }
         }
-        cout<<cnt;
+        cout<<ans.size()<<"\n";
+        for(auto i : ans) cout<<i<<" ";
+       // FOR(i,1,n+1) cout<<a[i]<<" ";
+        cout<<"\n";
     }
 }
