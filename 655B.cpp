@@ -68,24 +68,15 @@ int main(){
     fastio;
     int t=1; cin>>t;
     while(t--){
-        int n; cin>>n; int a[n+1],b[5000]={0}; FOR(i,0,n) cin>>a[i],b[a[i]]++;
-        vector<int>ans;
-        while(1) {
-            bool pos = true;
-            FOR(j,0,n) if(a[j]!=j) pos = false;
-            if(pos) break;
-            int mxe;
-            FOR(j,0,5000) if(b[j]==0) {mxe=j;  break;}
-            if(mxe==n) {
-                int k;
-                FOR(j,0,n) if(a[j]!=j) { b[a[j]]--; b[n]++; a[j]=n; ans.push_back(j+1);break;}
-            }else {
-                b[a[mxe]]--; b[mxe]++; a[mxe]=mxe; ans.push_back(mxe+1);  
-            }
-        }
-        cout<<ans.size()<<"\n";
-        for(auto i : ans) cout<<i<<" ";   
-       // FOR(i,1,n+1) cout<<a[i]<<" ";
-        cout<<"\n";
+       int n ; cin>>n;
+       int a=0,b=0;
+       for(int i =1;i*i<=n; i++) {
+           if(n%i==0){    
+               if(__gcd(i,n-i)>__gcd(a,b))  a=i,b=n-i;            //  cout<<i<<" "<<a<<" "<<b<<" "<<n<<";";
+
+               if(__gcd(n/i,n-n/i ) > __gcd(a,b) && i>1) a=n/i,b=n-n/i;
+           }
+       } 
+        cout<<a<<" "<<b<<"\n";
     }
 }

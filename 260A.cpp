@@ -66,26 +66,18 @@ const long long INF = 1e18;
 const long long MAX = 1e5+10;
 int main(){
     fastio;
-    int t=1; cin>>t;
+    int t=1;// cin>>t;
     while(t--){
-        int n; cin>>n; int a[n+1],b[5000]={0}; FOR(i,0,n) cin>>a[i],b[a[i]]++;
-        vector<int>ans;
-        while(1) {
-            bool pos = true;
-            FOR(j,0,n) if(a[j]!=j) pos = false;
-            if(pos) break;
-            int mxe;
-            FOR(j,0,5000) if(b[j]==0) {mxe=j;  break;}
-            if(mxe==n) {
-                int k;
-                FOR(j,0,n) if(a[j]!=j) { b[a[j]]--; b[n]++; a[j]=n; ans.push_back(j+1);break;}
-            }else {
-                b[a[mxe]]--; b[mxe]++; a[mxe]=mxe; ans.push_back(mxe+1);  
+        LL a,b,n; cin>>a>>b>>n;
+        FOR(i,0,10) {
+            int temp= a*10+i;
+            if(temp%b==0) { //cout<<temp<<" ";
+                cout<<a; cout<<i;
+                FOR(i,0,n-1) cout<<0;
+               // cout<<i;
+                return 0;
             }
         }
-        cout<<ans.size()<<"\n";
-        for(auto i : ans) cout<<i<<" ";   
-       // FOR(i,1,n+1) cout<<a[i]<<" ";
-        cout<<"\n";
+        cout<<-1;
     }
 }

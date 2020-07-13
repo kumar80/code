@@ -57,7 +57,8 @@ using namespace std;
 #define fastio ios_base::sync_with_stdio(0); cin.tie(0)
 #define LL long long 
 #define mod 1000000007 
- #define ROF(i, j, k) for (auto i=j ; i>=k ; i--) 
+#define FOR(i, j, k) for (auto i=j ; i<k ; i++)
+#define ROF(i, j, k) for (auto i=j ; i>=k ; i--) 
 #define debug(...) fprintf(stderr, __VA_ARGS__), fflush(stderr)
 #define time__(d) for(long blockTime = 0; (blockTime == 0 ? (blockTime=clock()) != 0 : false); debug("%s time : %.4fs", d, (double)(clock() - blockTime) / CLOCKS_PER_SEC))
 
@@ -78,10 +79,14 @@ int main(){
     fastio;
     int t=1; //cin>>t;
     while(t--){
-        int n; cin>>n; int a[10]; FOR(i,1,10)  cin>>a[ i];
+        int n; cin>>n; int a[10]; FOR(i,1,10) cin>>a[i];
         f(n,a,"");
         if(ans.size())cout<<ans;
         else cout<<-1;
     }   
 }
 
+/*
+898207
+99745 99746 99748 99752 99760 99776 99808 99872 100000 
+*/
