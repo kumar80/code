@@ -1,0 +1,39 @@
+#include<bits/stdc++.h>
+using namespace std;
+const int N = 1000010;
+int t,n,m;
+int val[N];
+set<pair<long long,int> > s;
+long long hold;
+int main(int argc, char const *argv[])
+{
+	scanf("%d",&t);
+	for(int zz=1; zz<=t;zz++)
+	{
+		s.clear();
+		scanf("%d%d",&n,&m);
+		s.insert({0,1});
+		for(int i=1;i<=n;i++)
+		{
+			scanf("%d",val+i);
+		}
+		int i;
+		for(i=1;i<=n;i++)
+		{
+			while(!s.empty() && i - s.begin()->second > m)
+			{
+				s.erase(s.begin());
+			}
+			if(s.empty())
+				break;
+			hold = s.begin()->first;
+			if(val[i] != 0)
+				s.insert({hold + 1LL*val[i], i});
+		}
+		long long ans = -1;
+		if(i==n+1)
+			ans = hold;
+		printf("Case #%d: %lld\n",zz,ans);
+	}
+	return 0;
+}

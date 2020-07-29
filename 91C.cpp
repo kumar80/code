@@ -66,8 +66,22 @@ const long long INF = 1e18;
 const long long MAX = 1e5+10;
 int main(){
     fastio;
-    int t=1;// cin>>t;
+    int t=1;cin>>t;
     while(t--){
-        
+        int n,x;cin>>n>>x;
+        int a[n]; FOR(i,0,n) cin>>a[i];
+        sort(a,a+n);
+        int b[n];
+        ROF(i,n-1,0){
+          int sm = a[i];
+          int j = ceil((float)x/a[i]);
+          b[i] = j;
+        }
+        int dp[n+100]={0};
+        ROF(i,n-1,0){
+          if(b[i]+i<=n) dp[i]=1+dp[b[i]+i];
+          else dp[i]=0;
+        }
+        cout<<*max_element(dp,dp+n)<<"\n";
     }
 }

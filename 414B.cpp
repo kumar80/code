@@ -50,38 +50,46 @@
                                              `''''`'''i==_+=_=i__
                                                      ||'''- '    `.
                                                       `-.......-''
-*/                              
-#include<bits/stdc++.h>
+*/
+#include <bits/stdc++.h>
 using namespace std;
- 
-#define fastio ios_base::sync_with_stdio(0); cin.tie(0)
-#define LL long long 
-#define mod 1000000007 
-#define FOR(i, j, k) for (auto i=j ; i<k ; i++)
-#define ROF(i, j, k) for (auto i=j ; i>=k ; i--) 
+
+#define fastio                  \
+  ios_base::sync_with_stdio(0); \
+  cin.tie(0)
+#define LL long long
+#define mod 1000000007
+#define FOR(i, j, k) for (auto i = j; i < k; i++)
+#define ROF(i, j, k) for (auto i = j; i >= k; i--)
 #define debug(...) fprintf(stderr, __VA_ARGS__), fflush(stderr)
-#define time__(d) for(long blockTime = 0; (blockTime == 0 ? (blockTime=clock()) != 0 : false); debug("%s time : %.4fs", d, (double)(clock() - blockTime) / CLOCKS_PER_SEC))
+#define time__(d) for (long blockTime = 0; (blockTime == 0 ? (blockTime = clock()) != 0 : false); debug("%s time : %.4fs", d, (double)(clock() - blockTime) / CLOCKS_PER_SEC))
 
 const long long INF = 1e18;
-const long long MAX = 1e5+10;
-int main(){
-    fastio;
-    int t=1;// cin>>t;
-    while(t--){
-        int n,k; cin>>n>>k; vector<vector<int>>dp(n+1,vector<int>(k+1,0));
-       // FOR(i,1,n+1) dp[1][i] = 1 + dp[1][i-1];
-       // FOR(i,1,k+1) dp[i][1] = 1; 
-        FOR(i,1,n+1){
-            FOR(j,1,k+1){
-                dp[i][j] = dp[i-1][j];
-                for(int f=1; f*f<i;f++) {
-                    if(i%f==0)
-                        dp[i][j]=(dp[i][j]+dp[f][j]+1)%mod,
-                        dp[i][j]=(dp[i][j]+dp[i/f][j]+1)%mod;
-                }
-              //  dp[i][j]++;
-            }
+const long long MAX = 1e5 + 10;
+int main()
+{
+  fastio;
+  int t = 1; // cin>>t;
+  while (t--)
+  {
+    int n, k;
+    cin >> n >> k;
+    vector<vector<int>> dp(k + 1, vector<int>(n + 1, 0));
+    FOR(i, 1, n + 1)
+    dp[1][i] = 1;
+    FOR(i, 2, k + 1)
+    {
+      FOR(j, 1, n + 1)
+      {
+        for (int f = j; f <= n; f += j)
+        {
+          dp[i][j] = (dp[i][j] + dp[i - 1][f]) % mod;
         }
-        cout<<dp[n][k];
+      }
     }
+    LL ans = 0;
+    FOR(i, 1, n + 1)
+    ans = (ans + dp[k][i]) % mod;
+    cout << ans;
+  }
 }

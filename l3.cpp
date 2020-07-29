@@ -64,17 +64,37 @@ using namespace std;
 
 const long long INF = 1e18;
 const long long MAX = 1e5+10;
-vector<int>adj[MAX],vis(MAX,0),node(MAX,1);
-
+int n,m;
+void dfs(int i,int j,int r,int c,vector<vector<char>>&a,vector<vector<int>>&vis,int &cy){
+  vis[i][j] = 1; 
+  int dx[] = {1,0,-1,0};
+  int dy[] = {0,1,0,-1};
+  FOR(k,0,4) {
+     int x = i+dx[k],y=j+dy[k];
+     if(x>=n || y>=m || x<0 || y<0 ) continue;
+     if(a[x][y]=='.') continue;
+     if(!vis[x][y]) dfs(x,y,i,j,a,vis,cy);
+     else if(x!=r || y!=c) cy++,cout<<i<<" "<<j<<" , "<<x<<" "<<y<<", "<<r<<" "<<c<<" ;";;
+   //  if(i==0 && j==1)  cout<<i<<" "<<j<<" , "<<x<<" "<<y<<", "<<r<<" "<<c<<" ;";
+   }
+}
 int main(){
-    fastio;
-    int t=1;// cin>>t;
+    fastio;   
+    int t=1; cin>>t;
     while(t--){
-        int n; cin>>n;
-        FOR(i,0,n) {
-            int x,y; cin>>x>>y;
-            adj[x].push_back(y);adj[y].push_back(x);
-        }
+        cin>>n>>m; 
+        vector<vector<char>>a(n+7,vector<char>(m+7));       
+        vector<vector<int>>vis(n+7,vector<int>(m+7,0));
+
+        FOR(i,0,n) FOR(j,0,m) cin>>a[i][j];
+        vector<int>v,c;
+        FOR(i,0,n) 
+          FOR(j,0,m) 
+            if(!vis[i][j] && a[i][j]=='#'){ int cy=0; dfs(i,j,i,j+1,a,vis,cy);  v.push_back(cy);}
         
+        for(auto i : v) cout<<i<<" ";
+        if(v.size()>1) cout<<0;
+        //else if(v.size()==0|| (v.size()==1 && v[0]<)) cout<<-1;
+        cout<<"\n";
     }
 }

@@ -1,0 +1,46 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define mod 1000000007
+#define fr(i,j,n) for(i=j;i<n;i++)
+#define frd(i,j,n) for(i=n-1;i>=j;i--)
+#define flash ios_base::sync_with_stdio(false); cin.tie(NULL),cout.tie(NULL);
+#define tc int tc; cin>>tc; while(tc--)
+#define endl "\n"
+#define pb push_back
+#define mp make_pair
+#define vc vector
+#define vl vector<ll>
+#define pr pair<ll,ll>
+#define vp vector<pr>
+#define pqmx priority_queue <ll>
+#define pqmn priority_queue <ll,vl,greater<ll>>
+#define all(v) v.begin(),v.end()
+#define srt(v) sort(all(v))
+#define srtd(v) sort(v.rbegin(),v.rend())
+#define F first
+#define S second
+int main()
+{
+  flash
+   ll n=1;
+   tc{
+     string s;
+     cin>>s;
+     ll i,j,k;
+     j=0;
+     cout<<"Case #"<<n<<": ";
+     n++;
+     k=s.length();
+     fr(i,0,k){
+       if(s[i]=='B')
+       j++;
+     }
+     if(j>=k/2&& j!=k-1)
+     cout<<"Y";
+     else
+     cout<<"N";
+     cout<<endl;
+   }
+  return 0;
+}

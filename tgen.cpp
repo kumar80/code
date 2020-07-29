@@ -29,12 +29,16 @@ string printRandomString(int n)
 } 
 
 // Driver code 
-int main() 
-{ 	int t = 1 + rand()%100; cout<<t<<"\n";
+int main(){
+	fastio;
+ 	srand(time(NULL));
+	int t = 1 ;
+	cout<<t<<"\n";
 	while(t--){
-	int n  = 1 + rand()%10000,k  = 1 + rand()%10000;
-	cout<<n<<" "<<k<<"\n";
-	//FOR(i,0,n) cout<<1+rand()%10<<" "<<1+rand()%10<<"\n";
+		int n  = 100000,k=100000-1,m=1;
+		cout<<n<<" "<<k<<" "<<m<<"\n";
+		FOR(i,0,n) cout<<1+rand()%20<<" ";
+		cout<<"\n";
 	}
-return 0; 
+	return 0; 
 } 
