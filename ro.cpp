@@ -50,42 +50,55 @@
                                              `''''`'''i==_+=_=i__
                                                      ||'''- '    `.
                                                       `-.......-''
-*/                              
+*/
 #include<bits/stdc++.h>
 using namespace std;
- 
+
 #define fastio ios_base::sync_with_stdio(0); cin.tie(0)
 #define LL long long 
 #define mod 1000000007 
+#define all(v) v.begin(),v.end()
+#define pr(v) pair<v,v>
+#define pb push_back
 #define FOR(i, j, k) for (auto i=j ; i<k ; i++)
 #define ROF(i, j, k) for (auto i=j ; i>=k ; i--) 
 #define debug(...) fprintf(stderr, __VA_ARGS__), fflush(stderr)
 #define time__(d) for(long blockTime = 0; (blockTime == 0 ? (blockTime=clock()) != 0 : false); debug("%s time : %.4fs", d, (double)(clock() - blockTime) / CLOCKS_PER_SEC))
 
 const long long INF = 1e18;
-const long long MAX = 1e5+10;
-int main(){
+const long long MAX = 2e5+10;
+int main() {
     fastio;
     int t=1; cin>>t;
-    while(t--){
-        int n; cin>>n;  string A ,B; cin>>A>>B;
-        vector<int>p; 
-        int l=0,rev=0,cnt=0;
-        ROF(i,n-1,0){
-            int a,b=B[i]-'0';
-            if(rev) {
-                a=A[l-i]-'0';
-                a=(cnt%2)^a;
-                if(a==b) continue;
-                int c=A[0]-'0';
-                if(c==a) p.push_back(i+1);
-                else p.push_back(1),p.push_back(i+1);
-            }else {
-              
-            } 
+    while (t--) {
+        int n; cin>>n; int a[n][n];
+        FOR(i, 0, n) FOR(j, 0, n) cin>>a[i][j];
+             FOR(i,0,n) {
+            FOR(j,0,n) cout<<a[i][j]<<" ";
+         cout<<"\n";
+        } cout<<"#############"<<endl;
+        FOR(k, 0, n) {
+            int i=k, j=0, p=n-1-k, q=p-i, temp;
+            while (q-- && i<p) {
+                temp=a[i][i];j=i;
+                while (j<=p) {
+                    swap(temp, a[j][i]);j++; 
+                }j=i+1; 
+                while (j<=p) {
+                    swap(temp, a[p][j]);j++;
+                }j=p-1;
+                while (j>=i) {
+                    swap(temp, a[j][p]); j--;
+                }j=p-1;
+                while (j>=i) {
+                    swap(temp, a[i][j]); j--;
+                }
+            }
         }
-        cout<<p.size()<<" ";
-        FOR(i,0,p.size()) cout<<p[i]<<" ";
+        FOR(i,0,n) {
+            FOR(j,0,n) cout<<a[i][j]<<" ";
+         cout<<"\n";
+        }
         cout<<"\n";
     }
 }

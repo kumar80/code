@@ -57,35 +57,48 @@ using namespace std;
 #define fastio ios_base::sync_with_stdio(0); cin.tie(0)
 #define LL long long 
 #define mod 1000000007 
+#define all(v) v.begin(),v.end()
 #define FOR(i, j, k) for (auto i=j ; i<k ; i++)
 #define ROF(i, j, k) for (auto i=j ; i>=k ; i--) 
 #define debug(...) fprintf(stderr, __VA_ARGS__), fflush(stderr)
 #define time__(d) for(long blockTime = 0; (blockTime == 0 ? (blockTime=clock()) != 0 : false); debug("%s time : %.4fs", d, (double)(clock() - blockTime) / CLOCKS_PER_SEC))
 
 const long long INF = 1e18;
-const long long MAX = 1e5+10;
+const long long MAX = 2e5+10;
+LL sum=0;
+int dfs(int u, int p,vector<pair<LL,LL>>adj[],vector<LL>&vis,priority_queue<pair<LL,LL>>&w,LL l,vector<LL>&lv,vector<LL>&we){
+    vis[u]=1; int cnt=0,le=0,tt;
+    for(auto v : adj[u]) 
+        if(!vis[v.first]){
+            tt=dfs(v.first,u,adj,vis,w,l+we[v.second],lv,we); 
+            lv[v.second]=tt;
+            le+=tt; cnt++;
+            w.push({we[v.second]*tt - (we[v.second]/2) * tt,v.second});
+        }
+    if(cnt==0) {sum+=l; return 1; }
+    return le;
+}
 int main(){
     fastio;
     int t=1; cin>>t;
     while(t--){
-        int n; cin>>n;  string A ,B; cin>>A>>B;
-        vector<int>p; 
-        int l=0,rev=0,cnt=0;
-        ROF(i,n-1,0){
-            int a,b=B[i]-'0';
-            if(rev) {
-                a=A[l-i]-'0';
-                a=(cnt%2)^a;
-                if(a==b) continue;
-                int c=A[0]-'0';
-                if(c==a) p.push_back(i+1);
-                else p.push_back(1),p.push_back(i+1);
-            }else {
-              
-            } 
+        LL n,s; cin>>n>>s;sum=0;
+        vector<pair<LL,LL>>adj[n+1];  priority_queue<pair<LL,LL>>w; vector<LL>vis(n+1,0),lv(n+1),we(n+1);
+        FOR(i,0,n-1){
+            LL u,v,w; cin>>u>>v>>w;
+            adj[u].push_back({v,i}); adj[v].push_back({u,i});
+            we[i]=w;
         }
-        cout<<p.size()<<" ";
-        FOR(i,0,p.size()) cout<<p[i]<<" ";
-        cout<<"\n";
+        dfs(1,1,adj,vis,w,0,lv,we);
+        int ans = 0;  
+        while(sum>s && !w.empty()) {
+            auto q = w.top(); w.pop();
+            sum+=-(we[q.second]*lv[q.second])+(we[q.second]/2)*lv[q.second]; 
+            we[q.second]/=2;
+            if(we[q.second])
+                 w.push({we[q.second]*lv[q.second] - (we[q.second]/2) * lv[q.second],q.second});
+            ans++;
+        }
+        cout<<ans<<"\n"; 
     }
 }

@@ -57,35 +57,36 @@ using namespace std;
 #define fastio ios_base::sync_with_stdio(0); cin.tie(0)
 #define LL long long 
 #define mod 1000000007 
+#define all(v) v.begin(),v.end()
 #define FOR(i, j, k) for (auto i=j ; i<k ; i++)
 #define ROF(i, j, k) for (auto i=j ; i>=k ; i--) 
 #define debug(...) fprintf(stderr, __VA_ARGS__), fflush(stderr)
 #define time__(d) for(long blockTime = 0; (blockTime == 0 ? (blockTime=clock()) != 0 : false); debug("%s time : %.4fs", d, (double)(clock() - blockTime) / CLOCKS_PER_SEC))
 
 const long long INF = 1e18;
-const long long MAX = 1e5+10;
+const long long MAX = 2e5+10;
 int main(){
     fastio;
-    int t=1; cin>>t;
+    int t=1; //cin>>t;
     while(t--){
-        int n; cin>>n;  string A ,B; cin>>A>>B;
-        vector<int>p; 
-        int l=0,rev=0,cnt=0;
-        ROF(i,n-1,0){
-            int a,b=B[i]-'0';
-            if(rev) {
-                a=A[l-i]-'0';
-                a=(cnt%2)^a;
-                if(a==b) continue;
-                int c=A[0]-'0';
-                if(c==a) p.push_back(i+1);
-                else p.push_back(1),p.push_back(i+1);
-            }else {
-              
-            } 
+        int n,s,m; cin>>n>>s; m=n;
+        int a[n]; FOR(i,0,n) cin>>a[i]; vector<int>v; v.push_back(0);
+        sort(a,a+n); 
+        FOR(i,0,n){
+            int j = i;
+            while(j<n && a[j]==a[i]) j++;
+            v.push_back(j-i);
+            i=j-1;
+        }FOR(i,1,v.size()) v[i]+=v[i-1];
+        int mn = INT_MAX;
+        int i =1,j=1;n=v.size();
+        while(j<n) {
+            while(j<n && m*ceil(log2((double)(j-i+1))) <=  s*8 ) j++;
+            mn = min(mn, v[n-1] - (v[j-1]-v[i-1]) );/// cout<<v[i-1]<<" "<<v[j-1]<<" "<<v[n] <<"; ";
+            while(i<j && m*ceil(log2((double)(j-i+1))) >  s*8 ) i++;
+            if(j<n) mn = min(mn, v[n-1]-(v[j]-v[i-1])); // cout<<i<<" "<<j<<" "<<mn <<"; ";
+        
         }
-        cout<<p.size()<<" ";
-        FOR(i,0,p.size()) cout<<p[i]<<" ";
-        cout<<"\n";
+          cout<<mn;
     }
 }

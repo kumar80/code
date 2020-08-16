@@ -57,35 +57,50 @@ using namespace std;
 #define fastio ios_base::sync_with_stdio(0); cin.tie(0)
 #define LL long long 
 #define mod 1000000007 
+#define all(v) v.begin(),v.end()
 #define FOR(i, j, k) for (auto i=j ; i<k ; i++)
 #define ROF(i, j, k) for (auto i=j ; i>=k ; i--) 
 #define debug(...) fprintf(stderr, __VA_ARGS__), fflush(stderr)
 #define time__(d) for(long blockTime = 0; (blockTime == 0 ? (blockTime=clock()) != 0 : false); debug("%s time : %.4fs", d, (double)(clock() - blockTime) / CLOCKS_PER_SEC))
 
 const long long INF = 1e18;
-const long long MAX = 1e5+10;
+const long long MAX = 2e5+10;
 int main(){
     fastio;
     int t=1; cin>>t;
     while(t--){
-        int n; cin>>n;  string A ,B; cin>>A>>B;
-        vector<int>p; 
-        int l=0,rev=0,cnt=0;
-        ROF(i,n-1,0){
-            int a,b=B[i]-'0';
-            if(rev) {
-                a=A[l-i]-'0';
-                a=(cnt%2)^a;
-                if(a==b) continue;
-                int c=A[0]-'0';
-                if(c==a) p.push_back(i+1);
-                else p.push_back(1),p.push_back(i+1);
-            }else {
-              
+        int n; cin>>n; string  s; cin>>s;
+        set<int>one,zero; 
+        FOR(i,0,n) {
+            if(s[i]=='1') one.insert(i);
+            else zero.insert(i);
+        }
+        int a[n]={0},c=0;
+        FOR(i,0,n){
+            if(s[i]=='0' && a[i]==0) {
+                zero.erase(zero.find(i)); a[i]=++c; int j=1,idx=i;
+                while(1){
+                    auto p = one.upper_bound(idx);
+                    auto q = zero.upper_bound(idx);
+                    if(j&1 && p!=one.end() && one.size())  a[*p]=c,idx=*p,one.erase(p),j++;
+                    else if(j%2==0 && q!=zero.end() && zero.size()) a[*q]=c,idx=*q,zero.erase(q),j++;
+                    else break;
+                }
+            }else if(s[i]=='1' && a[i]==0) {
+                one.erase(one.find(i)); a[i]=++c; int j=0,idx=i;
+                while(1){
+                    auto p = one.upper_bound(idx);
+                    auto q = zero.upper_bound(idx);
+                    if(j&1 && p!=one.end() && one.size())  a[*p]=c,idx=*p,one.erase(p),j++;
+                    else if(j%2==0 && q!=zero.end() && zero.size()) a[*q]=c,idx=*q,zero.erase(q),j++;
+                    else break;
+                }
             } 
         }
-        cout<<p.size()<<" ";
-        FOR(i,0,p.size()) cout<<p[i]<<" ";
+        for(auto p : one)   a[p] = ++c,cout<<"sa";
+        for(auto q : zero) a[q]= ++c,cout<<"pp";
+        cout<<c<<"\n";
+        FOR(i,0,n) cout<<a[i]<<" ";
         cout<<"\n";
     }
 }

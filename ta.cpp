@@ -57,35 +57,39 @@ using namespace std;
 #define fastio ios_base::sync_with_stdio(0); cin.tie(0)
 #define LL long long 
 #define mod 1000000007 
+#define all(v) v.begin(),v.end()
 #define FOR(i, j, k) for (auto i=j ; i<k ; i++)
 #define ROF(i, j, k) for (auto i=j ; i>=k ; i--) 
 #define debug(...) fprintf(stderr, __VA_ARGS__), fflush(stderr)
 #define time__(d) for(long blockTime = 0; (blockTime == 0 ? (blockTime=clock()) != 0 : false); debug("%s time : %.4fs", d, (double)(clock() - blockTime) / CLOCKS_PER_SEC))
 
 const long long INF = 1e18;
-const long long MAX = 1e5+10;
+const long long MAX = 2e5+10;
 int main(){
     fastio;
-    int t=1; cin>>t;
+    int t=1;cin>>t;
     while(t--){
-        int n; cin>>n;  string A ,B; cin>>A>>B;
-        vector<int>p; 
-        int l=0,rev=0,cnt=0;
-        ROF(i,n-1,0){
-            int a,b=B[i]-'0';
-            if(rev) {
-                a=A[l-i]-'0';
-                a=(cnt%2)^a;
-                if(a==b) continue;
-                int c=A[0]-'0';
-                if(c==a) p.push_back(i+1);
-                else p.push_back(1),p.push_back(i+1);
+        int n ;  cin>>n;  int a[n]; FOR(i,0,n) cin>>a[i];
+        int prev=1;
+        LL ans =1;
+        FOR(i,1,n) {
+            if(a[i]==a[i-1]){
+                if(i<n-1 && a[i]<a[i+1]) ans+=prev;
+                else if(i<n-1 && a[i]>a[i+1]) ans+=prev;
+                else ans+=prev;
+            }
+            else if(a[i]>a[i-1]) {
+                prev++; ans+=prev;
             }else {
-              
-            } 
+                LL j = i; prev=1;
+                while(j<n && a[j-1]>a[j]) j++,ans+=prev++;
+                if(i==1) ans+=prev-1; 
+             //   cout<<j<<" ";
+              //  ans+=((j-i+1)*(j-i+2))/2;
+              prev=1; 
+                i=j-1;
+            }
         }
-        cout<<p.size()<<" ";
-        FOR(i,0,p.size()) cout<<p[i]<<" ";
-        cout<<"\n";
+        cout<<ans<<"\n";
     }
 }

@@ -57,6 +57,7 @@ using namespace std;
 #define fastio ios_base::sync_with_stdio(0); cin.tie(0)
 #define LL long long 
 #define mod 1000000007 
+#define all(v) v.begin(),v.end()
 #define FOR(i, j, k) for (auto i=j ; i<k ; i++)
 #define ROF(i, j, k) for (auto i=j ; i>=k ; i--) 
 #define debug(...) fprintf(stderr, __VA_ARGS__), fflush(stderr)
@@ -66,26 +67,27 @@ const long long INF = 1e18;
 const long long MAX = 1e5+10;
 int main(){
     fastio;
-    int t=1; cin>>t;
+    int t=1;//s cin>>t;
     while(t--){
-        int n; cin>>n;  string A ,B; cin>>A>>B;
-        vector<int>p; 
-        int l=0,rev=0,cnt=0;
-        ROF(i,n-1,0){
-            int a,b=B[i]-'0';
-            if(rev) {
-                a=A[l-i]-'0';
-                a=(cnt%2)^a;
-                if(a==b) continue;
-                int c=A[0]-'0';
-                if(c==a) p.push_back(i+1);
-                else p.push_back(1),p.push_back(i+1);
-            }else {
-              
-            } 
+        int n; cin>>n; string  s; cin>>s;
+        int ans = 0;
+        FOR(i,0,n) {
+            int r=0,w=0,j=i;
+            while(j<n && s[j]=='W') j++,w++;
+            while(j<n && s[j]=='R') j++,r++;
+            if(w && r) ans+=r;
+            i=j-1;
         }
-        cout<<p.size()<<" ";
-        FOR(i,0,p.size()) cout<<p[i]<<" ";
-        cout<<"\n";
+        int i =0,j=n-1,p=0;
+        while(i<j) {
+            while(i<n && s[i]=='R') i++;
+            while(j>=0 && s[j]=='W') j--;
+            if(i<j) p++;
+            i++,j--;
+        }ans =min(p,ans);
+        int r=0,w=0; //cout<<ans<<" ";
+        FOR(i,0,n) if(s[i]=='R') r++; else w++;
+        ans = min(ans,w);
+        cout<<ans;
     }
 }

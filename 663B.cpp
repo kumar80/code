@@ -57,35 +57,36 @@ using namespace std;
 #define fastio ios_base::sync_with_stdio(0); cin.tie(0)
 #define LL long long 
 #define mod 1000000007 
+#define all(v) v.begin(),v.end()
 #define FOR(i, j, k) for (auto i=j ; i<k ; i++)
 #define ROF(i, j, k) for (auto i=j ; i>=k ; i--) 
 #define debug(...) fprintf(stderr, __VA_ARGS__), fflush(stderr)
 #define time__(d) for(long blockTime = 0; (blockTime == 0 ? (blockTime=clock()) != 0 : false); debug("%s time : %.4fs", d, (double)(clock() - blockTime) / CLOCKS_PER_SEC))
 
 const long long INF = 1e18;
-const long long MAX = 1e5+10;
+const long long MAX = 2e5+10;
 int main(){
     fastio;
     int t=1; cin>>t;
     while(t--){
-        int n; cin>>n;  string A ,B; cin>>A>>B;
-        vector<int>p; 
-        int l=0,rev=0,cnt=0;
-        ROF(i,n-1,0){
-            int a,b=B[i]-'0';
-            if(rev) {
-                a=A[l-i]-'0';
-                a=(cnt%2)^a;
-                if(a==b) continue;
-                int c=A[0]-'0';
-                if(c==a) p.push_back(i+1);
-                else p.push_back(1),p.push_back(i+1);
-            }else {
-              
-            } 
+        int n,m; cin>>n>>m; char c[n+1][m+1];
+        FOR(i,1,n+1) FOR(j,1,m+1) cin>>c[i][j];
+        int i=n,j=m-1; int ans = 0;
+        if(m==1) j=1;
+        while(m==1 && i-->0){
+            int u,v; 
+           if(c[i][j]=='R') u=i,v=j+1;
+           else u=i+1,v=j;
+           if(u>n || v>m) ans++;
         }
-        cout<<p.size()<<" ";
-        FOR(i,0,p.size()) cout<<p[i]<<" ";
-        cout<<"\n";
+        while(i>0 && j>0) {
+           int u,v; 
+           if(c[i][j]=='R') u=i,v=j+1;
+           else u=i+1,v=j;
+           if(u>n || v>m) ans++;
+           if(j==1) j=m,i--;
+           else j--;
+        }
+        cout<<ans<<"\n"; 
     }
 }

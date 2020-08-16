@@ -57,35 +57,33 @@ using namespace std;
 #define fastio ios_base::sync_with_stdio(0); cin.tie(0)
 #define LL long long 
 #define mod 1000000007 
+#define all(v) v.begin(),v.end()
+#define pr(v) pair<v,v>
+#define pb push_back
 #define FOR(i, j, k) for (auto i=j ; i<k ; i++)
 #define ROF(i, j, k) for (auto i=j ; i>=k ; i--) 
 #define debug(...) fprintf(stderr, __VA_ARGS__), fflush(stderr)
 #define time__(d) for(long blockTime = 0; (blockTime == 0 ? (blockTime=clock()) != 0 : false); debug("%s time : %.4fs", d, (double)(clock() - blockTime) / CLOCKS_PER_SEC))
 
 const long long INF = 1e18;
-const long long MAX = 1e5+10;
+const long long MAX = 2e5+10;
+bool f(int a[]) {
+    int cnt = 0;
+    if(a[0]&1) cnt++; if(a[1]&1) cnt++; if(a[2]&1) cnt++; if(a[3]&1) cnt++;
+    if(cnt==0 || cnt==1) return 1 ;
+    return 0;
+}
 int main(){
     fastio;
     int t=1; cin>>t;
     while(t--){
-        int n; cin>>n;  string A ,B; cin>>A>>B;
-        vector<int>p; 
-        int l=0,rev=0,cnt=0;
-        ROF(i,n-1,0){
-            int a,b=B[i]-'0';
-            if(rev) {
-                a=A[l-i]-'0';
-                a=(cnt%2)^a;
-                if(a==b) continue;
-                int c=A[0]-'0';
-                if(c==a) p.push_back(i+1);
-                else p.push_back(1),p.push_back(i+1);
-            }else {
-              
-            } 
-        }
-        cout<<p.size()<<" ";
-        FOR(i,0,p.size()) cout<<p[i]<<" ";
-        cout<<"\n";
+        int c[4]; cin>>c[0]>>c[1]>>c[2]>>c[3];
+        bool pos = f(c);
+        int cnt = 0;
+        FOR(i,0,3) if(c[i]) cnt++;
+        if(cnt==3) FOR(i,0,3) c[i]--,c[3]++;
+        bool pos1 = f(c);
+        if(pos || pos1 ) cout<<"YES\n";
+        else cout<<"NO\n"; 
     }
 }

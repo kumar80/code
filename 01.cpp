@@ -57,6 +57,7 @@ using namespace std;
 #define fastio ios_base::sync_with_stdio(0); cin.tie(0)
 #define LL long long 
 #define mod 1000000007 
+#define all(v) v.begin(),v.end()
 #define FOR(i, j, k) for (auto i=j ; i<k ; i++)
 #define ROF(i, j, k) for (auto i=j ; i>=k ; i--) 
 #define debug(...) fprintf(stderr, __VA_ARGS__), fflush(stderr)
@@ -64,28 +65,38 @@ using namespace std;
 
 const long long INF = 1e18;
 const long long MAX = 1e5+10;
+vector<int>adj[2*MAX],d(2*MAX,100*100*100),vis(2*MAX,0);
+void dfs(int u){
+    vis[u]=1;
+    for(auto v : adj[u] ) {
+        d[v]=min(d[v],d[u]+1);
+        if(!vis[v]) 
+            dfs(v);
+    }
+}
 int main(){
     fastio;
-    int t=1; cin>>t;
+    int t=1;// cin>>t;
     while(t--){
-        int n; cin>>n;  string A ,B; cin>>A>>B;
-        vector<int>p; 
-        int l=0,rev=0,cnt=0;
-        ROF(i,n-1,0){
-            int a,b=B[i]-'0';
-            if(rev) {
-                a=A[l-i]-'0';
-                a=(cnt%2)^a;
-                if(a==b) continue;
-                int c=A[0]-'0';
-                if(c==a) p.push_back(i+1);
-                else p.push_back(1),p.push_back(i+1);
-            }else {
-              
-            } 
+        int n,m; cin>>n>>m;
+        FOR(i,0,m){
+            int x,y; cin>>x>>y;
+            adj[x].push_back(y);adj[y].push_back(x);
+        }d[1]=0;
+      //  dfs(1);
+      queue<int>q;q.push(1);
+      while(!q.empty()){
+          int u = q.front(); q.pop();
+          vis[u]=1;
+          for(auto v : adj[u]) 
+              if(!vis[v]) q.push(v),d[v]=min(d[v],d[u]+1);
+          
+      }
+        LL s=0,mn=INT_MAX;
+        ROF(i,n,1){
+            mn=min((LL)d[i],mn);
+            s+=mn;
         }
-        cout<<p.size()<<" ";
-        FOR(i,0,p.size()) cout<<p[i]<<" ";
-        cout<<"\n";
+        cout<<s;
     }
 }

@@ -57,6 +57,7 @@ using namespace std;
 #define fastio ios_base::sync_with_stdio(0); cin.tie(0)
 #define LL long long 
 #define mod 1000000007 
+#define all(v) v.begin(),v.end()
 #define FOR(i, j, k) for (auto i=j ; i<k ; i++)
 #define ROF(i, j, k) for (auto i=j ; i>=k ; i--) 
 #define debug(...) fprintf(stderr, __VA_ARGS__), fflush(stderr)
@@ -64,28 +65,53 @@ using namespace std;
 
 const long long INF = 1e18;
 const long long MAX = 1e5+10;
+void leftrotate(string &s, int d) 
+{ 
+    reverse(s.begin(), s.begin()+d); 
+    reverse(s.begin()+d, s.end()); 
+    reverse(s.begin(), s.end()); 
+} 
+  
+// In-place rotates s towards right by d 
+void rightrotate(string &s, int d) 
+{ 
+   leftrotate(s, s.length()-d); 
+}
 int main(){
     fastio;
     int t=1; cin>>t;
     while(t--){
-        int n; cin>>n;  string A ,B; cin>>A>>B;
-        vector<int>p; 
-        int l=0,rev=0,cnt=0;
-        ROF(i,n-1,0){
-            int a,b=B[i]-'0';
-            if(rev) {
-                a=A[l-i]-'0';
-                a=(cnt%2)^a;
-                if(a==b) continue;
-                int c=A[0]-'0';
-                if(c==a) p.push_back(i+1);
-                else p.push_back(1),p.push_back(i+1);
-            }else {
-              
-            } 
+        string l; cin>>l; int n = l.size();
+        int d=INT_MAX;        
+        int cnt[10]={0}; 
+        FOR(i,0,n ) 
+            cnt[l[i]-'0']++; 
+        FOR(i,0,10) 
+            d=min(d,n-cnt[i]);
+
+        FOR(i,0,10) {
+            FOR(j,0,10) { 
+                string L,a; char f=('0'+i),s=('0'+j);
+                FOR(k,0,n) {
+                    int p=k;
+                    while(p<n && l[p]!=f) p++;
+                    int q=p+1;
+                    while(q<n && l[q]!=s) q++;
+                    if(p!=n && q!=n) L+=f,L+=s;
+                    k=q;
+                }
+                FOR(k,0,n) {
+                    int p=k;
+                    while(p<n && l[p]!=s) p++;
+                    int q=p+1;
+                    while(q<n && l[q]!=f) q++;
+                    if(p!=n && q!=n) a+=s,a+=f;
+                    k=q;
+                }
+                int p = L.size(),q=a.size();
+                d=min({d,n-p,n-q}); 
+            }
         }
-        cout<<p.size()<<" ";
-        FOR(i,0,p.size()) cout<<p[i]<<" ";
-        cout<<"\n";
+        cout<<d<<"\n";
     }
 }

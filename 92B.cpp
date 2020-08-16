@@ -57,6 +57,7 @@ using namespace std;
 #define fastio ios_base::sync_with_stdio(0); cin.tie(0)
 #define LL long long 
 #define mod 1000000007 
+#define all(v) v.begin(),v.end()
 #define FOR(i, j, k) for (auto i=j ; i<k ; i++)
 #define ROF(i, j, k) for (auto i=j ; i>=k ; i--) 
 #define debug(...) fprintf(stderr, __VA_ARGS__), fflush(stderr)
@@ -64,28 +65,22 @@ using namespace std;
 
 const long long INF = 1e18;
 const long long MAX = 1e5+10;
+
 int main(){
     fastio;
     int t=1; cin>>t;
     while(t--){
-        int n; cin>>n;  string A ,B; cin>>A>>B;
-        vector<int>p; 
-        int l=0,rev=0,cnt=0;
-        ROF(i,n-1,0){
-            int a,b=B[i]-'0';
-            if(rev) {
-                a=A[l-i]-'0';
-                a=(cnt%2)^a;
-                if(a==b) continue;
-                int c=A[0]-'0';
-                if(c==a) p.push_back(i+1);
-                else p.push_back(1),p.push_back(i+1);
-            }else {
-              
-            } 
+        int n,k,z; cin>>n>>k>>z;
+        vector<LL>a(n+1),b; a[0]=0 ;FOR(i,1,n+1) cin>>a[i];
+        LL sum=0;
+    
+        FOR(i,0,z+1){
+            LL p =0,r=0;
+            FOR(j,1,k-2*i+2) p+=a[j];
+            FOR(j,1,k-2*i+2) r=max(r,a[j]+a[j+1]);
+            sum=max(p+i*r,sum); 
         }
-        cout<<p.size()<<" ";
-        FOR(i,0,p.size()) cout<<p[i]<<" ";
-        cout<<"\n";
+
+        cout<<sum<<"\n";
     }
 }

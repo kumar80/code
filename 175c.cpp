@@ -50,42 +50,80 @@
                                              `''''`'''i==_+=_=i__
                                                      ||'''- '    `.
                                                       `-.......-''
-*/                              
-#include<bits/stdc++.h>
+*/
+#include <bits/stdc++.h>
 using namespace std;
- 
-#define fastio ios_base::sync_with_stdio(0); cin.tie(0)
-#define LL long long 
-#define mod 1000000007 
-#define FOR(i, j, k) for (auto i=j ; i<k ; i++)
-#define ROF(i, j, k) for (auto i=j ; i>=k ; i--) 
+
+#define fastio                    \
+    ios_base::sync_with_stdio(0); \
+    cin.tie(0)
+#define LL long long
+#define mod 1000000007
+#define all(v) v.begin(), v.end()
+#define pr(v) pair<v, v>
+#define pb push_back
+#define FOR(i, j, k) for (auto i = j; i < k; i++)
+#define ROF(i, j, k) for (auto i = j; i >= k; i--)
 #define debug(...) fprintf(stderr, __VA_ARGS__), fflush(stderr)
-#define time__(d) for(long blockTime = 0; (blockTime == 0 ? (blockTime=clock()) != 0 : false); debug("%s time : %.4fs", d, (double)(clock() - blockTime) / CLOCKS_PER_SEC))
+#define time__(d) for (long blockTime = 0; (blockTime == 0 ? (blockTime = clock()) != 0 : false); debug("%s time : %.4fs", d, (double)(clock() - blockTime) / CLOCKS_PER_SEC))
 
 const long long INF = 1e18;
-const long long MAX = 1e5+10;
-int main(){
-    fastio;
-    int t=1; cin>>t;
-    while(t--){
-        int n; cin>>n;  string A ,B; cin>>A>>B;
-        vector<int>p; 
-        int l=0,rev=0,cnt=0;
-        ROF(i,n-1,0){
-            int a,b=B[i]-'0';
-            if(rev) {
-                a=A[l-i]-'0';
-                a=(cnt%2)^a;
-                if(a==b) continue;
-                int c=A[0]-'0';
-                if(c==a) p.push_back(i+1);
-                else p.push_back(1),p.push_back(i+1);
-            }else {
-              
-            } 
+const long long MAX = 2e5 + 10;
+bool isPallindrome(string s)
+{
+    int l = 0;
+    int h = s.size() - 1;
+
+    while (h > l)
+    {
+        if (s[l++] != s[h--])
+        {
+            return 0;
         }
-        cout<<p.size()<<" ";
-        FOR(i,0,p.size()) cout<<p[i]<<" ";
-        cout<<"\n";
+    }
+    return 1;
+}
+
+int main()
+{
+    fastio;
+    int t = 1; //cin>>t;
+    while (t--)
+    {
+        int n1, n2;
+        cin >> n1 >> n2;
+        int ans = 0;
+        FOR(i, n1, n2 + 1)
+        {
+            string s;
+            s = to_string(i);
+            FOR(j, 0, 24)
+            {
+                string p = s;
+                if (j / 10 == 0)
+                    p += '0' + to_string(j);
+                else
+                    p += to_string(j);
+                FOR(k, 0, 60)
+                {
+                    string q = p;
+                    if (k / 10 == 0)
+                        q += '0' + to_string(k);
+                    else
+                        q += to_string(k);
+                    FOR(l, 0, 60)
+                    {
+                        string r = q;
+                        if (l / 10 == 0)
+                            r += '0' + to_string(l);
+                        else
+                            r += to_string(l);
+                        if (isPallindrome(r))
+                            ans++; //cout<<r<<" ";
+                    }
+                }
+            }
+        }
+        cout << ans;
     }
 }

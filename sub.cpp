@@ -57,6 +57,7 @@ using namespace std;
 #define fastio ios_base::sync_with_stdio(0); cin.tie(0)
 #define LL long long 
 #define mod 1000000007 
+#define all(v) v.begin(),v.end()
 #define FOR(i, j, k) for (auto i=j ; i<k ; i++)
 #define ROF(i, j, k) for (auto i=j ; i>=k ; i--) 
 #define debug(...) fprintf(stderr, __VA_ARGS__), fflush(stderr)
@@ -68,24 +69,16 @@ int main(){
     fastio;
     int t=1; cin>>t;
     while(t--){
-        int n; cin>>n;  string A ,B; cin>>A>>B;
-        vector<int>p; 
-        int l=0,rev=0,cnt=0;
-        ROF(i,n-1,0){
-            int a,b=B[i]-'0';
-            if(rev) {
-                a=A[l-i]-'0';
-                a=(cnt%2)^a;
-                if(a==b) continue;
-                int c=A[0]-'0';
-                if(c==a) p.push_back(i+1);
-                else p.push_back(1),p.push_back(i+1);
-            }else {
-              
-            } 
+        int n,m; cin>>n>>m;
+        int a[n],b[m]; FOR(i,0,n) cin>>a[i]; FOR(i,0,m) cin>>b[i];
+        map<int,int>m1,m2; int dp1[n+1]={0},dp2[m+1]={0};
+        FOR(i,0,m) m2[b[i]] = i+1; int cm=0;
+        FOR(i,0,n) {
+            m1[a[i]] = i+1; int j = m2[a[i]];
+            if(j) {
+                dp1[i+1]=1; 
+                dp1[i+1] = max(dp[i+1],)
+            }else dp1[i+1] = dp1[i];
         }
-        cout<<p.size()<<" ";
-        FOR(i,0,p.size()) cout<<p[i]<<" ";
-        cout<<"\n";
     }
 }
