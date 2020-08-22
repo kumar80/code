@@ -71,5 +71,13 @@ int main(){
     fastio;
     int t=1; cin>>t;
     while(t--){
+        LL n,v; cin>>n;
+        v=(n*n+n)/2;
+        int i = 0;
+        while(1ll<<i <=n ){
+            v-= 2*(1ll<<i);
+            i++;
+        }
+        cout<<v<<"\n";
     }
 }

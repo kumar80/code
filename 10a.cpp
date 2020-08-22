@@ -71,5 +71,8 @@ int main(){
     fastio;
     int t=1; cin>>t;
     while(t--){
+        int n,x; cin>>n; set<int>s; FOR(i,0,n) cin>>x,s.insert(x);
+        if(s.size()==1) cout<<n<<"\n";
+        else cout<<1<<"\n"; 
     }
 }

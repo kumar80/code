@@ -71,5 +71,14 @@ int main(){
     fastio;
     int t=1; cin>>t;
     while(t--){
+        int n; cin>>n;   
+        int a[n],b[n],mn=INT_MAX; FOR(i,0,n) cin>>a[i],mn=min(a[i],mn),b[i]=a[i];
+       sort(b,b+n);
+       bool pos = true;
+        FOR(i,0,n) {
+          if(b[i]!=a[i] && a[i]%mn!=0) pos = false;
+        }
+      if(pos) cout<<"YES\n";
+      else cout<<"NO\n";
     }
 }

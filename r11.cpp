@@ -88,28 +88,28 @@ int main()
         cin >> n >> k >> w;
         LL l[n], h[n];
         FOR(i, 0, k)
-            cin >> l[i];
+        cin >> l[i];
         cin >> al >> bl >> cl >> dl;
         FOR(i, k, n)
-        l[i] = (al * l[i - 2] + bl * l[i - 1] + cl) % dl + 1;
+        l[i] = (al * l[i - 2] + bl * l[i - 1] + cl) % dl + 1,cout<<l[i]<<" ,";
         //add((mul(al,l[i-2]),add(mul(bl,l[i-1]),cl))%dl,1),cout<<l[i]<<", ";
         FOR(i, 0, k)
-            cin >> h[i];
+        cin >> h[i];
         cin >> ah >> bh >> ch >> dh;
         FOR(i, k, n)
-        h[i] = (ah * h[i - 2] + bh * h[i - 1] + ch) % dh + 1;
+        h[i] = (ah * h[i - 2] + bh * h[i - 1] + ch) % dh + 1,cout<<h[i]<<" ,";
         //add((mul(ah,h[i-2]), add(mul(bh,h[i-1]),ch))%dh,1),cout<<h[i]<<", ";
         LL prev = 0, hmax = h[0], lmin = l[0], lmax = l[0] + w;
         cout << "\n";
-        LL ans = (2 * (w + h[0])) % mod;
+        LL ans = (2 * (w + h[0])) % mod, cnt1 = 0,cnt2=0,cnt3=0;
         prev = 0;
         FOR(i, 1, n)
         {
             LL ar;
             if (lmax < l[i])
             {
-                prev += 2 * (lmax - lmin + hmax); //add(prev,mul(2,add(lmax-lmin,hmax)));
-                ar = prev + 2 * (h[i] + w);       //add(prev,mul(2,add(w,h[i])));
+                prev = add(prev, 2 * (lmax - lmin + hmax)); //add(prev,mul(2,add(lmax-lmin,hmax)));
+                ar = prev + 2 * (h[i] + w);                 //add(prev,mul(2,add(w,h[i])));
                 hmax = h[i];
                 lmin = l[i], lmax = l[i] + w;
                 ans = mul(ans, ar);
@@ -118,9 +118,13 @@ int main()
             {
                 hmax = max(h[i], hmax);
                 lmax = max(l[i] + w, lmax);
-                ar = prev + 2 * (lmax - lmin + hmax); //add(prev,mul(2,add(lmax-lmin,hmax)));// cout<<"ar "<<ar<<"\n";
+                ar = prev + 2 * (lmax - lmin + hmax); //add(prev,mul(2,add(lmax-lmin,hmax)));
                 ans = mul(ans, ar);
             }
+             if (prev - 1e9 - 7 >=0)  cout << "prev", cnt1++;
+             if(ar - 1e9 - 7 >= 0)  cout << "ar", cnt2++;
+             if( ans - 1e9 - 7 >= 0)  cout << "ans", cnt3++;
+               
 
             // 50 10 17
             // 4 9 10 26 28 59 97 100 105 106
@@ -129,6 +133,6 @@ int main()
             // 21 81 410 605
         }
         cout << "Case #" << T++ << ": ";
-        cout << ans << "\n";
+        cout << ans << " " << cnt1 <<" "<<cnt2<<" "<<cnt3<<" " << "\n";
     }
 }

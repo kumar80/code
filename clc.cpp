@@ -71,5 +71,25 @@ int main(){
     fastio;
     int t=1; cin>>t;
     while(t--){
+      LL n,a,b; cin>>n>>a>>b;  string s; cin>>s;
+      int p=0; int i=0;
+      deque<char>st;
+      while(i<n) {
+          if(st.empty() || s[i]=='(') st.push_back(s[i]);
+          else if(s[i] ==')' && st.back()=='(') st.pop_back();
+          else st.push_back(s[i]);
+          i++;
+      }
+      while(!st.empty() && st.front()==')') p++,st.pop_front();
+      int q = st.size();
+    //  cout<<p<<" "<<q<<"\n";
+      if(p<q) swap(p,q);
+     
+      LL ans=(p-q)*a,temp=1e18; p-=(p-q);
+      for(int i=1;i<=p;i++) { 
+          temp = min(temp,2*i*a + (p-i)*b);
+          temp = min(temp,i*b + 2*(p-i)*a);
+      }if(temp==1e18)temp=0;
+      cout<<ans+temp<<"\n";
     }
 }

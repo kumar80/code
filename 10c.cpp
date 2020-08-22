@@ -71,5 +71,11 @@ int main(){
     fastio;
     int t=1; cin>>t;
     while(t--){
+        int n ; cin>>n; LL a[n];FOR(i,0,n) cin>>a[i];
+        LL ans=0;
+        FOR(i,0,n-1){
+            ans+=max(a[i]-a[i+1],0ll);
+        }
+        cout<<ans<<"\n";
     }
 }

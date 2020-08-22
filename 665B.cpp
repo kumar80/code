@@ -71,5 +71,16 @@ int main(){
     fastio;
     int t=1; cin>>t;
     while(t--){
+        LL x1,x2,y1,y2,z1,z2; cin>>x1>>y1>>z1>>x2>>y2>>z2;
+        if(z1>y2){
+          LL sum = 2*y2;
+          if(y1>x2) sum-=2*(y1-x2);
+          cout<<sum<<"\n";
+        }else{
+          LL sum = 2*z1;
+          if(y1-(y2-z1) - x2>0) sum-=2*(y1-y2+z1-x2); 
+          cout<<sum<<"\n";
+        }
+
     }
 }

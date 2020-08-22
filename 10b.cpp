@@ -71,5 +71,13 @@ int main(){
     fastio;
     int t=1; cin>>t;
     while(t--){
+         LL n,k; cin>>n>>k; LL a[n],mn=1e18,mx=-1e18;
+         FOR(i,0,n) cin>>a[i],mn=min(mn,a[i]),mx=max(mx,a[i]) ;
+         if(k%2==0) {
+             FOR(i,0,n) cout<<a[i]-mn<<" ";
+         }else {
+             FOR(i,0,n) cout<<mx-a[i]<<" "; 
+         }
+         cout<<"\n";
     }
 }

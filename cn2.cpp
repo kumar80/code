@@ -67,9 +67,40 @@ using namespace std;
 
 const long long INF = 1e18;
 const long long MAX = 2e5+10;
+void reverseArray(string &arr, int start, 
+                            int end) 
+{ 
+    while (start < end) 
+    { 
+        std::swap(arr[start], arr[end]); 
+        start++; 
+        end--; 
+    } 
+} 
+  
+/* Function to right rotate arr[] 
+of size n by d */
+void rightRotate(string &arr, int d, int n,int i) 
+{ 
+    reverseArray(arr, i, i+n-1); 
+    reverseArray(arr, i, i+d-1); 
+    reverseArray(arr, i+d, i+n-1); 
+} 
+  
+
 int main(){
     fastio;
-    int t=1; cin>>t;
+    int t=1; //cin>>t;
     while(t--){
+        string s; cin>>s; int m,n = s.size();  cin>>m;
+        vector<int>v(n+22,0);
+        FOR(i,0,m) {
+            int x,y,z; cin>>x>>y>>z;
+            int l = x-1, r=y-1;
+            int len = y-x+1; len=z%len;
+            rightRotate(s,len,y-x+1,l);
+            //cout<<s<<" \n";
+        }
+        cout<<s;
     }
 }

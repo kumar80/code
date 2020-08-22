@@ -67,9 +67,17 @@ using namespace std;
 
 const long long INF = 1e18;
 const long long MAX = 2e5+10;
+void f(string s, vector<string>&a) {
+    if(s.size()==7) {a.push_back(s); return;}
+    f(s+'?',a); f(s+'.',a); 
+}
 int main(){
     fastio;
     int t=1; cin>>t;
     while(t--){
+        string s;
+        vector<string>a;
+        f(s,a); 
+        for(auto i : a) cout<<i<<" ";
     }
 }

@@ -71,5 +71,12 @@ int main(){
     fastio;
     int t=1; cin>>t;
     while(t--){
+        LL n,x; cin>>n>>x; int a[n]; FOR(i,0,n) cin>>a[i];
+        LL v = (x*x+x)/2;
+        FOR(i,0,n) {
+            if(a[i]<=x) v-=2*a[i];
+        } 
+        cout<<v<<"\n";
     }
 }
+

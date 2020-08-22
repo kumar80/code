@@ -71,5 +71,12 @@ int main(){
     fastio;
     int t=1; cin>>t;
     while(t--){
+        int xa ,k; cin>>xa>>k;
+        if(xa<k) {
+            cout<<(k-xa)<<"\n";
+        }else {
+          if((xa-k)%2==0) cout<<"0\n";
+          else cout<<1<<"\n";
+        }
     }
 }

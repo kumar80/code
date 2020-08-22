@@ -50,26 +50,65 @@
                                              `''''`'''i==_+=_=i__
                                                      ||'''- '    `.
                                                       `-.......-''
-*/                              
-#include<bits/stdc++.h>
+*/
+#include <bits/stdc++.h>
 using namespace std;
- 
-#define fastio ios_base::sync_with_stdio(0); cin.tie(0)
-#define LL long long 
-#define mod 1000000007 
-#define all(v) v.begin(),v.end()
-#define pr(v) pair<v,v>
+
+#define fastio                  \
+  ios_base::sync_with_stdio(0); \
+  cin.tie(0)
+#define LL long long
+#define mod 1000000007
+#define all(v) v.begin(), v.end()
+#define pr(v) pair<v, v>
 #define pb push_back
-#define FOR(i, j, k) for (auto i=j ; i<k ; i++)
-#define ROF(i, j, k) for (auto i=j ; i>=k ; i--) 
+#define FOR(i, j, k) for (auto i = j; i < k; i++)
+#define ROF(i, j, k) for (auto i = j; i >= k; i--)
 #define debug(...) fprintf(stderr, __VA_ARGS__), fflush(stderr)
-#define time__(d) for(long blockTime = 0; (blockTime == 0 ? (blockTime=clock()) != 0 : false); debug("%s time : %.4fs", d, (double)(clock() - blockTime) / CLOCKS_PER_SEC))
+#define time__(d) for (long blockTime = 0; (blockTime == 0 ? (blockTime = clock()) != 0 : false); debug("%s time : %.4fs", d, (double)(clock() - blockTime) / CLOCKS_PER_SEC))
 
 const long long INF = 1e18;
-const long long MAX = 2e5+10;
-int main(){
-    fastio;
-    int t=1; cin>>t;
-    while(t--){
+const long long MAX = 2e5 + 10;
+vector<vector<LL>> dp(101, vector<LL>(MAX, -1));
+LL f(LL *w, LL *v, int n, LL mv)
+{
+  if (dp[n][mv] != -1)
+    return dp[n][mv];
+  dp[n][mv] = f(w, v, n - 1, mv);
+  if(mv - v[n] >= 0)
+    dp[n][mv] = min(dp[n][mv], w[n]+ f(w, v, n - 1, mv - v[n]));
+  
+    //cout<<n<<" "<<mv<<" "<<dp[n][mv]<<" ;"<<endl;
+
+    return dp[n][mv];
+}
+int main()
+{
+  fastio;
+  int t = 1; // cin>>t;
+  while (t--)
+  {
+    LL n, w;
+    cin >> n >> w;
+    LL a[n + 1], b[n + 1];
+    FOR(i, 1, n + 1)
+    cin >> a[i] >> b[i];
+    LL ans = 0;
+    FOR(i, 0, MAX)
+    dp[0][i] = INT_MAX;
+    FOR(i, 0, n + 1)
+    dp[i][0] = 0;
+    ROF(i, MAX - 1, 1)
+    {
+      ans = f(a, b, n, i);
+     // cout<<ans<<" ,";
+      if (ans > 0 && ans <= w)
+      {
+        ans = i;
+        break;
+      }
+      ans = 0;
     }
+    cout<<ans;
+  }
 }

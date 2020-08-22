@@ -1,0 +1,81 @@
+#include<bits/stdc++.h>
+using namespace std;
+const int N = 1000010,mod=1000000007;
+int t,n,k,w,l[N],h[N],al,bl,cl,dl,ah,bh,ch,dh;
+
+void takeInput()
+{
+	scanf("%d%d%d",&n,&k,&w);
+	for(int i=1;i<=k;i++)
+	{
+		scanf("%d",l+i);
+	}
+
+	scanf("%d%d%d%d",&al,&bl,&cl,&dl);
+	for(int i=k+1;i<=n;i++)
+	{
+		l[i] = (l[i-2]*1LL*al + l[i-1]*1LL*bl + 1LL*cl)%dl + 1;
+	}
+
+	for(int i=1;i<=k;i++)
+	{
+		scanf("%d",h+i);
+	}
+
+	scanf("%d%d%d%d",&ah,&bh,&ch,&dh);
+	for(int i=k+1;i<=n;i++)
+	{
+		h[i] = (h[i-2]*1LL*ah + h[i-1]*1LL*bh + 1LL*ch)%dh + 1;
+	}
+
+}
+int add(int a,int b)
+{
+	a = a+b;
+	if(a>=mod)
+		a-=mod;
+	return a;
+}
+int main(int argc, char const *argv[])
+{
+	scanf("%d",&t);
+	for(int zz=1;zz<=t;zz++)
+	{
+		l[0]=0;
+		takeInput();
+		// for(int i=1;i<=n;i++)
+		// 	cout<<l[i]<<" ";
+		// cout<<endl;
+		// for(int i=1;i<=n;i++)
+		// 	cout<<h[i]<<" ";
+		// cout<<endl;
+		l[0] = -25;
+		 int ans = 1;
+		 int pi = 0;
+		for(int i=1;i<=n;i++)
+		{
+			int htemp=0,ptemp=0;
+			for(int j=i-1; j>=1 && l[j]+w>=l[i];j--)
+			{
+				htemp = max(h[j],htemp);
+			}
+			//cout<<"--->"<<htemp<<endl;
+			ptemp = add(max(h[i]-htemp,0),max(h[i]-htemp,0));
+			//cout<<ptemp<<"<---"<<endl;
+			if(l[i-1]+w >= l[i])
+			{
+				ptemp = add(ptemp,l[i]-l[i-1]);
+				ptemp = add(ptemp,l[i]-l[i-1]);
+			}else
+			{
+				ptemp = add(ptemp,l[i]+w - l[i]);
+				ptemp = add(ptemp,l[i]+w - l[i]);
+			}
+			//cout<<ptemp<<endl;
+			pi = add(pi,ptemp);
+			ans = ans*1LL*pi%mod;
+		}
+		printf("Case #%d: %d\n",zz,ans);
+	}
+	return 0;
+}
