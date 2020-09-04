@@ -1,8 +1,10 @@
 #!/bin/bash
 # A sample Bash script, by Ryan
 
-g++ tgen.cpp
+g++ treegen.cpp
 ./a.out > in.txt
+cat in.txt
+
 g++ wo.cpp
 ./a.out < in.txt  > sol.txt
 g++ $1
@@ -10,7 +12,7 @@ g++ $1
 
 if [[ $(diff sol.txt out.txt ) ]]; then
     echo ***********************DIFFERENT ANSWER***********************
-    diff sol.txt out.txt 
+    cat sol.txt out.txt 
 else
     echo "Match 100%"
 fi
