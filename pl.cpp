@@ -55,7 +55,15 @@
 using namespace std;
  
 #define fastio ios_base::sync_with_stdio(0); cin.tie(0)
+#define LL long long 
+#define mod 1000000007 
+#define all(v) v.begin(),v.end()
+#define pr(v) pair<v,v>
+#define pb push_back
 #define FOR(i, j, k) for (auto i=j ; i<k ; i++)
+#define ROF(i, j, k) for (auto i=j ; i>=k ; i--) 
+#define debug(...) fprintf(stderr, __VA_ARGS__), fflush(stderr)
+#define time__(d) for(long blockTime = 0; (blockTime == 0 ? (blockTime=clock()) != 0 : false); debug("%s time : %.4fs", d, (double)(clock() - blockTime) / CLOCKS_PER_SEC))
 
 const long long INF = 1e18;
 const long long MAX = 2e5+10;
@@ -63,30 +71,23 @@ int main(){
     fastio;
     int t=1; cin>>t;
     while(t--){
-        int n,M; cin>>n>>M; vector<int>v(n+7);
-        FOR(i,0,n) cin>>v[i];
-        int l=M+1,r=n,ans=-1;
-        while(l<=r) {
-            int  m = l + (r-l)/2;
-            bool ok = false;
-            unordered_map<int,int>mp;
-            int i=0,j=0,cnt=0;
-            for(;j<m-1;j++) {
-                if(v[j]<m) mp[v[j]]++; else cnt--;
-                if(v[j]<m && mp[v[j]]==1) cnt++;
-            } 
-            while(j<n){
-                if(v[j]<m) mp[v[j]]++;  else cnt--;
-                if(v[j]<m && mp[v[j]]==1) cnt++;
-                if(cnt==m-1 && mp[M]==0) ok= true;
-                if(v[i]<m) mp[v[i]]--;
-                if(mp[v[i]]==0) cnt--;
-                if(v[i]>=m) cnt++;
-                i++,j++;              
-            }
-            if(ok) r=m-1,ans=m;
-            else l=m+1;
-        }
-        cout<<ans<<"\n";
+       int n; cin>>n; int a[n]; FOR(i,0,n) cin>>a[i];
+       int i=n/2 -1;,j=(n%2)?n/2+1:n/2;
+       while(i>=0 && a[i]==a[j]) i--,j++;
+       if(i<0){
+          int c=1;
+          i=n/2 -1;,j=(n%2)?n/2+1:n/2;
+          if(n&1) a[n/2]++,c=a[n/2]/10,a[n/2]%=10; 
+          while(i>=0) {
+              a[i]+=c; c=a[i]/10; a[i]%=10;a[j]=a[i];
+              i--;j++; 
+          }
+        FOR(i,0,n) cout<<a[i]; 
+       }else {
+           i=n/2 -1;,j=(n%2)?n/2+1:n/2;
+           while(i>=0) a[j]=a[i],i--,j++;
+           i=n/2 -1;,j=(n%2)?n/2+1:n/2;
+           
+       }
     }
 }

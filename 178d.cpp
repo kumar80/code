@@ -55,38 +55,36 @@
 using namespace std;
  
 #define fastio ios_base::sync_with_stdio(0); cin.tie(0)
+#define LL long long 
+#define mod 1000000007 
+#define all(v) v.begin(),v.end()
+#define pr(v) pair<v,v>
+#define pb push_back
 #define FOR(i, j, k) for (auto i=j ; i<k ; i++)
+#define ROF(i, j, k) for (auto i=j ; i>=k ; i--) 
+#define debug(...) fprintf(stderr, __VA_ARGS__), fflush(stderr)
+#define time__(d) for(long blockTime = 0; (blockTime == 0 ? (blockTime=clock()) != 0 : false); debug("%s time : %.4fs", d, (double)(clock() - blockTime) / CLOCKS_PER_SEC))
 
 const long long INF = 1e18;
 const long long MAX = 2e5+10;
+LL res=0;       
+vector<int>dp(3007,-1);
+int f(vector<int>&v,int s){
+    if(s<0) return 0;
+    if(dp[s]!=-1) return dp[s];
+     dp[s]=0;
+    FOR(i,0,v.size()) {
+        dp[s] = ((dp[s] + f(v,s-v[i]))%mod+mod)%mod;
+    }
+    return dp[s];
+}
 int main(){
     fastio;
-    int t=1; cin>>t;
+    int t=1;// cin>>t;
     while(t--){
-        int n,M; cin>>n>>M; vector<int>v(n+7);
-        FOR(i,0,n) cin>>v[i];
-        int l=M+1,r=n,ans=-1;
-        while(l<=r) {
-            int  m = l + (r-l)/2;
-            bool ok = false;
-            unordered_map<int,int>mp;
-            int i=0,j=0,cnt=0;
-            for(;j<m-1;j++) {
-                if(v[j]<m) mp[v[j]]++; else cnt--;
-                if(v[j]<m && mp[v[j]]==1) cnt++;
-            } 
-            while(j<n){
-                if(v[j]<m) mp[v[j]]++;  else cnt--;
-                if(v[j]<m && mp[v[j]]==1) cnt++;
-                if(cnt==m-1 && mp[M]==0) ok= true;
-                if(v[i]<m) mp[v[i]]--;
-                if(mp[v[i]]==0) cnt--;
-                if(v[i]>=m) cnt++;
-                i++,j++;              
-            }
-            if(ok) r=m-1,ans=m;
-            else l=m+1;
-        }
-        cout<<ans<<"\n";
+        int n; cin>>n; 
+        vector<int>v; FOR(i,3,n+1) v.push_back(i);
+         dp[0]=1; 
+         cout<< f(v,n);    
     }
 }

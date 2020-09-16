@@ -55,38 +55,58 @@
 using namespace std;
  
 #define fastio ios_base::sync_with_stdio(0); cin.tie(0)
+#define LL long long 
+#define mod 1000000007 
+#define all(v) v.begin(),v.end()
+#define pr(v) pair<v,v>
+#define pb push_back
 #define FOR(i, j, k) for (auto i=j ; i<k ; i++)
+#define ROF(i, j, k) for (auto i=j ; i>=k ; i--) 
+#define debug(...) fprintf(stderr, __VA_ARGS__), fflush(stderr)
+#define time__(d) for(long blockTime = 0; (blockTime == 0 ? (blockTime=clock()) != 0 : false); debug("%s time : %.4fs", d, (double)(clock() - blockTime) / CLOCKS_PER_SEC))
 
 const long long INF = 1e18;
 const long long MAX = 2e5+10;
+int sum(LL x){
+  int d=0;
+  while(x) d+=x%10,x/=10;
+  return d;
+}
+
+int dig(LL x){
+  int d = -1;
+  while(x) {
+    if(x%10>0) {d=x%10; break;}
+    x/=10;
+  } 
+  return d;
+}
+
 int main(){
     fastio;
-    int t=1; cin>>t;
+    int t=1;  cin>>t;
     while(t--){
-        int n,M; cin>>n>>M; vector<int>v(n+7);
-        FOR(i,0,n) cin>>v[i];
-        int l=M+1,r=n,ans=-1;
-        while(l<=r) {
-            int  m = l + (r-l)/2;
-            bool ok = false;
-            unordered_map<int,int>mp;
-            int i=0,j=0,cnt=0;
-            for(;j<m-1;j++) {
-                if(v[j]<m) mp[v[j]]++; else cnt--;
-                if(v[j]<m && mp[v[j]]==1) cnt++;
-            } 
-            while(j<n){
-                if(v[j]<m) mp[v[j]]++;  else cnt--;
-                if(v[j]<m && mp[v[j]]==1) cnt++;
-                if(cnt==m-1 && mp[M]==0) ok= true;
-                if(v[i]<m) mp[v[i]]--;
-                if(mp[v[i]]==0) cnt--;
-                if(v[i]>=m) cnt++;
-                i++,j++;              
-            }
-            if(ok) r=m-1,ans=m;
-            else l=m+1;
+        LL n,s; cin>>n>>s;
+        if(sum(n)<=s) { cout<<0<<"\n"; continue;  }
+        LL N=n; int i=0;
+        while(sum(N)>s && i<20){
+            LL p= pow(10,i);
+            LL temp = N;
+            if(i>0) { LL k = pow(10,i); temp=(temp/k)*k;  } 
+            int d = dig(temp); 
+            d= (10-d)%10;
+            temp +=(p*d);
+            if(sum(temp)>s) N=temp;
+            else {       
+              //cout<<d<<" "<<temp<<", ";
+              FOR(j,0,d+1) {
+                  LL x = temp + p*j;// cout<<x<<" ";
+                  if(sum(x)<=s) {N=x; break;}
+              }
+              break;
+            }// cout<<N<<" ;";
+            i++; 
         }
-        cout<<ans<<"\n";
-    }
+        cout<<(N-n)<<"\n";
+    }   
 }

@@ -1,7 +1,7 @@
 #!/bin/bash
 # A sample Bash script, by Ryan
 
-g++ treegen.cpp
+g++ tgen.cpp
 ./a.out > in.txt
 cat in.txt
 

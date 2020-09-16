@@ -55,38 +55,54 @@
 using namespace std;
  
 #define fastio ios_base::sync_with_stdio(0); cin.tie(0)
+#define LL long long 
+#define mod 1000000007 
+#define all(v) v.begin(),v.end()
+#define pb push_back
 #define FOR(i, j, k) for (auto i=j ; i<k ; i++)
+#define ROF(i, j, k) for (auto i=j ; i>=k ; i--) 
+#define debug(...) fprintf(stderr, __VA_ARGS__), fflush(stderr)
+#define time__(d) for(long blockTime = 0; (blockTime == 0 ? (blockTime=clock()) != 0 : false); debug("%s time : %.4fs", d, (double)(clock() - blockTime) / CLOCKS_PER_SEC))
 
 const long long INF = 1e18;
 const long long MAX = 2e5+10;
+int pr(char ch){
+    if(ch=='^') return 4;
+    if(ch=='*' || ch=='/') return 3;
+    if(ch=='+' || ch=='-') return 2;
+    return -1;
+}
+string f(string s){
+    stack<char>t;
+    string in;
+    FOR(i,0,s.size()){
+        if((s[i]<='z' && s[i]>='a') || (s[i]<='Z' && s[i]>='A'))
+            in+=s[i];
+        else if(s[i]=='(') t.push(s[i]);
+        else if(s[i]==')') {
+            while(!t.empty() && t.top()!='(') {
+                in+=t.top(); t.pop();
+            }
+            t.pop();
+        }else {
+            while(!t.empty() && pr(s[i]) <= pr(t.top())) {
+                 in+=t.top(); t.pop();
+            }
+            t.push(s[i]);
+        }
+    }
+    while(!t.empty()) {
+        in+=t.top(); t.pop();
+    }
+
+    return in;
+
+}
 int main(){
     fastio;
     int t=1; cin>>t;
     while(t--){
-        int n,M; cin>>n>>M; vector<int>v(n+7);
-        FOR(i,0,n) cin>>v[i];
-        int l=M+1,r=n,ans=-1;
-        while(l<=r) {
-            int  m = l + (r-l)/2;
-            bool ok = false;
-            unordered_map<int,int>mp;
-            int i=0,j=0,cnt=0;
-            for(;j<m-1;j++) {
-                if(v[j]<m) mp[v[j]]++; else cnt--;
-                if(v[j]<m && mp[v[j]]==1) cnt++;
-            } 
-            while(j<n){
-                if(v[j]<m) mp[v[j]]++;  else cnt--;
-                if(v[j]<m && mp[v[j]]==1) cnt++;
-                if(cnt==m-1 && mp[M]==0) ok= true;
-                if(v[i]<m) mp[v[i]]--;
-                if(mp[v[i]]==0) cnt--;
-                if(v[i]>=m) cnt++;
-                i++,j++;              
-            }
-            if(ok) r=m-1,ans=m;
-            else l=m+1;
-        }
-        cout<<ans<<"\n";
+       string s; cin>>s;
+       cout<<f(s)<<"\n"; 
     }
 }

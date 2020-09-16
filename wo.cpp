@@ -1,171 +1,99 @@
-#include <bits/stdc++.h>
-#include <ext/pb_ds/assoc_container.hpp>
-//#include <__msvc_all_public_headers.hpp>
+// C++ program to find minimum XOR value in an array. 
+#include <bits/stdc++.h> 
+using namespace std; 
+#define INT_SIZE 32 
 
-#pragma GCC optimize("Ofast")
-#pragma GCC target("avx,avx2,fma")
-#pragma GCC optimization("unroll-loops")
+// A Trie Node 
+struct TrieNode { 
+	int value; // used in leaf node 
+	TrieNode* Child[2]; 
+}; 
 
-typedef long long ll;
+// Utility function to create a new Trie node 
+TrieNode* getNode() 
+{ 
+	TrieNode* newNode = new TrieNode; 
+	newNode->value = 0; 
+	newNode->Child[0] = newNode->Child[1] = NULL; 
+	return newNode; 
+} 
 
-#define press_F_to_pay_respect        \
-    ios_base::sync_with_stdio(false); \
-    cin.tie(0);                       \
-    cout.tie(0)
-#define forn for (int i = 0; i < n; i++)
-#define fore(i, a, b) for (int i = a; i < (b); i++)
-#define pb push_back
-#define pob pop_back()
-#define mp make_pair
-#define sc second
-#define f first
-#define ld long double
-#define kek cout << "\n";
-#define rep(i, a, b) for (int i = a; i < b; i++)
-#define all(v) ((v).begin()), ((v).end())
-#define halt          \
-    {                 \
-        cout << "NO"; \
-        return 0;     \
-    }
+// utility function insert new key in trie 
+void insert(TrieNode* root, int key) 
+{ 
+	TrieNode* temp = root; 
 
-const ll MOD = 1e9 + 7;
-const ll MOD1 = 998244353;
-const int N = 5010;
-const int INF = 1e8;
-const ll LL_INF = 1e18;
-const long double pi = 3.1415926535;
-using namespace std;
-using namespace __gnu_pbds;
-typedef tree<ld, null_type, less<ld>, rb_tree_tag, tree_order_statistics_node_update> indexed_set;
-int divide(int a, int b)
-{
-    return (a + b - 1) / b;
-}
-vector<vector<ll>> adj;
-vector<ll> dp;
-vector<ll> g;
-ll diam = 0;
-vector<bool> nodes;
-void dfs(int s, int e)
-{
-    dp[s] = 1;
-    vector<ll> val;
-    for (auto x : adj[s])
-    {
-        if (e == x)
-            continue;
-        dfs(x, s);
-        val.pb(dp[x]);
-    }
-    sort(all(val));
-    if (val.size())
-        dp[s] += val.back();
-    if (val.size() >= 2)
-        g[s] = 1 + val.back() + val[val.size() - 2];
+	// start from the most significant bit, insert all 
+	// bit of key one-by-one into trie 
+	for (int i = INT_SIZE - 1; i >= 0; i--) { 
+		// Find current bit in given prefix 
+		bool current_bit = (key & (1 << i)); 
 
-    diam = max(diam, max(dp[s], g[s]));
-}
-void dfs1(int s, int e)
-{
-    if (adj[s].size() == 1)
-        nodes[s] = true;
-    for (auto x : adj[s])
-    {
-        if (x == e)
-            continue;
-        if (dp[x] == dp[s] - 1)
-            dfs1(x, s);
-    }
-}
-int main()
-{
-#if defined(_DEBUG)
-    freopen("input.txt", "r", stdin);
-    freopen("output.txt", "w", stdout);
-#endif
-    press_F_to_pay_respect;
-    // cout << fixed << setprecision(12) << ans;
-    // string al = "abcdefghijklmnopqrstuvwxyz";
-    int questions = 1;
-    // cin>>questions;
-    while (questions--)
-    {
-        int n;
-        cin >> n;
-        if (n == 1)
-        {
-            cout << 1;
-            return 0;
-        }
-        adj.resize(n + 2);
-        dp.resize(n + 2);
-        g.resize(n + 2);
-        nodes.resize(n + 2);
-        int z = n - 1;
-        while (z--)
-        {
-            int a, b;
-            cin >> a >> b;
-            adj[a].pb(b);
-            adj[b].pb(a);
-        }
-        dfs(1, 0);
-        vector<ll> d = dp;
-        // we have found diam == tree diameter
-        for (int i = 1; i <= n; i++)
-        {
-            if (g[i] == diam)
-            {
-                dp.clear();
-                dp.resize(n + 2);
-                g.clear();
-                g.resize(n + 2);
-                // now lets root the tree on node i and count dp and g vectors
-                dfs(i, 0);
-                vector<int> val;
-                // add in vector<int> val all dp values from other nodes
-                for (auto x : adj[i])
-                    val.pb(dp[x]);
-                // then choose two maximum
-                sort(all(val));
-                int mx = val.back();
-                int mx1 = val[val.size() - 2];
-                // then do dfs1 to find leaves
-                for (auto x : adj[i])
-                {
-                    if (dp[x] == mx || dp[x] == mx1)
-                        dfs1(x, 0);
-                }
-                // if we have found needed nodes write them
-            }
-        }
-        dp = d;
-        // otherwise the tree is rooted in node 1 and we need to find leaves from here
-        for (int i = 1; i <= n; i++)
-        {
-            if (dp[i] == diam)
-            {
-                // dfs from node i
-                //cout<<"aaa1"<<" "<<i;
-                nodes[i] = true;
-                dfs1(i, 0);
-                break;
-            }
-        }
-        // we have found the answer, print it
-        for (int i = 1; i <= n; i++)
-        {
-            if (nodes[i])
-                cout << diam;
-            else
-                cout << diam - 1;
-            kek;
-        }
-    }
+		// Add a new Node into trie 
+		if (temp->Child[current_bit] == NULL) 
+			temp->Child[current_bit] = getNode(); 
 
-    // !!! LOOK AT NUMBER OF QUESTIONS IN A PROBLEM !!! (cin>>questions)
+		temp = temp->Child[current_bit]; 
+	} 
 
-    // cout <<"Runtime is:"<<clock() * 1.0 / CLOCKS_PER_SEC <<endl;
-    return 0;
-}
+	// store value at leafNode 
+	temp->value = key; 
+} 
+
+// Returns minimum XOR value of an integer inserted 
+// in Trie and given key. 
+int minXORUtil(TrieNode* root, int key) 
+{ 
+	TrieNode* temp = root; 
+
+	for (int i = INT_SIZE - 1; i >= 0; i--) { 
+		// Find current bit in given prefix 
+		bool current_bit = (key & (1 << i)); 
+
+		// Traversal Trie, look for prefix that has 
+		// same bit 
+		if (temp->Child[current_bit] != NULL) 
+			temp = temp->Child[current_bit]; 
+
+		// if there is no same bit.then looking for 
+		// opposite bit 
+		else if (temp->Child[1 - current_bit] != NULL) 
+			temp = temp->Child[1 - current_bit]; 
+	} 
+
+	// return xor value of minimum bit difference value 
+	// so we get minimum xor value 
+  cout<<temp->value<<" ";
+	return key ^ temp->value; 
+} 
+
+// Returns minimum xor value of pair in arr[0..n-1] 
+int minXOR(int arr[], int n) 
+{ 
+	int min_xor = INT_MAX; // Initialize result 
+
+	// create a True and insert first element in it 
+	TrieNode* root = getNode(); 
+	insert(root, arr[0]); 
+
+	// Traverse all array element and find minimum xor 
+	// for every element 
+	for (int i = 1; i < n; i++) { 
+		// Find minimum XOR value of current element with 
+		// previous elements inserted in Trie 
+		min_xor = min(min_xor, minXORUtil(root, arr[i])); 
+
+		// insert current array value into Trie 
+		insert(root, arr[i]); 
+	} 
+	return min_xor; 
+} 
+
+// Driver code 
+int main() 
+{ 
+	int arr[] = { 9, 5, 3 }; 
+	int n = sizeof(arr) / sizeof(arr[0]); 
+	cout << minXOR(arr, n) << endl; 
+	return 0; 
+} 

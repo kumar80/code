@@ -55,38 +55,56 @@
 using namespace std;
  
 #define fastio ios_base::sync_with_stdio(0); cin.tie(0)
+#define LL long long 
+#define mod 1000000007 
+#define all(v) v.begin(),v.end()
+#define pr(v) pair<v,v>
+#define pb push_back
 #define FOR(i, j, k) for (auto i=j ; i<k ; i++)
+#define ROF(i, j, k) for (auto i=j ; i>=k ; i--) 
+#define debug(...) fprintf(stderr, __VA_ARGS__), fflush(stderr)
+#define time__(d) for(long blockTime = 0; (blockTime == 0 ? (blockTime=clock()) != 0 : false); debug("%s time : %.4fs", d, (double)(clock() - blockTime) / CLOCKS_PER_SEC))
 
 const long long INF = 1e18;
 const long long MAX = 2e5+10;
+int n,q,m;
+vector<pair<int,int>>adj[MAX];
+
+void dijkstra(int u, vector<int>&d){
+    d[u]=0;
+    set<pair<int,int>>s;
+    s.insert({u,0});
+    while(!s.empty()){
+        int p  = s.begin()->first;
+        s.erase(s.begin());
+        for(auto v : adj[p]){
+            int to = v.first;
+            int w =  v.second;
+            if(w+d[p]<d[to]){
+                s.erase({to,d[to]});
+                d[to] = w+d[p];
+                s.insert({to,d[to]});
+            }
+        }
+    }
+}
+
 int main(){
     fastio;
-    int t=1; cin>>t;
+    int t=1;// cin>>t;
     while(t--){
-        int n,M; cin>>n>>M; vector<int>v(n+7);
-        FOR(i,0,n) cin>>v[i];
-        int l=M+1,r=n,ans=-1;
-        while(l<=r) {
-            int  m = l + (r-l)/2;
-            bool ok = false;
-            unordered_map<int,int>mp;
-            int i=0,j=0,cnt=0;
-            for(;j<m-1;j++) {
-                if(v[j]<m) mp[v[j]]++; else cnt--;
-                if(v[j]<m && mp[v[j]]==1) cnt++;
-            } 
-            while(j<n){
-                if(v[j]<m) mp[v[j]]++;  else cnt--;
-                if(v[j]<m && mp[v[j]]==1) cnt++;
-                if(cnt==m-1 && mp[M]==0) ok= true;
-                if(v[i]<m) mp[v[i]]--;
-                if(mp[v[i]]==0) cnt--;
-                if(v[i]>=m) cnt++;
-                i++,j++;              
-            }
-            if(ok) r=m-1,ans=m;
-            else l=m+1;
+        cin>>n>>m>>q;
+        FOR(i,0,m) {
+            int x,y,d; cin>>x>>y>>d;
+            adj[x].push_back({y,d});
         }
-        cout<<ans<<"\n";
+        while(q--){
+            int a,b; cin>>a>>b;
+            vector<int>d(n+1,INT_MAX);
+            dijkstra(a,d);
+            if(d[b]==INT_MAX) cout<<-1<<"\n";
+            else cout<<d[b]<<"\n";
+        }
+
     }
 }
