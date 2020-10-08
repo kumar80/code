@@ -67,62 +67,37 @@ using namespace std;
 
 const long long INF = 1e18;
 const long long MAX = 2e5+10;
-vector<int>adj[MAX];
-
-void dfs(int u, int p,vector<int>&nodes){
-    nodes[u]=1;
-    for(auto v : adj[u]){
-      if(p!=v) {
-        dfs(v,u,nodes);
-       nodes[u]+=nodes[v];
-      }
+void merge(int a[],int l, int m, int r){
+    int temp[r-l+1]={0},i=0;
+  //  cout<<r<<"; "; FOR(p,l,r+1) cout<<a[p]<<" "; cout<<"\n";
+    int j=l,k=m+1;
+    while(j<=m && k<=r){
+        if(a[j]<=a[k]) temp[i]=a[j],j++;
+        else temp[i]=a[k],k++;
+        i++;
     }
+    while(j<=m) temp[i++]=a[j++];
+    while(k<=r) temp[i++]=a[k++];
+    
+    i=0; j=l;
+    while(j<=r) a[j++] = temp[i++];
 }
-void centroid(int u, int p , vector<int>&nodes, int &gc ,int t,vector<int>&lc){
-      int lo=t-nodes[u];
-      for(auto v : adj[u]) {
-        if(p!=v){
-            centroid(v,u,nodes,gc,t,lc);
-            lo=max(lo,nodes[v]);
-        }
-      }
-      lc[u]=lo;
-      gc = min(gc,lo);
-}
-void dfs2(int u,int p , int &k, int q,int &p1){
-    k = u; p1=p;
-    for(auto v : adj[u]) {
-         if(v!=p && q!=v) 
-            dfs2(v,u,k,q,p1);
+
+void mer(int a[], int l, int r){
+    if(l<r){
+        int m = l + (r-l)/2;
+        mer(a,l,m);
+        mer(a,m+1,r);
+        merge(a,l,m,r);
     }
 }
 int main(){
     fastio;
-    int t=1; cin>>t;
+    int t=1; //cin>>t;
     while(t--){
-        int n; cin>>n; 
-        FOR(i,0,n-1) {
-            int x,y; cin>>x>>y;
-            adj[x].push_back(y); adj[y].push_back(x);
-        }
-      vector<int>nodes(n+1);
-      dfs(1,-1,nodes);
-      int c=INT_MAX;
-      vector<int>lc(n+1);
-      vector<int>cs;
-      centroid(1,-1,nodes,c,n,lc);
-      FOR(i,0,n+1) if(c==lc[i]) cs.push_back(i);
-    //  cout<<cs[0]<<" "<<cs[1]<<" "<<c<<" ,";
-      if(cs.size()==1) {
-        cout<<1<<" "<<adj[1][0]<<"\n";
-        cout<<1<<" "<<adj[1][0]<<"\n";
-      }else {
-          int k =0,k2=0,p=0; 
-          dfs2(cs[1],-1,k,cs[0],p); //dfs2(cs[0],-1,k2,cs[1],c);
-          cout<<p<<" "<<k<<"\n";
-          cout<<k<<" "<<cs[0]<<"\n";
-      }
-      FOR(i,0,n+1) adj[i].clear(); 
+        int n; cin>>n; int a[n];
+        FOR(i,0,n) cin>>a[i];
+        mer(a,0,n-1);
+          FOR(i,0,n) cout<<a[i]<<" ";
     }
-
 }

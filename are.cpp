@@ -67,62 +67,41 @@ using namespace std;
 
 const long long INF = 1e18;
 const long long MAX = 2e5+10;
-vector<int>adj[MAX];
+struct ci{
+    int x,y,r;
+};
+    double PI = 2*acos(0.0);
 
-void dfs(int u, int p,vector<int>&nodes){
-    nodes[u]=1;
-    for(auto v : adj[u]){
-      if(p!=v) {
-        dfs(v,u,nodes);
-       nodes[u]+=nodes[v];
-      }
-    }
+double hypot( double l, double r ){
+  return pow(l*l+r*r,0.5);
 }
-void centroid(int u, int p , vector<int>&nodes, int &gc ,int t,vector<int>&lc){
-      int lo=t-nodes[u];
-      for(auto v : adj[u]) {
-        if(p!=v){
-            centroid(v,u,nodes,gc,t,lc);
-            lo=max(lo,nodes[v]);
+double area(ci A, ci B) {
+
+   double d = hypot(B.x - A.x, B.y - A.y);
+
+    if (d < A.r + B.r) {
+
+       double a = A.r * A.r;
+        double b = B.r * B.r;
+
+       double x = (a - b + d * d) / (2 * d);
+       double z = x * x;
+       double y = sqrt(a - z);
+
+        if (d <= abs(B.r - A.r)) {
+            return PI * min(a, b);
         }
-      }
-      lc[u]=lo;
-      gc = min(gc,lo);
-}
-void dfs2(int u,int p , int &k, int q,int &p1){
-    k = u; p1=p;
-    for(auto v : adj[u]) {
-         if(v!=p && q!=v) 
-            dfs2(v,u,k,q,p1);
+        return a * asin(y / A.r) + b * asin(y / B.r) - y * (x + sqrt(z + b - a));
     }
+    return 0;
 }
 int main(){
     fastio;
-    int t=1; cin>>t;
+    int t=1;// cin>>t;
     while(t--){
-        int n; cin>>n; 
-        FOR(i,0,n-1) {
-            int x,y; cin>>x>>y;
-            adj[x].push_back(y); adj[y].push_back(x);
-        }
-      vector<int>nodes(n+1);
-      dfs(1,-1,nodes);
-      int c=INT_MAX;
-      vector<int>lc(n+1);
-      vector<int>cs;
-      centroid(1,-1,nodes,c,n,lc);
-      FOR(i,0,n+1) if(c==lc[i]) cs.push_back(i);
-    //  cout<<cs[0]<<" "<<cs[1]<<" "<<c<<" ,";
-      if(cs.size()==1) {
-        cout<<1<<" "<<adj[1][0]<<"\n";
-        cout<<1<<" "<<adj[1][0]<<"\n";
-      }else {
-          int k =0,k2=0,p=0; 
-          dfs2(cs[1],-1,k,cs[0],p); //dfs2(cs[0],-1,k2,cs[1],c);
-          cout<<p<<" "<<k<<"\n";
-          cout<<k<<" "<<cs[0]<<"\n";
-      }
-      FOR(i,0,n+1) adj[i].clear(); 
+        ci A,B; cin>>A.x>>A.y>>A.r;cin>>B.x>>B.y>>B.r;
+        double to = 2*PI*A.r+ 2*PI*B.r;
+        
+        cout<<(area(A,B)/to)*100;
     }
-
 }

@@ -66,63 +66,74 @@ using namespace std;
 #define time__(d) for(long blockTime = 0; (blockTime == 0 ? (blockTime=clock()) != 0 : false); debug("%s time : %.4fs", d, (double)(clock() - blockTime) / CLOCKS_PER_SEC))
 
 const long long INF = 1e18;
-const long long MAX = 2e5+10;
-vector<int>adj[MAX];
+const long long MAX = 2e6+10;
 
-void dfs(int u, int p,vector<int>&nodes){
-    nodes[u]=1;
-    for(auto v : adj[u]){
-      if(p!=v) {
-        dfs(v,u,nodes);
-       nodes[u]+=nodes[v];
-      }
+int spf[MAX]; 
+  
+// Calculating SPF (Smallest Prime Factor) for every 
+// number till MAX. 
+// Time Complexity : O(nloglogn) 
+void sieve() 
+{ 
+    spf[1] = 1; 
+    for (int i=2; i<MAX; i++) 
+  
+        // marking smallest prime factor for every 
+        // number to be itself. 
+        spf[i] = i; 
+  
+    // separately marking spf for every even 
+    // number as 2 
+    for (int i=4; i<MAX; i+=2) 
+        spf[i] = 2; 
+  
+    for (int i=3; i*i<MAX; i++) 
+    { 
+        // checking if i is prime 
+        if (spf[i] == i) 
+        { 
+            // marking SPF for all numbers divisible by i 
+            for (int j=i*i; j<MAX; j+=i) 
+  
+                // marking spf[j] if it is not  
+                // previously marked 
+                if (spf[j]==j) 
+                    spf[j] = i; 
+        } 
+    } 
+} 
+  
+LL p(LL n){
+    vector<LL>k;
+
+    while(n!=1){
+        int x  = spf[n];
+        int  cnt = 0; 
+        while(n%x==0) n/=x,cnt++;
+        k.push_back(cnt);
     }
-}
-void centroid(int u, int p , vector<int>&nodes, int &gc ,int t,vector<int>&lc){
-      int lo=t-nodes[u];
-      for(auto v : adj[u]) {
-        if(p!=v){
-            centroid(v,u,nodes,gc,t,lc);
-            lo=max(lo,nodes[v]);
-        }
-      }
-      lc[u]=lo;
-      gc = min(gc,lo);
-}
-void dfs2(int u,int p , int &k, int q,int &p1){
-    k = u; p1=p;
-    for(auto v : adj[u]) {
-         if(v!=p && q!=v) 
-            dfs2(v,u,k,q,p1);
+    LL ans = 1;
+    FOR(i,0,k.size() ) {
+        ans = (ans*(k[i]+1));
     }
+   // ans = ans*2;
+    if(k.size()==0) ans = 1;
+    return ans;
 }
+
 int main(){
     fastio;
-    int t=1; cin>>t;
+    int t=1;// cin>>t;
+    sieve();
     while(t--){
-        int n; cin>>n; 
-        FOR(i,0,n-1) {
-            int x,y; cin>>x>>y;
-            adj[x].push_back(y); adj[y].push_back(x);
-        }
-      vector<int>nodes(n+1);
-      dfs(1,-1,nodes);
-      int c=INT_MAX;
-      vector<int>lc(n+1);
-      vector<int>cs;
-      centroid(1,-1,nodes,c,n,lc);
-      FOR(i,0,n+1) if(c==lc[i]) cs.push_back(i);
-    //  cout<<cs[0]<<" "<<cs[1]<<" "<<c<<" ,";
-      if(cs.size()==1) {
-        cout<<1<<" "<<adj[1][0]<<"\n";
-        cout<<1<<" "<<adj[1][0]<<"\n";
-      }else {
-          int k =0,k2=0,p=0; 
-          dfs2(cs[1],-1,k,cs[0],p); //dfs2(cs[0],-1,k2,cs[1],c);
-          cout<<p<<" "<<k<<"\n";
-          cout<<k<<" "<<cs[0]<<"\n";
-      }
-      FOR(i,0,n+1) adj[i].clear(); 
-    }
+        LL ans  = 0;
+        int n ;cin>>n;
+        FOR(i,1,n){
+            LL v = p(n-i);
+            ans+=v;
+           // cout<<v<<" ";
+        }//ans++;
 
+        cout<<ans;
+    }
 }
