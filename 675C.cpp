@@ -67,19 +67,38 @@ using namespace std;
 
 const long long INF = 1e18;
 const long long MAX = 2e5+10;
+
+LL f(LL x, LL y){
+  LL res= 1;
+  while(y){
+    if(y&1) res=((res*x)%mod+mod)%mod;
+    x=((x*x)%mod+mod)%mod; y/=2;
+  }
+  return res;
+}
 int main(){
     fastio;
-    int t=1;// cin>>t;
+    int t=1; //cin>>t;
     while(t--){
-        int n1,n2,k1,k2;  
-        int md=1e8;
-        cin>>n1>>n2>>k1>>k2;
-        int dp[n1+1][n2+1][2]; 
-        FOR(i,0,n1+1) dp[i][0][1]=0;
-        FOR(i,0,n2+1) dp[0][i][0]=0;
-        FOR(i,1,n1+1)
-          FOR(j,1,n2+1){
-              
+          string s; cin>>s;
+          LL n =s.size();
+          LL pr[n+1]; pr[0]=0;
+          FOR(i,1,n+1) {
+            LL l = ((f(10,i-1)*i)%mod+mod)%mod;
+            pr[i] = ((pr[i-1]+l)%mod+mod)%mod;
+            //if(l<0) cout<<"--1";
           }
+          reverse(all(s));
+          LL ans=0;
+          FOR(i,0,n){
+              LL d = s[i]-'0';       
+              LL l = ((((n-i)*(n-i-1))/2)%mod+mod)%mod; //if(l<0) cout<<"--2";
+              l=((f(10,i)*l)%mod+mod)%mod;//if(l<0) cout<<"--3";
+              l=((l+pr[i])%mod+mod)%mod;//if(l<0) cout<<"--4";
+              l=((l*d)%mod+mod)%mod;//if(l<0) cout<<"--5";
+              ans= ((ans+l)%mod+mod)%mod;//if(l<0) cout<<"--6";
+          }
+          cout<<ans<<"\n";
     }
 }
+// 1 , 1+1

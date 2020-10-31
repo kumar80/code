@@ -67,19 +67,20 @@ using namespace std;
 
 const long long INF = 1e18;
 const long long MAX = 2e5+10;
+vector<int>adj[MAX];
+vector<int>vis(MAX,false);
+void dfs(int u);
 int main(){
     fastio;
-    int t=1;// cin>>t;
+    int t=1; //cin>>t;
     while(t--){
-        int n1,n2,k1,k2;  
-        int md=1e8;
-        cin>>n1>>n2>>k1>>k2;
-        int dp[n1+1][n2+1][2]; 
-        FOR(i,0,n1+1) dp[i][0][1]=0;
-        FOR(i,0,n2+1) dp[0][i][0]=0;
-        FOR(i,1,n1+1)
-          FOR(j,1,n2+1){
-              
-          }
+        int n,m; cin>>n>>m; 
+        FOR(i,0,m){
+            int x,y; char c; cin>>x>>c>>y;
+            if(c=='<') adj[x].push_back(y);
+            else adj[y].push_back(x);
+        }
+
+        dfs(1);
     }
 }

@@ -71,15 +71,43 @@ int main(){
     fastio;
     int t=1;// cin>>t;
     while(t--){
-        int n1,n2,k1,k2;  
-        int md=1e8;
-        cin>>n1>>n2>>k1>>k2;
-        int dp[n1+1][n2+1][2]; 
-        FOR(i,0,n1+1) dp[i][0][1]=0;
-        FOR(i,0,n2+1) dp[0][i][0]=0;
-        FOR(i,1,n1+1)
-          FOR(j,1,n2+1){
-              
+        int n; cin>>n; 
+        set<int>q;
+        set<pair<int,int>>p;
+        string s,te;  cin>>te;
+        getline(cin,s);  s=te+s; 
+        int l =s.size();  vector<int>o[n+1];
+        vector<int>v;int k =0;
+        FOR(i,0,l){
+           char ch = s[i]; ///cout<<ch<<",";
+            if(ch==','){// cout<<v.size()<<";"; 
+              v.push_back(k);
+              FOR(j,1,v.size()) p.insert({v[0],v[j]}),o[v[0]].push_back(v[j]);
+              v.clear();  k=0; 
+            }else if(isspace(s[i])) v.push_back(k),k=0;
+            else { 
+              k=k*10+s[i]-'0';
+            }
+        }     v.push_back(k);        
+        FOR(j,1,v.size()) p.insert({v[0],v[j]}),o[v[0]].push_back(v[j]);
+        for(auto i : p){
+          auto it  = p.find({i.second,i.first});
+          if(it!=p.end()) q.insert(i.second),q.insert(i.first);
+        }
+        while(1){
+          int pp=q.size(); 
+        FOR(i,1,n+1){
+          int cnt = 0;
+          FOR(j,0,o[i].size()) {
+             auto it = q.find(o[i][j]);
+             if(it!=q.end()) cnt++;
+            // if(i==3) cout<<o[i][j]<<" ";
           }
+          if(cnt>1) q.insert(i);
+        }
+        if(pp==q.size()) break;
+      }
+      l=q.size();int j=0;
+      for(auto i : q) if(j++<l-1) cout<<i<<","; else cout<<i;
     }
 }

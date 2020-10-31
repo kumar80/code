@@ -50,36 +50,73 @@
                                              `''''`'''i==_+=_=i__
                                                      ||'''- '    `.
                                                       `-.......-''
-*/                              
-#include<bits/stdc++.h>
+*/
+#include <bits/stdc++.h>
 using namespace std;
- 
-#define fastio ios_base::sync_with_stdio(0); cin.tie(0)
-#define LL long long 
-#define mod 1000000007 
-#define all(v) v.begin(),v.end()
-#define pr(v) pair<v,v>
+
+#define fastio                    \
+    ios_base::sync_with_stdio(0); \
+    cin.tie(0)
+#define LL long long
+#define mod 1000000007
+#define all(v) v.begin(), v.end()
+#define pr(v) pair<v, v>
 #define pb push_back
-#define FOR(i, j, k) for (auto i=j ; i<k ; i++)
-#define ROF(i, j, k) for (auto i=j ; i>=k ; i--) 
+#define FOR(i, j, k) for (auto i = j; i < k; i++)
+#define ROF(i, j, k) for (auto i = j; i >= k; i--)
 #define debug(...) fprintf(stderr, __VA_ARGS__), fflush(stderr)
-#define time__(d) for(long blockTime = 0; (blockTime == 0 ? (blockTime=clock()) != 0 : false); debug("%s time : %.4fs", d, (double)(clock() - blockTime) / CLOCKS_PER_SEC))
+#define time__(d) for (long blockTime = 0; (blockTime == 0 ? (blockTime = clock()) != 0 : false); debug("%s time : %.4fs", d, (double)(clock() - blockTime) / CLOCKS_PER_SEC))
 
 const long long INF = 1e18;
-const long long MAX = 2e5+10;
-int main(){
-    fastio;
-    int t=1;// cin>>t;
-    while(t--){
-        int n1,n2,k1,k2;  
-        int md=1e8;
-        cin>>n1>>n2>>k1>>k2;
-        int dp[n1+1][n2+1][2]; 
-        FOR(i,0,n1+1) dp[i][0][1]=0;
-        FOR(i,0,n2+1) dp[0][i][0]=0;
-        FOR(i,1,n1+1)
-          FOR(j,1,n2+1){
-              
-          }
+const long long MAX = 2e5 + 10;
+int f(int n, string s1, string s2)
+{
+    set<int> v[n + 100];
+    int j = 1, k = 0, l = s1.size();
+    FOR(i, 0, l)
+    {
+        if (s1[i] == ',')
+            v[j].insert(k), k = 0, j++;
+        else if (s1[i] == '&')
+            v[j].insert(k), k = 0;
+        else
+            k = k * 10 + s1[i] - '0';
     }
+    v[j].insert(k);
+    int ans[n + 100];
+    FOR(i, 1, n + 1)
+    ans[i] = v[i].size();
+    l = s2.size();
+    j = 1, k = 0;
+    FOR(i, 0, l)
+    {
+        if (s2[i] == ',')
+        {
+            if (v[k].find(j) == v[k].end())
+                ans[k]++;
+            j++;
+            k = 0;
+        }
+        else if (s2[i] == '&')
+        {
+            if (v[k].find(j) == v[k].end())
+                ans[k]++;
+            k = 0;
+        }
+        else
+            k = k * 10 + s2[i] - '0';
+    }
+    if (v[k].find(j) == v[k].end())
+        ans[k]++;
+    ans[0] = 0;
+    return *max_element(ans, ans + n + 1);
+}
+int main()
+{
+    fastio;
+
+    int n, m;
+    string s1, s2;
+    cin >> n >> s1 >> m >> s2;
+    cout << max(f(n, s1, s2), f(m, s2, s1));
 }
