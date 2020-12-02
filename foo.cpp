@@ -1,140 +1,54 @@
-#include <iostream>
-
-#include <cassert>
-
+#include <bits/stdc++.h>
 using namespace std;
 
-template <class T>
-inline void umax(T &a, T b)
+#define fastio                  \
+  ios_base::sync_with_stdio(0); \
+  cin.tie(0)
+#define LL long long
+#define mod 1000000007
+#define all(v) v.begin(), v.end()
+#define pr(v) pair<v, v>
+#define pb push_back
+#define FOR(i, j, k) for (auto i = j; i < k; i++)
+#define ROF(i, j, k) for (auto i = j; i >= k; i--)
+#define debug(...) fprintf(stderr, __VA_ARGS__), fflush(stderr)
+#define time__(d) for (long blockTime = 0; (blockTime == 0 ? (blockTime = clock()) != 0 : false); debug("%s time : %.4fs", d, (double)(clock() - blockTime) / CLOCKS_PER_SEC))
+
+const long long INF = 1e18;
+const long long MAX = 2e5 + 10;
+
+LL fun(int i, int j, vector<vector<LL>> &p)
 {
-  if (a < b)
-    a = b;
-}
-
-template <class T>
-inline void umin(T &a, T b)
-{
-  if (a > b)
-    a = b;
-}
-
-template <class T>
-inline T abs(T a) { return a > 0 ? a : -a; }
-
-template <class T>
-inline T gcd(T a, T b) { return __gcd(a, b); }
-
-template <class T>
-inline T lcm(T a, T b) { return a / gcd(a, b) * b; }
-
-typedef long long ll;
-
-typedef pair<int, int> ii;
-
-const int inf = 1e9 + 143;
-
-const ll longinf = 1e18 + 143;
-
-inline int read()
-
-{
-
-  int x;
-  scanf(" %d", &x);
-
-  return x;
-}
-
-const int N = 20001;
-
-int n;
-
-int a[N];
-
-void read_inp()
-
-{
-
-  n = read();
-
-  assert(1 <= n && n <= 20000);
-
-  for (int i = 1; i <= n; i++)
-
+  LL s = 0, res = -INF, cur = 0;
+  int n = p.size();
+  while (i >= 0 && j < n)
   {
-
-    a[i] = read();
-
-    assert(abs(a[i]) <= int(1e6));
+    s += p[i][j];
+    cur = min(cur, s);
+    res = max(res, s - cur);
+    i--, j++;
   }
+  return res;
 }
-
 int main()
-
 {
-
-  read_inp();
-
-  ll ans = -longinf;
-
-  for (int i = 1; i <= n; i++)
-
+  fastio;
+  int t = 1; // cin>>t;
+  while (t--)
   {
-
+    int n;
+    cin >> n;
+    LL a[n];
+    FOR(i, 0, n)
+        cin >> a[i];
+    vector<vector<LL>> p(n, vector<LL>(n));
+    FOR(i, 0, n)
+    FOR(j, 0, n) p[i][j] = a[i] * a[j];
+    LL res = -INF;
+    FOR(i, 0, n)
     {
-
-      int l = i - 1, r = i;
-
-      ll best = 0ll, cur = 0ll;
-
-      while (l >= 1 && r <= n)
-
-      {
-
-        ll val = (ll)a[l] * a[r];
-
-        cur += val;
-
-        umin(best, cur);
-
-        umax(ans, cur - best);
-
-        --l;
-
-        ++r;
-      }
+      res = max({res, fun(i - 1, i, p), fun(i - 1, i + 1, p)});
     }
-
-    {
-
-      int l = i - 1, r = i + 1;
-
-      ll best = 0ll, cur = 0ll;
-
-      while (l >= 1 && r <= n)
-
-      {
-
-        ll val = (ll)a[l] * a[r];
-
-        cur += val;
-
-        umin(best, cur);
-
-        umax(ans, cur - best);
-
-        --l;
-
-        ++r;
-      }
-    }
+    cout << res;
   }
-
-  printf("%lld\n", ans);
-
-  return 0;
 }
-
-// 8
-// 1 9 2 3 0 6 7 8
-// 104

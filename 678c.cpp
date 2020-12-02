@@ -58,7 +58,7 @@ using namespace std;
 #define LL long long 
 #define mod 1000000007 
 #define all(v) v.begin(),v.end()
-#define pr(v) pair<v,v> 
+#define pr(v) pair<v,v>
 #define pb push_back
 #define FOR(i, j, k) for (auto i=j ; i<k ; i++)
 #define ROF(i, j, k) for (auto i=j ; i>=k ; i--) 
@@ -67,54 +67,84 @@ using namespace std;
 
 const long long INF = 1e18;
 const long long MAX = 2e5+10;
-vector<int>adj[2*MAX];
-vector<int>vis(2*MAX,0);
-vector<int>d1(2*MAX,0);
-vector<int>d2(2*MAX,0);
-vector<int>d3(2*MAX,0);
-vector<int>r(2*MAX);
-int di=0;
-int dfs(int u , int h){
-    vis[u]=1;
-    d1[u]=h; //cout<<u<<" "<<d1[u]<<" ;";
-    int f=0,s=0;
-    for(auto v :adj[u]) 
-        if(!vis[v]){
-            int sub = dfs(v,h+1);
-            if(f==0) f=sub;
-            else if(sub>=f) s=f,f=sub;
-            else if(sub>s) s= sub;
-        }
-    d1[u]=h;
-    d2[u]=f,d3[u]=s;
-    di = max({di,d2[u]+d3[u],d1[u]+d2[u]});  
-    return 1+d2[u];  
+LL fac(LL n){
+  LL res=1;
+  FOR(i,1,n+1) res=(res*i)%mod;
+  return res;
 }
-void dfs2(int u,int d){
-    vis[u]=1;
-    for(auto v : adj[u]) 
-        if(!vis[v]){
-            dfs(v,max(d1[u],d2[u])+1);
-        }
-    r[u]=max(di,d+1);
+ long long power( long long x, 
+                                  LL y, LL p)
+{
+     long long res = 1; // Initialize result
+ 
+    x = x % p; // Update x if it is more than or
+    // equal to p
+ 
+    while (y > 0) 
+    {
+     
+        // If y is odd, multiply x with result
+        if (y & 1)
+            res = (res * x) % p;
+ 
+        // y must be even now
+        y = y >> 1; // y = y/2
+        x = (x * x) % p;
+    }
+    return res;
+}
+ 
+// Returns n^(-1) mod p
+ long long modInverse( long long n,  
+                                            LL p)
+{
+    return power(n, p - 2, p);
+}
+ 
+// Returns nCr % p using Fermat's little
+// theorem.
+ long long nCrModPFermat( long long n,
+                                 LL r, LL p=mod)
+{
+    // If n<r, then nCr should return 0
+    if (n < r)
+        return 0;
+    // Base case
+    if (r == 0)
+        return 1;
+ 
+    // Fill factorial array so that we
+    // can find all factorial of r, n
+    // and n-r
+     long long fac[n + 1];
+    fac[0] = 1;
+    for (int i = 1; i <= n; i++)
+        fac[i] = (fac[i - 1] * i) % p;
+ 
+    return (fac[n] * modInverse(fac[r], p) % p
+            * modInverse(fac[n - r], p) % p)
+           % p;
 }
 int main(){
     fastio;
-    int t=1;// cin>>t;
+    int t=1; //cin>>t;
     while(t--){
-        int n ; cin>>n; 
-        FOR(i,0,n-1){
-            int x,y; cin>>x>>y;
-            adj[x].push_back(y);adj[y].push_back(x);
-        }
-        dfs(1,0); 
-        vis.resize(2*MAX,0);
-        dfs2(1,d2[1]+1);
-      //  cout<<di;
-        
-        FOR(i,1,n+1){
-         //  cout<<d1[i]<<" "<<d2[i]<<" "<<d3[i]<<" ";
-            cout<<r[i]<<"\n";
-        }
+        int n,x,pos; cin>>n>>x>>pos;
+        int c1=0,c2=0;
+        int l=0,r=n; 
+        while(l<r) {
+            int m = (l+r)/2;
+            if(m<=pos) { if(m!=pos) c1++; l=m+1; }
+            else r=m,c2++;
+        } l--; 
+        if(n==1) {cout<<1; break;}
+        //cout<<(x-1>=c1);
+        if( !(x-1>=c1 && n-x>=c2)) { cout<<0; break;}
+        LL a = ((nCrModPFermat(n-x,c2)*fac(c2)%mod)+mod)%mod;
+        LL b = ((nCrModPFermat(x-1,c1)*fac(c1)%mod)+mod)%mod;
+        LL c = ((a*b)%mod+mod)%mod;
+        LL d = fac(n-c1-c2-1);
+        c  = ((c*d)%mod+mod)%mod;
+        cout<<c;
     }
-}
+} 

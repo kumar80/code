@@ -58,7 +58,7 @@ using namespace std;
 #define LL long long 
 #define mod 1000000007 
 #define all(v) v.begin(),v.end()
-#define pr(v) pair<v,v> 
+#define pr(v) pair<v,v>
 #define pb push_back
 #define FOR(i, j, k) for (auto i=j ; i<k ; i++)
 #define ROF(i, j, k) for (auto i=j ; i>=k ; i--) 
@@ -67,54 +67,19 @@ using namespace std;
 
 const long long INF = 1e18;
 const long long MAX = 2e5+10;
-vector<int>adj[2*MAX];
-vector<int>vis(2*MAX,0);
-vector<int>d1(2*MAX,0);
-vector<int>d2(2*MAX,0);
-vector<int>d3(2*MAX,0);
-vector<int>r(2*MAX);
-int di=0;
-int dfs(int u , int h){
-    vis[u]=1;
-    d1[u]=h; //cout<<u<<" "<<d1[u]<<" ;";
-    int f=0,s=0;
-    for(auto v :adj[u]) 
-        if(!vis[v]){
-            int sub = dfs(v,h+1);
-            if(f==0) f=sub;
-            else if(sub>=f) s=f,f=sub;
-            else if(sub>s) s= sub;
-        }
-    d1[u]=h;
-    d2[u]=f,d3[u]=s;
-    di = max({di,d2[u]+d3[u],d1[u]+d2[u]});  
-    return 1+d2[u];  
-}
-void dfs2(int u,int d){
-    vis[u]=1;
-    for(auto v : adj[u]) 
-        if(!vis[v]){
-            dfs(v,max(d1[u],d2[u])+1);
-        }
-    r[u]=max(di,d+1);
-}
 int main(){
     fastio;
-    int t=1;// cin>>t;
+    int t=1; //cin>>t;
     while(t--){
-        int n ; cin>>n; 
-        FOR(i,0,n-1){
-            int x,y; cin>>x>>y;
-            adj[x].push_back(y);adj[y].push_back(x);
+        int n; cin>>n; LL a[n+1],p[n+1]; p[0]=a[0]=0;
+        LL sum=0,ans=0;
+        FOR(i,1,n+1) cin>>a[i],p[i]=a[i]+p[i-1];
+        LL k[n+1]; k[0]=0;
+        FOR(i,1,n+1) {
+            k[i]=max(p[i],k[i-1]);
+            ans=max(ans,sum+k[i]);
+            sum+=p[i];
         }
-        dfs(1,0); 
-        vis.resize(2*MAX,0);
-        dfs2(1,d2[1]+1);
-      //  cout<<di;
-        
-        FOR(i,1,n+1){
-         //  cout<<d1[i]<<" "<<d2[i]<<" "<<d3[i]<<" ";
-            cout<<r[i]<<"\n";
-        }
+        cout<<ans;
     }
 }

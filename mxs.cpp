@@ -50,71 +50,102 @@
                                              `''''`'''i==_+=_=i__
                                                      ||'''- '    `.
                                                       `-.......-''
-*/                              
-#include<bits/stdc++.h>
+*/
+#include <bits/stdc++.h>
 using namespace std;
- 
-#define fastio ios_base::sync_with_stdio(0); cin.tie(0)
-#define LL long long 
-#define mod 1000000007 
-#define all(v) v.begin(),v.end()
-#define pr(v) pair<v,v> 
+
+#define fastio                    \
+    ios_base::sync_with_stdio(0); \
+    cin.tie(0)
+#define LL long long
+#define mod 1000000007
+#define aLL(v) v.begin(), v.end()
+#define pr(v) pair<v, v>
 #define pb push_back
-#define FOR(i, j, k) for (auto i=j ; i<k ; i++)
-#define ROF(i, j, k) for (auto i=j ; i>=k ; i--) 
+#define FOR(i, j, k) for (auto i = j; i < k; i++)
+#define ROF(i, j, k) for (auto i = j; i >= k; i--)
 #define debug(...) fprintf(stderr, __VA_ARGS__), fflush(stderr)
-#define time__(d) for(long blockTime = 0; (blockTime == 0 ? (blockTime=clock()) != 0 : false); debug("%s time : %.4fs", d, (double)(clock() - blockTime) / CLOCKS_PER_SEC))
+#define time__(d) for (long blockTime = 0; (blockTime == 0 ? (blockTime = clock()) != 0 : false); debug("%s time : %.4fs", d, (double)(clock() - blockTime) / CLOCKS_PER_SEC))
 
 const long long INF = 1e18;
-const long long MAX = 2e5+10;
-vector<int>adj[2*MAX];
-vector<int>vis(2*MAX,0);
-vector<int>d1(2*MAX,0);
-vector<int>d2(2*MAX,0);
-vector<int>d3(2*MAX,0);
-vector<int>r(2*MAX);
-int di=0;
-int dfs(int u , int h){
-    vis[u]=1;
-    d1[u]=h; //cout<<u<<" "<<d1[u]<<" ;";
-    int f=0,s=0;
-    for(auto v :adj[u]) 
-        if(!vis[v]){
-            int sub = dfs(v,h+1);
-            if(f==0) f=sub;
-            else if(sub>=f) s=f,f=sub;
-            else if(sub>s) s= sub;
+const long long MAX = 2e5 + 10;
+vector<LL> cnt(20, 0);
+void process(LL x)
+{
+    bool has[4];
+    memset(has, false, sizeof(has));
+    while (x)
+    {
+        int last = x % 10;
+        if (last == 2)
+        {
+            has[0] = true;
         }
-    d1[u]=h;
-    d2[u]=f,d3[u]=s;
-    di = max({di,d2[u]+d3[u],d1[u]+d2[u]});  
-    return 1+d2[u];  
-}
-void dfs2(int u,int d){
-    vis[u]=1;
-    for(auto v : adj[u]) 
-        if(!vis[v]){
-            dfs(v,max(d1[u],d2[u])+1);
+        if (last == 3)
+        {
+            has[1] = true;
         }
-    r[u]=max(di,d+1);
+        if (last == 5)
+        {
+            has[2] = true;
+        }
+        if (last == 7)
+        {
+            has[3] = true;
+        }
+        x /= 10;
+    }
+    for (int i = 1; i <= 15; i++)
+    {
+        bool flag = true;
+        for (int j = 0; j < 4; j++)
+        {
+            if (i & (1 << j))
+            {
+                if (!has[j])
+                {
+                    flag = false;
+                }
+            }
+        }
+        if (flag)
+        {
+            cnt[i]++;
+        }
+    }
 }
-int main(){
+LL ch3(LL n)
+{
+
+    return (n * (n - 1) * (n - 2)) / 6;
+}
+int main()
+{
     fastio;
-    int t=1;// cin>>t;
-    while(t--){
-        int n ; cin>>n; 
-        FOR(i,0,n-1){
-            int x,y; cin>>x>>y;
-            adj[x].push_back(y);adj[y].push_back(x);
+    int t = 1; //cin>>t;
+    while (t--)
+    {
+        int n;
+        cin >> n;
+        LL x;
+        for (int i = 1; i <= n; i++)
+        {
+            cin >> x;
+            process(x);
         }
-        dfs(1,0); 
-        vis.resize(2*MAX,0);
-        dfs2(1,d2[1]+1);
-      //  cout<<di;
-        
-        FOR(i,1,n+1){
-         //  cout<<d1[i]<<" "<<d2[i]<<" "<<d3[i]<<" ";
-            cout<<r[i]<<"\n";
+        LL ans = 0;
+        for (int i = 1; i <= 15; i++)
+        {
+            int bits = __builtin_popcount(i);
+            if (bits & 1)
+            {
+                ans += ch3(cnt[i]);
+            }
+            else
+            {
+                ans -= ch3(cnt[i]);
+            }
         }
+        cout << ans;
     }
 }

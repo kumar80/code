@@ -58,7 +58,7 @@ using namespace std;
 #define LL long long 
 #define mod 1000000007 
 #define all(v) v.begin(),v.end()
-#define pr(v) pair<v,v> 
+#define pr(v) pair<v,v>
 #define pb push_back
 #define FOR(i, j, k) for (auto i=j ; i<k ; i++)
 #define ROF(i, j, k) for (auto i=j ; i>=k ; i--) 
@@ -67,54 +67,37 @@ using namespace std;
 
 const long long INF = 1e18;
 const long long MAX = 2e5+10;
-vector<int>adj[2*MAX];
-vector<int>vis(2*MAX,0);
-vector<int>d1(2*MAX,0);
-vector<int>d2(2*MAX,0);
-vector<int>d3(2*MAX,0);
-vector<int>r(2*MAX);
-int di=0;
-int dfs(int u , int h){
-    vis[u]=1;
-    d1[u]=h; //cout<<u<<" "<<d1[u]<<" ;";
-    int f=0,s=0;
-    for(auto v :adj[u]) 
-        if(!vis[v]){
-            int sub = dfs(v,h+1);
-            if(f==0) f=sub;
-            else if(sub>=f) s=f,f=sub;
-            else if(sub>s) s= sub;
-        }
-    d1[u]=h;
-    d2[u]=f,d3[u]=s;
-    di = max({di,d2[u]+d3[u],d1[u]+d2[u]});  
-    return 1+d2[u];  
-}
-void dfs2(int u,int d){
-    vis[u]=1;
-    for(auto v : adj[u]) 
-        if(!vis[v]){
-            dfs(v,max(d1[u],d2[u])+1);
-        }
-    r[u]=max(di,d+1);
-}
 int main(){
     fastio;
-    int t=1;// cin>>t;
+    int t=1; //cin>>t;
     while(t--){
-        int n ; cin>>n; 
-        FOR(i,0,n-1){
-            int x,y; cin>>x>>y;
-            adj[x].push_back(y);adj[y].push_back(x);
+        int n ; cin>>n;
+        vector<LL>a[50];
+        FOR(j,0,n) {
+            LL x;  cin>>x;
+            int i=30;
+            while(i>=0){
+                bool ok = (x&(1ll<<i));
+                if(ok) {
+                    a[i].push_back(x);
+                    break;
+                }
+                i--;
+            }
         }
-        dfs(1,0); 
-        vis.resize(2*MAX,0);
-        dfs2(1,d2[1]+1);
-      //  cout<<di;
-        
-        FOR(i,1,n+1){
-         //  cout<<d1[i]<<" "<<d2[i]<<" "<<d3[i]<<" ";
-            cout<<r[i]<<"\n";
+        LL fi=0,se=0; bool _fi=true;
+    
+        ROF(i,40,0){
+            sort(all(a[i]),greater<LL>());
+            while(a[i].size()>0){
+                int l = a[i].size()-1;
+                if(_fi) fi^=a[i][l],_fi=false;
+                else se^=a[i][l],_fi=true;
+                a[i].pop_back();
+            }
         }
+        if(fi==se) cout<<-1;
+        else if(fi>se) cout<<1;
+        else cout<<0;
     }
 }
