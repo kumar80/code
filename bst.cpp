@@ -96,25 +96,29 @@ void inorder(node *trav) {
     inorder(trav->right);    
 }
 
-void _delete(node *root, int v,node *p,int s){
+node* _delete(node *root, int v,node *p,int s){
     if(root == NULL) return ;
     if(root->data == v ) {
         if(root->left==NULL && root->right!=NULL) {
             if(s) p->right=root->right;
             else p->left=root->right;
         }
-        if(root->right==NULL && root->left!=NULL){
+        if(root->left!=NULL && root->left==NULL){
             if(s) p->right=root->left;
             else p->left=root->left;
         }
         if(root->left!=NULL && root->right!=NULL){
             
         }
-        delete root;
+        if(root->left==NULL && root->right==NULL){
+            delete root; 
+        }
         return ;
     }
-    _delete(root->left,v,root,0);
-    _delete(root->right,v,root,1);
+  if(root->data > v)  root->left= _delete(root->left,v,root,0);
+  if(root->data < v)  root->right= _delete(root->right,v,root,1);
+  
+  return root;
 }
 
 int main(){
