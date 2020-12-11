@@ -50,86 +50,70 @@
                                              `''''`'''i==_+=_=i__
                                                      ||'''- '    `.
                                                       `-.......-''
-*/                              
-#include<bits/stdc++.h>
+*/
+#include <bits/stdc++.h>
 using namespace std;
- 
-#define fastio ios_base::sync_with_stdio(0); cin.tie(0)
-#define LL long long 
-#define mod 1000000007 
-#define all(v) v.begin(),v.end()
-#define pr(v) pair<v,v>
+
+#define fastio                    \
+    ios_base::sync_with_stdio(0); \
+    cin.tie(0)
+#define LL long long
+#define mod 1000000007
+#define all(v) v.begin(), v.end()
+#define pr(v) pair<v, v>
 #define pb push_back
-#define FOR(i, j, k) for (auto i=j ; i<k ; i++)
-#define ROF(i, j, k) for (auto i=j ; i>=k ; i--) 
+#define FOR(i, j, k) for (auto i = j; i < k; i++)
+#define ROF(i, j, k) for (auto i = j; i >= k; i--)
 #define debug(...) fprintf(stderr, __VA_ARGS__), fflush(stderr)
-#define time__(d) for(long blockTime = 0; (blockTime == 0 ? (blockTime=clock()) != 0 : false); debug("%s time : %.4fs", d, (double)(clock() - blockTime) / CLOCKS_PER_SEC))
+#define time__(d) for (long blockTime = 0; (blockTime == 0 ? (blockTime = clock()) != 0 : false); debug("%s time : %.4fs", d, (double)(clock() - blockTime) / CLOCKS_PER_SEC))
 
 const long long INF = 1e18;
-const long long MAX = 2e5+10;
-
-struct node{
-    int data;
-    node* left;
-    node* right;
-    node(int value){
-        this->data = value;
-        this->left=this->right=NULL;
+const long long MAX = 2e5 + 10;
+int f(vector<int> &v, int b)
+{
+    int n = v.size();
+    int ans = 0;
+    int i = min(b - 1, n - 1);
+    int k = -1;
+    while (i < n)
+    {
+        bool ok = false;
+        ROF(j, i, k + 1)
+        {
+            if (v[j] == 1)
+            {
+                ok = true, ans++, k = j;
+                if()
+                if(i!=n-1)
+                i = min(n - 1, j + b + b - 1);
+                else i=n;
+                break;
+            }
+        }
+        //  FOR(j,i,)
+       // cout<<i<<" ";
+        if (!ok)
+            return -1;
+       // if (i == n - 1)
+           //break;
     }
-};
-
-node *insert(int value, node* head) {
-    if(head == NULL) {
-        node *temp = new node(value);
-        return temp;
-    }
-    if(head->data > value )  return head->left = insert(value,head->left);
-    if(head->data  < value)  return head->right =insert(value,head->right); 
-    return NULL;
+    return ans;
 }
-
-void inorder(node *trav) {
-    if(trav == NULL) return ;
-
-    inorder(trav->left);
-    cout<<(trav->data)<<" ";
-    inorder(trav->right);    
-}
-
-node* _delete(node *root, int v,node *p,int s){
-    if(root == NULL) return ;
-    if(root->data == v ) {
-        if(root->left==NULL && root->right!=NULL) {
-            node *temp = root->right;
-            delete root;
-            return temp;
-        }
-        if(root->left!=NULL && root->left==NULL){
-            node *temp = root->left;
-            delete root;
-            return temp;
-        }
-        if(root->left!=NULL && root->right!=NULL){
-            
-        }
-        if(root->left==NULL && root->right==NULL){
-            delete root; 
-            return NULL;
-        }
-    }
-  if(root->data > v)  root->left= _delete(root->left,v,root,0);
-  if(root->data < v)  root->right= _delete(root->right,v,root,1);
-
-  return root;
-}
-
-int main(){
+int main()
+{
     fastio;
-    int t=1;// cin>>t;
-    while(t--){
-        node* root  = insert( 10, NULL );
-        insert(4,root); 
-        insert(60,root);
-        inorder(root);
+    int t = 1; ///cin>>t;
+    while (t--)
+    {
+        int n;
+        cin >> n;
+        vector<int> v(n);
+        FOR(i, 0, n)
+            cin >> v[i];
+        int b;
+        cin >> b;
+        cout << f(v, b);
     }
 }
+
+//0 1 1 0 1 0 1 0 1 0 0 1 1 0 1 0 1 1 1 1 0 0 1 0 0

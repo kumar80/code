@@ -50,86 +50,105 @@
                                              `''''`'''i==_+=_=i__
                                                      ||'''- '    `.
                                                       `-.......-''
-*/                              
-#include<bits/stdc++.h>
+*/
+#include <bits/stdc++.h>
 using namespace std;
- 
-#define fastio ios_base::sync_with_stdio(0); cin.tie(0)
-#define LL long long 
-#define mod 1000000007 
-#define all(v) v.begin(),v.end()
-#define pr(v) pair<v,v>
+
+#define fastio                    \
+    ios_base::sync_with_stdio(0); \
+    cin.tie(0)
+#define LL long long
+#define mod 1000000007
+#define all(v) v.begin(), v.end()
+#define pr(v) pair<v, v>
 #define pb push_back
-#define FOR(i, j, k) for (auto i=j ; i<k ; i++)
-#define ROF(i, j, k) for (auto i=j ; i>=k ; i--) 
+#define FOR(i, j, k) for (auto i = j; i < k; i++)
+#define ROF(i, j, k) for (auto i = j; i >= k; i--)
 #define debug(...) fprintf(stderr, __VA_ARGS__), fflush(stderr)
-#define time__(d) for(long blockTime = 0; (blockTime == 0 ? (blockTime=clock()) != 0 : false); debug("%s time : %.4fs", d, (double)(clock() - blockTime) / CLOCKS_PER_SEC))
+#define time__(d) for (long blockTime = 0; (blockTime == 0 ? (blockTime = clock()) != 0 : false); debug("%s time : %.4fs", d, (double)(clock() - blockTime) / CLOCKS_PER_SEC))
 
 const long long INF = 1e18;
-const long long MAX = 2e5+10;
+const long long MAX = 2e5 + 10;
 
-struct node{
-    int data;
-    node* left;
-    node* right;
-    node(int value){
-        this->data = value;
-        this->left=this->right=NULL;
+LL a, b, c, d;
+LL power(LL x, LL n)
+{
+    LL result = 1;
+    while (n)
+    {
+        if (n & 1)
+            result = (result * x) % mod;
+        x = (x * x) % mod;
+        n = n >> 1;
     }
-};
-
-node *insert(int value, node* head) {
-    if(head == NULL) {
-        node *temp = new node(value);
-        return temp;
-    }
-    if(head->data > value )  return head->left = insert(value,head->left);
-    if(head->data  < value)  return head->right =insert(value,head->right); 
-    return NULL;
+    return result;
 }
 
-void inorder(node *trav) {
-    if(trav == NULL) return ;
-
-    inorder(trav->left);
-    cout<<(trav->data)<<" ";
-    inorder(trav->right);    
-}
-
-node* _delete(node *root, int v,node *p,int s){
-    if(root == NULL) return ;
-    if(root->data == v ) {
-        if(root->left==NULL && root->right!=NULL) {
-            node *temp = root->right;
-            delete root;
-            return temp;
-        }
-        if(root->left!=NULL && root->left==NULL){
-            node *temp = root->left;
-            delete root;
-            return temp;
-        }
-        if(root->left!=NULL && root->right!=NULL){
-            
-        }
-        if(root->left==NULL && root->right==NULL){
-            delete root; 
-            return NULL;
-        }
+void fast_fib(long long int n, long long int ans[])
+{
+    if (n == 0)
+    {
+        ans[0] = 0;
+        ans[1] = 1;
+        return;
     }
-  if(root->data > v)  root->left= _delete(root->left,v,root,0);
-  if(root->data < v)  root->right= _delete(root->right,v,root,1);
-
-  return root;
+    fast_fib((n / 2), ans);
+    a = ans[0]; /* F(n) */
+    b = ans[1]; /* F(n+1) */
+    c = 2 * b - a;
+    if (c < 0)
+        c += mod;
+    c = (a * c) % mod;         /* F(2n) */
+    d = (a * a + b * b) % mod; /* F(2n + 1) */
+    if (n % 2 == 0)
+    {
+        ans[0] = c;
+        ans[1] = d;
+    }
+    else
+    {
+        ans[0] = d;
+        ans[1] = c + d;
+    }
 }
-
-int main(){
+int main()
+{
     fastio;
-    int t=1;// cin>>t;
-    while(t--){
-        node* root  = insert( 10, NULL );
-        insert(4,root); 
-        insert(60,root);
-        inorder(root);
+    int q = 1; //cin>>t;
+    
+    while (q--)
+    {
+        LL v, x, y, i, j;
+        cin >> v >> x >> y;
+        LL ans[2] = {0};
+        fast_fib(x, ans);
+        a = ans[0];
+        b = ans[1];
+        LL t = 0;
+        for (i = x; i <= y; i++)
+        {
+            c = a + b;
+            LL k = 1;
+            a = b;
+            b = c;
+            if (c < v)
+                continue;
+            for (j = 0; j < v; j++)
+            {
+                k *= (c - j);
+                k %= mod;
+            }
+            t += k;
+            t %= mod;
+        }
+        LL z = 1;
+        for (i = 1; i <= v; i++)
+        {
+            z *= (power(i, mod - 2));
+            z %= mod;
+        }
+        t *= z;
+        t %= mod;
+        cout << t;
     }
 }

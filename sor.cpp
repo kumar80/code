@@ -67,69 +67,26 @@ using namespace std;
 
 const long long INF = 1e18;
 const long long MAX = 2e5+10;
-
-struct node{
-    int data;
-    node* left;
-    node* right;
-    node(int value){
-        this->data = value;
-        this->left=this->right=NULL;
-    }
-};
-
-node *insert(int value, node* head) {
-    if(head == NULL) {
-        node *temp = new node(value);
-        return temp;
-    }
-    if(head->data > value )  return head->left = insert(value,head->left);
-    if(head->data  < value)  return head->right =insert(value,head->right); 
-    return NULL;
-}
-
-void inorder(node *trav) {
-    if(trav == NULL) return ;
-
-    inorder(trav->left);
-    cout<<(trav->data)<<" ";
-    inorder(trav->right);    
-}
-
-node* _delete(node *root, int v,node *p,int s){
-    if(root == NULL) return ;
-    if(root->data == v ) {
-        if(root->left==NULL && root->right!=NULL) {
-            node *temp = root->right;
-            delete root;
-            return temp;
-        }
-        if(root->left!=NULL && root->left==NULL){
-            node *temp = root->left;
-            delete root;
-            return temp;
-        }
-        if(root->left!=NULL && root->right!=NULL){
-            
-        }
-        if(root->left==NULL && root->right==NULL){
-            delete root; 
-            return NULL;
-        }
-    }
-  if(root->data > v)  root->left= _delete(root->left,v,root,0);
-  if(root->data < v)  root->right= _delete(root->right,v,root,1);
-
-  return root;
-}
-
 int main(){
     fastio;
     int t=1;// cin>>t;
     while(t--){
-        node* root  = insert( 10, NULL );
-        insert(4,root); 
-        insert(60,root);
-        inorder(root);
+        int n; cin>>n; int a[n],b[n];
+        FOR(i,0,n) cin>>a[i];
+        FOR(i,0,n) cin>>b[i];
+        int k=0,i=0,j=0;
+        int s=0;
+        while(k<=n+1){
+            k++;
+            if(a[i]<=b[j]) {
+                if(k==n || k==n+1) s+=a[i];
+                i++;
+            }
+            else {
+                if(k==n || k==n+1) s+=b[j];
+                j++;
+            }
+        }
+        cout<<s/2;
     }
 }
