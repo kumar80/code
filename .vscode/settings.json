@@ -45,5 +45,6 @@
         "type_traits": "cpp",
         "typeindex": "cpp"
     },
-    "competitive-programming-helper.firstTime": false
+    "competitive-programming-helper.firstTime": false,
+    "compile-hero.disable-compile-files-on-did-save-code": true
 }
