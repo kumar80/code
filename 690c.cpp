@@ -67,32 +67,32 @@ using namespace std;
 
 const long long INF = 1e18;
 const long long MAX = 2e5+10;
-int solve(int n, vector<int> &a) {
-    LL sum = 0;
-    FOR(i,0,n ) sum+=a[i];
-    if(sum%3!=0) return 0;
-    sum/=3;
-    LL s=0;int ans = 0;
-    map<LL,int>m;
-    ROF(i,n-1,0) s+=a[i],m[s]++;
-    LL p=0; m[s]--; s-=a[0];
-    FOR(i,0,n-1) {
-        m[s]--; s-=a[i+1]; 
-        p+=a[i];
-        if(p==sum){
-            cout<<i <<" ";
-            ans+=m[sum];
+int ans = INT_MAX;
+void f(int n, vector<bool>d,int v,int sum){
+    if(sum>n) return;
+    
+    if(sum==n) {
+      ans = min(ans,v);
+      return;
+    }
+    FOR(i,1,10){
+        if(!d[i]) {
+          vector<bool>temp=d;
+          temp[i]=true;
+          f(n,temp,v*10+i,sum+i);
         }
     }
-
-    return ans;     
+   
 }
 int main(){
     fastio;
-    int t=1;// cin>>t;
+    int t=1; cin>>t;
     while(t--){
-        int n; cin>>n; vector<int>v(n);
-        FOR(i,0,n) cin>>v[i];
-        cout<<solve(n,v);
+          int n; cin>>n;
+          vector<bool>d(10,false);
+          ans = INT_MAX;
+          f(n,d,0,0);
+          if(ans==INT_MAX) cout<<-1<<"\n";
+          else cout<<ans<<"\n";
     }
 }

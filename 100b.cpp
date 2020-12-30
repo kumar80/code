@@ -50,49 +50,56 @@
                                              `''''`'''i==_+=_=i__
                                                      ||'''- '    `.
                                                       `-.......-''
-*/                              
-#include<bits/stdc++.h>
+*/
+#include <bits/stdc++.h>
 using namespace std;
- 
-#define fastio ios_base::sync_with_stdio(0); cin.tie(0)
-#define LL long long 
-#define mod 1000000007 
-#define all(v) v.begin(),v.end()
-#define pr(v) pair<v,v>
+
+#define fastio                  \
+  ios_base::sync_with_stdio(0); \
+  cin.tie(0)
+#define LL long long
+#define mod 1000000007
+#define all(v) v.begin(), v.end()
+#define pr(v) pair<v, v>
 #define pb push_back
-#define FOR(i, j, k) for (auto i=j ; i<k ; i++)
-#define ROF(i, j, k) for (auto i=j ; i>=k ; i--) 
+#define FOR(i, j, k) for (auto i = j; i < k; i++)
+#define ROF(i, j, k) for (auto i = j; i >= k; i--)
 #define debug(...) fprintf(stderr, __VA_ARGS__), fflush(stderr)
-#define time__(d) for(long blockTime = 0; (blockTime == 0 ? (blockTime=clock()) != 0 : false); debug("%s time : %.4fs", d, (double)(clock() - blockTime) / CLOCKS_PER_SEC))
+#define time__(d) for (long blockTime = 0; (blockTime == 0 ? (blockTime = clock()) != 0 : false); debug("%s time : %.4fs", d, (double)(clock() - blockTime) / CLOCKS_PER_SEC))
 
 const long long INF = 1e18;
-const long long MAX = 2e5+10;
-int solve(int n, vector<int> &a) {
-    LL sum = 0;
-    FOR(i,0,n ) sum+=a[i];
-    if(sum%3!=0) return 0;
-    sum/=3;
-    LL s=0;int ans = 0;
-    map<LL,int>m;
-    ROF(i,n-1,0) s+=a[i],m[s]++;
-    LL p=0; m[s]--; s-=a[0];
-    FOR(i,0,n-1) {
-        m[s]--; s-=a[i+1]; 
-        p+=a[i];
-        if(p==sum){
-            cout<<i <<" ";
-            ans+=m[sum];
-        }
+const long long MAX = 2e5 + 10;
+int main()
+{
+  fastio;
+  int t = 1;
+  cin >> t;
+  while (t--)
+  {
+    int n;
+    cin >> n;
+    LL s = 0, ss = 0;
+    int a[n];
+    FOR(i, 0, n)
+        cin >> a[i],
+        ss += a[i];
+    FOR(i, 0, n)
+    {
+      if (i & 1)
+        s += a[i] - 1;
     }
-
-    return ans;     
-}
-int main(){
-    fastio;
-    int t=1;// cin>>t;
-    while(t--){
-        int n; cin>>n; vector<int>v(n);
-        FOR(i,0,n) cin>>v[i];
-        cout<<solve(n,v);
+    s *= 2;
+    if (s <= ss)
+    {
+      FOR(i, 0, n)
+          if (i & 1) cout << 1 << " ";
+      else cout << a[i] << " ";
+      cout << "\n";
+      continue;
     }
+    FOR(i, 0, n)
+        if (i & 1) cout << a[i] << " ";
+    else cout << 1 << " ";
+    cout << "\n";
+  }
 }

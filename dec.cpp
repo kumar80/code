@@ -67,32 +67,35 @@ using namespace std;
 
 const long long INF = 1e18;
 const long long MAX = 2e5+10;
-int solve(int n, vector<int> &a) {
-    LL sum = 0;
-    FOR(i,0,n ) sum+=a[i];
-    if(sum%3!=0) return 0;
-    sum/=3;
-    LL s=0;int ans = 0;
-    map<LL,int>m;
-    ROF(i,n-1,0) s+=a[i],m[s]++;
-    LL p=0; m[s]--; s-=a[0];
-    FOR(i,0,n-1) {
-        m[s]--; s-=a[i+1]; 
-        p+=a[i];
-        if(p==sum){
-            cout<<i <<" ";
-            ans+=m[sum];
-        }
-    }
-
-    return ans;     
-}
 int main(){
     fastio;
-    int t=1;// cin>>t;
+    int t=1; cin>>t;
     while(t--){
-        int n; cin>>n; vector<int>v(n);
-        FOR(i,0,n) cin>>v[i];
-        cout<<solve(n,v);
+        int n; cin>>n;
+        vector<pair<LL,LL>>v(n);
+        vector<LL>b(n+7,0);
+        FOR(i,0,n) {
+            int l,r,z; cin>>l>>r>>z;
+            v[i].first = l;
+            v[i].second=r;
+            b[l]+=z; b[r+1]+=-z;
+        }
+        LL l=0,r=1e12;
+        LL ans = 0;
+        FOR(i,1,n+1) b[i]+=b[i-1];
+        while(l<=r) {
+            LL m = (l+r)/2;
+            bool ok = true;
+            FOR(i,0,n) {
+                int l = v[i].first,r=v[i].second;
+                if((r-l+1)*m<b[r]-b[l-1]) ok=false;
+            }
+            if(ok) ans = m,r=m-1;
+            else l=m+1;
+        }
+        cout<<ans<<"\n";
     }
 }
+
+
+

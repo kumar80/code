@@ -67,32 +67,32 @@ using namespace std;
 
 const long long INF = 1e18;
 const long long MAX = 2e5+10;
-int solve(int n, vector<int> &a) {
-    LL sum = 0;
-    FOR(i,0,n ) sum+=a[i];
-    if(sum%3!=0) return 0;
-    sum/=3;
-    LL s=0;int ans = 0;
-    map<LL,int>m;
-    ROF(i,n-1,0) s+=a[i],m[s]++;
-    LL p=0; m[s]--; s-=a[0];
-    FOR(i,0,n-1) {
-        m[s]--; s-=a[i+1]; 
-        p+=a[i];
-        if(p==sum){
-            cout<<i <<" ";
-            ans+=m[sum];
+
+vector<int> flip(string s){
+    vector<int>ans(2,-1);
+    int n = s.size();
+    vector<int>p(n+1,0);
+    FOR(i,1,n+1) p[i]=p[i-1] + (s[i-1]=='1');
+    vector<pair<int,int>>mn(n+2); mn[n+1].first = 0 ; mn[n+1].second = 0;
+    ROF(i,n,1) {
+        mn[i] = mn[i+1];
+        if(mn[i+1].first >= p[i]+i) {
+            mn[i].first = p[i]+1;
+            mn[i].second = i;
         }
     }
-
-    return ans;     
+    int m=INT_MAX;
+    FOR(i,1,n){
+        int cr = p[i] + i;
+        
+    }
 }
 int main(){
     fastio;
     int t=1;// cin>>t;
     while(t--){
-        int n; cin>>n; vector<int>v(n);
-        FOR(i,0,n) cin>>v[i];
-        cout<<solve(n,v);
-    }
+        string s; cin>>s;
+        vector<int>v = flip(s);
+        cout<<v[0]<<" "<<v[1];
+    }   
 }
