@@ -1,10 +1,15 @@
-n = input()
-mx=[-1 for x in range(1)] 
-for i in range(n-1,0,-1):
-    mx[i]=max(a[i],mx[i+1])
+def find_Novowels(words):
+    novowelwords = []
+    vowel = ['a', 'e', 'i', 'o', 'u']
+    for word in words:
+        novowel = True    
 
-ans = 0
-for i in range(0,n):
-    ans=max(ans,mx[i]-a[i])
+        for letter in word:
+            if letter in vowel:
+                novowel=False
 
-print(ans)
+        if novowel == True:
+            novowelwords.append(word)
+    return novowelwords
+
+print(find_Novowels(['wqrty','swpty','spwrt']))

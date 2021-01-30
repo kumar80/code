@@ -1,0 +1,16 @@
+/home/maverick/Documents/code/hcc/bin/Debug/net5.0/hcc
+/home/maverick/Documents/code/hcc/bin/Debug/net5.0/hcc.deps.json
+/home/maverick/Documents/code/hcc/bin/Debug/net5.0/hcc.runtimeconfig.json
+/home/maverick/Documents/code/hcc/bin/Debug/net5.0/hcc.runtimeconfig.dev.json
+/home/maverick/Documents/code/hcc/bin/Debug/net5.0/hcc.dll
+/home/maverick/Documents/code/hcc/bin/Debug/net5.0/ref/hcc.dll
+/home/maverick/Documents/code/hcc/bin/Debug/net5.0/hcc.pdb
+/home/maverick/Documents/code/hcc/obj/Debug/net5.0/hcc.csprojAssemblyReference.cache
+/home/maverick/Documents/code/hcc/obj/Debug/net5.0/hcc.GeneratedMSBuildEditorConfig.editorconfig
+/home/maverick/Documents/code/hcc/obj/Debug/net5.0/hcc.AssemblyInfoInputs.cache
+/home/maverick/Documents/code/hcc/obj/Debug/net5.0/hcc.AssemblyInfo.cs
+/home/maverick/Documents/code/hcc/obj/Debug/net5.0/hcc.csproj.CoreCompileInputs.cache
+/home/maverick/Documents/code/hcc/obj/Debug/net5.0/hcc.dll
+/home/maverick/Documents/code/hcc/obj/Debug/net5.0/ref/hcc.dll
+/home/maverick/Documents/code/hcc/obj/Debug/net5.0/hcc.pdb
+/home/maverick/Documents/code/hcc/obj/Debug/net5.0/hcc.genruntimeconfig.cache
