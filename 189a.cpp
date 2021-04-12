@@ -71,9 +71,17 @@ int main(){
     fastio;
     int t=1;// cin>>t;
     while(t--){
-        string s; cin>>s;
-        if(s[0]==s[1] && s[1]==s[2] && isupper(s[0]) && isupper(s[1]) && isupper(s[2])) 
-            cout<<"Won";
-        else cout<< "Lost";
+        int n; cin>>n;
+        int a[n];
+        FOR(i,0,n) cin>>a[i];
+        int ans  = 0;
+        FOR(i,0,n) {
+          int mn = a[i];
+          FOR(j,i,n) {
+            mn = min(mn,a[j]);
+            ans = max(ans, (j-i+1)*mn);
+          }
+        }
+        cout<<ans;
     }
 }

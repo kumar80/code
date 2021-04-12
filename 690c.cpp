@@ -67,32 +67,33 @@ using namespace std;
 
 const long long INF = 1e18;
 const long long MAX = 2e5+10;
-int ans = INT_MAX;
-void f(int n, vector<bool>d,int v,int sum){
-    if(sum>n) return;
-    
-    if(sum==n) {
-      ans = min(ans,v);
-      return;
-    }
-    FOR(i,1,10){
-        if(!d[i]) {
-          vector<bool>temp=d;
-          temp[i]=true;
-          f(n,temp,v*10+i,sum+i);
-        }
-    }
-   
-}
+
 int main(){
     fastio;
     int t=1; cin>>t;
     while(t--){
           int n; cin>>n;
-          vector<bool>d(10,false);
-          ans = INT_MAX;
-          f(n,d,0,0);
-          if(ans==INT_MAX) cout<<-1<<"\n";
-          else cout<<ans<<"\n";
+          string ans;
+          bool pos = true;
+          int j=9;
+          while(n>0){
+             ROF(i,j,1){
+               if(n>=i){
+                ans.push_back('0'+i);
+                n-=i;
+                j=i-1;
+                break;
+              }
+             }
+
+            if(j==0 && n) {
+              
+              pos=false; break;
+            }
+          }
+          
+          reverse(ans.begin(),ans.end());
+          if(!pos) ans = "-1";
+          cout<<ans<<endl;
     }
 }
