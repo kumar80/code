@@ -201,7 +201,7 @@ int main(){
         if(l<0 && r>=n) break;
         l--;r++;
       }
-      inorder(root);
+    //  inorder(root);
       FOR(i,0,m){
         LL x=vv[i];// cin>>x;
         LL d = 1e18;
@@ -226,7 +226,7 @@ int main(){
        // inorder(root); cout<<"\n***\n";
       }
       cout<<"Case #"<<T++<<": ";
-      for(int i =0;i<ans.size();i++) cout<<ans[i]<<" "; 
+      for(int i =0;i<n;i++) cout<<ans[i]<<" "; 
       cout<<"\n";
     }
 }
