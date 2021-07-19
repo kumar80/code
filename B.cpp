@@ -65,16 +65,23 @@ const long long MAX = 1e5+10;
 
 int main(){
     fastio;
-    int t=1; cin>>t;
+    int t; cin>>t;
     while(t--){
-        int n,x; cin>>n>>x; int a[n];vector<int> v(500,0);
-        FOR(i,0,n) {cin>>a[i]; v[a[i]]=1;}
-        int mx=0;
-        FOR(i,1,500) {
-            if(v[i]) {mx = i; continue;}
-            if(x>0) {mx=i; x--;}
-            else break;
-        }
-        cout<<mx<<"\n";
+        int n; cin>>n; int a[n]; FOR(i,0,n) cin>>a[i]; 
+        vector<int>v[50]; int p[] = {2,3,5,7,11,13,17,19,23,29,31};
+        for(int i=0;i<n;i++){
+            for(int j=0;j<11;j++){
+                    if(a[i]%p[j]==0) {v[j].push_back(i);break;}
+            }
+        }int m=0,c[n]={0};
+        FOR(i,0,11) {
+            if(v[i].size()>0){
+                m++;
+                FOR(j,0,v[i].size()) c[v[i][j]]=m;
+            }
+        }   
+        cout<<m<<"\n";
+        FOR(i,0,n) cout<<c[i]<<" ";
+        cout<<"\n";
     }
 }

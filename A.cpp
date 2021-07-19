@@ -1,8 +1,8 @@
 /*              |\ | |  ||\ \ /(_~     |~)|_~|\/||_~|\/||~)|_~|~)
                 |~\|_|/\||~\ | ,_)     |~\|__|  ||__|  ||_)|__|~\
 
-                \ //~\| |    |\ |~)|_~    | ||\ ||/~\| ||_~
-                | \_/\_/    |~\|~\|__    \_/| \||\_X\_/|__
+                   \ //~\| |    |\ |~)|_~    | ||\ ||/~\| ||_~
+                    | \_/\_/    |~\|~\|__    \_/| \||\_X\_/|__
                 (J U S T   L I K E   E V E R Y O N E   E L S E !)
 
                              __ ,..---.._
@@ -56,34 +56,24 @@ using namespace std;
  
 #define fastio ios_base::sync_with_stdio(0); cin.tie(0)
 #define LL long long 
-#define mod 998244353 
-#define FOR(i, j, k) for (int i=j ; i<k ; i++)
-#define ROF(i, j, k) for (int i=j ; i>k ; i--) 
- 
+#define mod 1000000007 
+#define FOR(i, j, k) for (auto i=j ; i<k ; i++)
+#define ROF(i, j, k) for (auto i=j ; i>=k ; i--) 
+#define debug(...) fprintf(stderr, __VA_ARGS__), fflush(stderr)
+#define time__(d) for(long blockTime = 0; (blockTime == 0 ? (blockTime=clock()) != 0 : false); debug("%s time : %.4fs", d, (double)(clock() - blockTime) / CLOCKS_PER_SEC))
+
 const long long INF = 1e18;
 const long long MAX = 1e5+10;
-
 int main(){
     fastio;
-    int t=1; cin>>t;
+    int t=1;// cin>>t;
     while(t--){
-        int n,mx=0; cin>>n; int a[n+1]; set<int>l,r; 
-        FOR(i,1,n+1) {cin>>a[i]; mx = max(mx,a[i]); }
-        vector<int> v;
-        FOR(i,1,mx+1) 
-          l.insert(a[i]);
-        FOR(i,mx+1,n+1) 
-          r.insert(a[i]);
-        if(l.size()==mx && r.size()==n-mx && mx == *l.rbegin() && n-mx==*r.rbegin()) v.push_back(mx);
-        r.clear(); l.clear();
-        FOR(i,1,n-mx+1) 
-          l.insert(a[i]);
-        FOR(i,n-mx+1,n+1) 
-          r.insert(a[i]);
-        if(r.size()==mx && l.size()==n-mx &&  mx == *r.rbegin() && n-mx==*l.rbegin()) v.push_back(n-mx);
-        if(mx==n-mx && v.size()==2) v.erase(v.begin()+1);
-
-        cout<<v.size()<<"\n";
-        for(auto it : v) cout<<it<<" "<<n-it<<"\n";
+        int n; cin>>n; vector<int>a(n);  FOR(i,0,n) cin>>a[i];
+        sort(a.begin(),a.end()); auto prev  = a.begin();
+        FOR(i,1,2*MAX) {
+            auto it   = lower_bound(prev,a.end(),i);
+            if(it==a.end()) {cout<<i-1; return 0; }
+            prev=++it;
+        }
     }
 }

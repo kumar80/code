@@ -67,16 +67,33 @@ int main(){
     fastio;
     int t=1; cin>>t;
     while(t--){
-        int n; cin>>n;
-        int a[n]; FOR(i,0,n) cin>>a[i];
-        sort(a,a+n);
-        int b[n],j=n-1,i=0;
-        for(int k=n-1;k>0;k-=2) {
-            b[k]=a[i]; b[k-1]=a[j];
-            j--;i++;
+        int h,n;cin>>h>>n;
+        vector<int>type(n),a(n),ans(n,0); vector<pair<int,int>> x(n);
+        FOR(i,0,n) {
+            cin>>type[i]>>x[i].first>>a[i];
+            x[i].second = i;
         }
-        if(n&1) b[0]=a[n/2];
-        FOR(i,0,n) cout<<b[i]<<" ";
-        cout<<endl;
+        sort(x.begin(),x.end());
+        
+        FOR(i,0,n){
+            double mn=INT_MIN,mx=INT_MAX;
+            double  idxi=x[i].second,xi=x[i].first,yi=a[idxi],tyi=type[idxi];
+            FOR(j,i+1,n){
+              double idxj=x[j].second,xj=x[j].first,yj=a[idxj],tyj=type[idxj];
+              double yy=yj-yi,xx=xj-xi;
+              if(xx==0){
+                  ans[idxi]++; ans[idxj]++; continue;
+              }
+              double s = yy/xx;
+              if(s>mn && s<mx) {ans[idxi]++;ans[idxj]++; }
+              if(tyj){
+                  if(s<=mx) mx=s;
+              }
+              else if(s >= mn) mn=s;
+            }
+        }               //   cout<<t<<": ";
+
+        FOR(i,0,n) cout<<ans[i]<<" ";
+        cout<<"\n";
     }
 }
