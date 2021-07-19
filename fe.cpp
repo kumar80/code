@@ -146,8 +146,8 @@ int main(){
         else {
           root = insert(root,pt(p.l,k-1));
           root = insert(root,pt(k+1,p.r));
-        }
-      //  cout<<i<<"= \n";        
+        } 
+      //  cout<< i<<"= \n";        
        // cout<<p.l<<" "<<p.r<<" "<<d<<" "<<k<<";; \n";
 
        // inorder(root); cout<<"\n***\n";
