@@ -76,6 +76,7 @@ void dfs(int u, int p){
         e.push_back(u);
       }    
 }
+
 void build(int i, int l , int r){
     if(l==r){
        seg[i] = e[l];
