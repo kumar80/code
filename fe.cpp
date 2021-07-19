@@ -1,6 +1,9 @@
 #include<bits/stdc++.h>
+#include <chrono>
+
 using namespace std;
- 
+using namespace std::chrono;
+
 #define fastio ios_base::sync_with_stdio(0); cin.tie(0)
 #define LL long long 
 #define mod 1000000007 
@@ -18,6 +21,7 @@ struct pt{
     pt(LL x, LL y){
       l=x; r=y;
     }
+    pt(){}
 };
 
 struct node{
@@ -70,9 +74,32 @@ node* deleteNode(node* root, pt key){
       free(root);
       return temp;
     }
-      node* temp = minNode(root->right);
-      root->key = temp->key;
-      root->right = deleteNode(root->right, temp->key);
+		    node* succParent = root;
+ 
+        // Find successor
+        node* succ = root->right;
+        while (succ->left != NULL) {
+            succParent = succ;
+            succ = succ->left;
+        }
+ 
+        // Delete successor.  Since successor
+        // is always left child of its parent
+        // we can safely make successor's right
+        // right child as left of its parent.
+        // If there is no succ, then assign
+        // succ->right to succParent->right
+        if (succParent != root)
+            succParent->left = succ->right;
+        else
+            succParent->right = succ->right;
+ 
+        // Copy Successor Data to root
+        root->key = succ->key;
+ 
+        // Delete Successor and return root
+        delete succ;
+        return root;
   }
     return root;
 }
@@ -117,27 +144,46 @@ void search(node* root, pt &key, LL &d, LL x){
         search(root->right,key,d,x);
     }
 }
+bool cmp(pt a, pt b){
+  return (a.l<b.l || (a.l==b.l && a.r<=b.r));
+}
 int main(){
-  time__("TT:")
-{    fastio;
-    int t=1; cin>>t; int T=1;
+    fastio;
+    time__("xxxxxxssssssxxx:"){
+		int t=1; cin>>t; int T=1;
     while(t--){
+      auto start = high_resolution_clock::now();
+
       node* root = NULL;
       int n,m; cin>>n>>m;
+      vector<pt>v(n);
+      vector<LL>vv(m);
+      vector<LL>ans(m);
+  
       FOR(i,0,n){
-        LL x,y; cin>>x>>y;
-        root = insert(root,pt(x,y));
+        cin>>v[i].l>>v[i].r;
+        // LL x,y; cin>>x>>y;
+        // root = insert(root,pt(x,y));
       }
-      cout<<"Case #"<<T++<<": ";
+      FOR(i,0,m) cin>>vv[i];
+
+        sort(v.begin(),v.end(),cmp);
+        int l = n/2-1,r=n/2;
+      while(1){
+        if(l>=0) root = insert(root,pt(v[l].l,v[l].r));
+        else if(r<n) root = insert(root,pt(v[r].l,v[r].r));
+        else break;
+        l--;r++;
+      }
       FOR(i,0,m){
-        LL x; cin>>x;
+        LL x=vv[i]; //cin>>x;
         LL d = 1e18;
         pt p = pt(INT_MAX, INT_MAX);
         search(root,p,d,x);
         root = deleteNode(root, pt(p.l,p.r));
-        int k=x-d>=p.l && x-d<=p.r?x-d:x+d;
-        
-        cout<<k<<" ";
+        LL k=x-d>=p.l && x-d<=p.r?x-d:x+d;
+        ans.push_back(k);
+       // cout<<k<<" ";
         if(p.l == p.r) continue;
         if(p.l == k)
           root = insert(root,pt(k+1,p.r));
@@ -152,6 +198,15 @@ int main(){
 
        // inorder(root); cout<<"\n***\n";
       }
+
+  
+      cout<<"Case #"<<T++<<": ";
+      for(int i =0;i<ans.size();i++) cout<<ans[i]<<" "; 
       cout<<"\n";
-    }}
+      auto stop = high_resolution_clock::now();
+      auto duration = duration_cast<microseconds>(stop - start);
+      cout << "Time taken by function: "
+         << duration.count() << " microseconds" << endl;
+    }
+	}
 }
