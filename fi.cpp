@@ -247,7 +247,7 @@ int main()
       FOR(i,0,m){
         LL x=vv[i];
         LL d = 1e18;
-        pt p = pt(INT_MAX, INT_MAX);
+        pt p = pt(1e18, 1e18);
         search(root,p,d,x);
         root = deleteNode(root, pt(p.l,p.r));
         LL k=x-d>=p.l && x-d<=p.r?x-d:x+d;

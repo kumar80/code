@@ -71,28 +71,21 @@ node* deleteNode(node* root, pt key){
       free(root);
       return temp;
     }
-        // node* succParent = root;
-        // node* succ = root->right;
-        // while (succ->left != NULL) {
-        //     succParent = succ;
-        //     succ = succ->left;
-        // }
-        // if (succParent != root)
-        //     succParent->left = succ->right;
-        // else
-        //     succParent->right = succ->right;
+        node* succParent = root;
+        node* succ = root->right;
+        while (succ->left != NULL) {
+            succParent = succ;
+            succ = succ->left;
+        }
+        if (succParent != root)
+            succParent->left = succ->right;
+        else
+            succParent->right = succ->right;
  
-        // root->key = succ->key;
+        root->key = succ->key;
  
-        // delete succ;
-        // return root;
-               struct node* temp = minNode(root->right);
- 
-        // Copy the inorder successor's content to this node
-        root->key = temp->key;
- 
-        // Delete the inorder successor
-        root->right = deleteNode(root->right, temp->key);
+        delete succ;
+        return root;
   }
     return root;
 }
@@ -233,7 +226,7 @@ int main(){
        // inorder(root); cout<<"\n***\n";
       }
       cout<<"Case #"<<T++<<": ";
-      for(int i =0;i<n;i++) cout<<ans[i]<<" "; 
+      for(int i =0;i<m;i++) cout<<ans[i]<<" "; 
       cout<<"\n";
     }
 }
