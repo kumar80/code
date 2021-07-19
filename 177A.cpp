@@ -69,18 +69,10 @@ const long long INF = 1e18;
 const long long MAX = 2e5+10;
 int main(){
     fastio;
-    int t=1; //cin>>t;
+    int t=1;// cin>>t;
     while(t--){
-        int n,k; cin>>n>>k;
-        if(n==1 && k==1) {cout<<'a'; return 0;} 
-        if(n<k || k==1) cout<<-1;
-        else{
-            cout<<'a';
-            int l = (n-k+1)/2;
-            while(l--) cout<<"ba";
-            if((n-k)%2==0) cout<<'b';
-            k-=2; int i=2;
-            while(k-->0) cout<<(char)('a'+i++);
-        }
+        LL d,t,s; cin>>d>>t>>s;
+        if(d<=t*s) cout<<"Yes";
+        else cout<<"No";
     }
 }
