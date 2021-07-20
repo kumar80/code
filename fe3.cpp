@@ -236,13 +236,13 @@ void search(Node *root, pt &key, LL &d, LL x)
         search(root->right, key, d, x);
     }
 }
-void merge(LL arr[], int p, int q, int r)
+void merge(pt arr[], int p, int q, int r)
 {
 
     int n1 = q - p + 1;
     int n2 = r - q;
 
-    LL L[n1], M[n2];
+    pt L[n1], M[n2];
 
     for (int i = 0; i < n1; i++)
         L[i] = arr[p + i];
@@ -256,7 +256,7 @@ void merge(LL arr[], int p, int q, int r)
 
     while (i < n1 && j < n2)
     {
-        if (L[i] >= M[j])
+        if (L[i].l >= M[j].l)
         {
             arr[k] = L[i];
             i++;
@@ -284,7 +284,7 @@ void merge(LL arr[], int p, int q, int r)
     }
 }
 
-void mergeSort(LL arr[], int l, int r)
+void mergeSort(pt arr[], int l, int r)
 {
     if (l < r)
     {
@@ -300,21 +300,22 @@ int main()
     int t = 1;
     cin >> t;
     int T = 1;
-    // auto start = high_resolution_clock::now();
     while (t--)
     {
         Node *root = NULL;
         int n, m;
         cin >> n >> m;
         pt v[n];
-        LL vv[m];
+        pt vv[m];
         LL ans[m];
         FOR(i, 0, n)
         {
             cin >> v[i].l >> v[i].r;
         }
         FOR(i, 0, m)
-            cin >> vv[i];
+            cin >> vv[i].l;
+        FOR(i, 0, m)
+            cin >> vv[i].r;
         FOR(i, 0, n)
         {
             root = insert(root, pt(v[i].l, v[i].r));
@@ -323,7 +324,7 @@ int main()
 
         FOR(i, 0, m)
         {
-            LL x = vv[i];
+            LL x = vv[i].r;
             LL d = 1e18;
             pt p = pt(INT_MAX, INT_MAX);
             search(root, p, d, x);
