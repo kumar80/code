@@ -403,19 +403,20 @@ int main()
     cin >> vv[i].r;
     FOR(i, 0, n)
     {
-      root = insert(root, pt(v[i].l, v[i].r));
+      root = insert(root, v[i]);
     }
     mergeSort(vv, 0, m - 1);
     FOR(i, 0, m)
     {
       LL x = vv[i].r;
       LL d = 1e18;
-      pt p = pt((LL)100000 * 100000 * 100000, (LL)100000 * 100000 * 100000);
+      pt p = pt(d,d);
       search(root, p, d, x);
-      root = deleteNode(root, pt(p.l, p.r));
+      root = deleteNode(root, p);
       LL k = x - d >= p.l && x - d <= p.r ? x - d : x + d;
 
       ans[i] = k;
+
       if (p.l == p.r)
         continue;
       if (p.l == k)
