@@ -326,7 +326,7 @@ int main()
         {
             LL x = vv[i].r;
             LL d = 1e18;
-            pt p = pt(INT_MAX, INT_MAX);
+            pt p = pt(100000*100000*100000, 100000*100000*100000);
             search(root, p, d, x);
             root = deleteNode(root, pt(p.l, p.r));
             LL k = x - d >= p.l && x - d <= p.r ? x - d : x + d;
