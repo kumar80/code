@@ -313,12 +313,12 @@ int main()
             cin >> v[i].l >> v[i].r;
         }
         FOR(i, 0, m)
-            cin >> vv[i].l;
+        cin >> vv[i].l;
         FOR(i, 0, m)
-            cin >> vv[i].r;
+        cin >> vv[i].r;
         FOR(i, 0, n)
         {
-            root = insert(root, pt(v[i].l, v[i].r));
+            root = insert(root, v[i]);
         }
         mergeSort(vv, 0, m - 1);
 
@@ -326,9 +326,9 @@ int main()
         {
             LL x = vv[i].r;
             LL d = 1e18;
-            pt p = pt(100000*100000*100000, 100000*100000*100000);
+            pt p = pt(d, d);
             search(root, p, d, x);
-            root = deleteNode(root, pt(p.l, p.r));
+            root = deleteNode(root, p);
             LL k = x - d >= p.l && x - d <= p.r ? x - d : x + d;
 
             ans[i] = k;
