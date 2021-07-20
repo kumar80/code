@@ -1,239 +1,452 @@
-#include<iostream>
+#include <bits/stdc++.h>
+
+#define SPACE 10
+#define fastio                  \
+  ios_base::sync_with_stdio(0); \
+  cin.tie(0)
+#define LL unsigned long long
+#define FOR(i, j, k) for (auto i = j; i < k; i++)
+
 using namespace std;
- 
-#define fastio ios_base::sync_with_stdio(0); cin.tie(0)
-#define LL long long 
-#define mod 1000000007 
-#define all(v) v.begin()+1,v.end()
-#define FOR(i, j, k) for (auto i=j ; i<k ; i++)
-#define ROF(i, j, k) for (auto i=j ; i>=k ; i--) 
-#define debug(...) fprintf(stderr, __VA_ARGS__), fflush(stderr)
-#define time__(d) for(long blockTime = 0; (blockTime == 0 ? (blockTime=clock()) != 0 : false); debug("%s time : %.4fs", d, (double)(clock() - blockTime) / CLOCKS_PER_SEC))
-
-const long long INF = 1e18;
-const long long MAX = 1e5+10;
-
-struct pt{
-    LL l,r;
-    pt(LL x, LL y){
-      l=x; r=y;
-    }
-    pt(){}
-};
-
-struct node{
-  pt key;
-  node *left,*right;
-};
-
-node* newNode(pt key){
-  node* temp =  (struct node*)malloc(sizeof(struct node));
-  temp->key = key;
-  temp->left = temp->right = NULL;
-  return temp;
-}
-
-node* insert(node* root, pt key){
-  if(root==NULL)
-    return newNode(key);
-  if(key.r < root->key.l)
-    root->left = insert(root->left, key);
-  else
-    root->right = insert(root->right, key);
-
-  return root;
-}
-
-node* minNode(node* node){
-    struct node* current = node; 
-    while (current && current->left != NULL)
-        current = current->left;
- 
-    return current;
-}
-
-node* deleteNode(node* root, pt key){
-  if(root==NULL) return root;
-
-  if(key.r  < root->key.l)
-    root->left = deleteNode(root->left, key);
-  else if( key.l > root->key.r)
-    root->right = deleteNode(root->right, key);
-  else {
-    if (root->left == NULL && root->right == NULL)        
-            return NULL;
-    else if(root->left == NULL){
-      node *temp  = root->right;
-      free(root);
-      return temp;
-    }else if(root->right == NULL){
-      node *temp  = root->left;
-      free(root);
-      return temp;
-    }
-        // node* succParent = root;
-        // node* succ = root->right;
-        // while (succ->left != NULL) {
-        //     succParent = succ;
-        //     succ = succ->left;
-        // }
-        // if (succParent != root)
-        //     succParent->left = succ->right;
-        // else
-        //     succParent->right = succ->right;
- 
-        // root->key = succ->key;
- 
-        // delete succ;
-        // return root;
-               struct node* temp = minNode(root->right);
- 
-        // Copy the inorder successor's content to this node
-        root->key = temp->key;
- 
-        // Delete the inorder successor
-        root->right = deleteNode(root->right, temp->key);
+bool fr = false;
+struct pt
+{
+  LL l, r;
+  pt(LL x, LL y)
+  {
+    l = x;
+    r = y;
+    //cout << l << "****" << x << "\n";
   }
-    return root;
-}
+  pt() {}
+};
 
-void inorder(struct node* root)
+class TreeNode
 {
-    if (root != NULL) {
-        inorder(root->left);
-        cout<<root->key.l<<" "<<root->key.r<<"\n"; 
-        inorder(root->right);
+public:
+  pt key;
+  TreeNode *left;
+  TreeNode *right;
+
+  TreeNode()
+  {
+    key = pt();
+    left = NULL;
+    right = NULL;
+  }
+  TreeNode(pt p)
+  {
+    key = p;
+    left = NULL;
+    right = NULL;
+  }
+};
+
+class AVLTree
+{
+public:
+  TreeNode *root;
+  AVLTree()
+  {
+    root = NULL;
+  }
+  bool isTreeEmpty()
+  {
+    if (root == NULL)
+    {
+      return true;
     }
-}
-void search(node* root, pt &key, LL &d, LL x){
-    if(root==NULL) return;
-    if(root->key.l<=x && root->key.r>=x){
-        d=0; key.l=root->key.l;
+    else
+    {
+      return false;
+    }
+  }
+  // Get Height
+  int height(TreeNode *r)
+  {
+    if (r == NULL)
+      return -1;
+    else
+    {
+      /* compute the height of each subtree */
+      int lheight = height(r->left);
+      int rheight = height(r->right);
+
+      /* use the larger one */
+      if (lheight > rheight)
+        return (lheight + 1);
+      else
+        return (rheight + 1);
+    }
+  }
+
+  // Get Balance factor of node N
+  int getBalanceFactor(TreeNode *n)
+  {
+    if (n == NULL)
+      return -1;
+    return height(n->left) - height(n->right);
+  }
+
+  TreeNode *rightRotate(TreeNode *y)
+  {
+    TreeNode *x = y->left;
+    TreeNode *T2 = x->right;
+
+    // Perform rotation
+    x->right = y;
+    y->left = T2;
+
+    return x;
+  }
+
+  TreeNode *leftRotate(TreeNode *x)
+  {
+    TreeNode *y = x->right;
+    TreeNode *T2 = y->left;
+
+    // Perform rotation
+    y->left = x;
+    x->right = T2;
+
+    return y;
+  }
+
+  TreeNode *insert(TreeNode *r, TreeNode *new_node, bool &ok)
+  {
+    if (r == NULL)
+    {
+      r = new_node;
+      //cout << "key inserted successfully" << endl;
+      return r;
+    }
+
+    if (new_node->key.r < r->key.l)
+    {
+      r->left = insert(r->left, new_node, ok);
+    }
+    else if (new_node->key.l > r->key.r)
+    {
+      r->right = insert(r->right, new_node, ok);
+    }
+    else
+    {
+      ok = false;
+
+      //cout << "No duplicate keys allowed!" << fr << " " << new_node->key.l << " " << new_node->key.r << endl;
+      return r;
+    }
+    if (!ok)
+      return r;
+    int bf = getBalanceFactor(r);
+    // Left Left Case
+    if (bf > 1 && new_node->key.r < r->left->key.l)
+      return rightRotate(r);
+
+    // Right Right Case
+    if (bf < -1 && new_node->key.l > r->right->key.r)
+      return leftRotate(r);
+
+    // Left Right Case
+    if (bf > 1 && new_node->key.l > r->left->key.r)
+    {
+      r->left = leftRotate(r->left);
+      return rightRotate(r);
+    }
+
+    // Right Left Case
+    if (bf < -1 && new_node->key.r < r->right->key.l)
+    {
+      r->right = rightRotate(r->right);
+      return leftRotate(r);
+    }
+
+    /* return the (unchanged) node pointer */
+    return r;
+  }
+
+  TreeNode *minkeyNode(TreeNode *node)
+  {
+    TreeNode *current = node;
+    /* loop down to find the leftmost leaf */
+    while (current->left != NULL)
+    {
+      current = current->left;
+    }
+    return current;
+  }
+
+  TreeNode *deleteNode(TreeNode *r, pt v)
+  {
+    // base case
+    if (r == NULL)
+    {
+      return NULL;
+    }
+    // If the key to be deleted is smaller than the root's key,
+    // then it lies in left subtree
+    else if (v.r < r->key.l)
+    {
+      r->left = deleteNode(r->left, v);
+    }
+    // If the key to be deleted is greater than the root's key,
+    // then it lies in right subtree
+    else if (v.l > r->key.r)
+    {
+      r->right = deleteNode(r->right, v);
+    }
+    // if key is same as root's key, then This is the node to be deleted
+    else
+    {
+      // node with only one child or no child
+      if (r->left == NULL)
+      {
+        TreeNode *temp = r->right;
+        delete r;
+        return temp;
+      }
+      else if (r->right == NULL)
+      {
+        TreeNode *temp = r->left;
+        delete r;
+        return temp;
+      }
+      else
+      {
+        // node with two children: Get the inorder successor (smallest
+        // in the right subtree)
+        TreeNode *temp = minkeyNode(r->right);
+        // Copy the inorder successor's content to this node
+        r->key = temp->key;
+        // Delete the inorder successor
+        r->right = deleteNode(r->right, temp->key);
+        //deleteNode(r->right, temp->key);
+      }
+    }
+
+    int bf = getBalanceFactor(r);
+    // Left Left Imbalance/Case or Right rotation
+    if (bf == 2 && getBalanceFactor(r->left) >= 0)
+      return rightRotate(r);
+    // Left Right Imbalance/Case or LR rotation
+    else if (bf == 2 && getBalanceFactor(r->left) == -1)
+    {
+      r->left = leftRotate(r->left);
+      return rightRotate(r);
+    }
+    // Right Right Imbalance/Case or Left rotation
+    else if (bf == -2 && getBalanceFactor(r->right) <= -0)
+      return leftRotate(r);
+    // Right Left Imbalance/Case or RL rotation
+    else if (bf == -2 && getBalanceFactor(r->right) == 1)
+    {
+      r->right = rightRotate(r->right);
+      return leftRotate(r);
+    }
+
+    return r;
+  }
+
+  void search(TreeNode *root, pt &key, LL &d, LL x)
+  {
+    ////cout<<"inside search"<<"\n";
+
+    if (root == NULL)
+      return;
+    if (root->key.l <= x && root->key.r >= x)
+    {
+      d = 0;
+      key.l = root->key.l;
+      key.r = root->key.r;
+    }
+    else if (root->key.l > x)
+    {
+      if (root->key.l - x < d || (root->key.l - x == d && key.l > root->key.r))
+      {
+        d = root->key.l - x;
+        key.l = root->key.l;
         key.r = root->key.r;
+      }
+      search(root->left, key, d, x);
     }
-    else if(root->key.l> x){
-        if(root->key.l-x <d || (root->key.l-x == d && key.l>root->key.r)){
-           d = root->key.l-x;
-           key.l = root->key.l;
-           key.r = root->key.r;
-        }
-        search(root->left,key,d,x);
+    else
+    {
+      if (x - root->key.r < d || (x - root->key.r == d && key.l > root->key.r))
+      {
+        d = x - root->key.r;
+        key.l = root->key.l;
+        key.r = root->key.r;
+      }
+      search(root->right, key, d, x);
     }
-    else {
-        if(x-root->key.r <d || (x-root->key.r == d && key.l>root->key.r)){
-           d = x-root->key.r;
-           key.l = root->key.l;
-           key.r = root->key.r;
-        }
-        search(root->right,key,d,x);
-    }
-}
+  }
 
-bool cmp(pt a , pt b){
-    return (a.l<b.l || (a.l==b.l && a.r<=b.r));
-}
-
-void merge(pt array[], int const left, int const mid, int const right)
+  TreeNode *iterativeSearch(pt v)
+  {
+    if (root == NULL)
+    {
+      return root;
+    }
+    else
+    {
+      TreeNode *temp = root;
+      while (temp != NULL)
+      {
+        if (v.l == temp->key.l || v.r == temp->key.r)
+        {
+          return temp;
+        }
+        else if (v.r < temp->key.l)
+        {
+          temp = temp->left;
+        }
+        else
+        {
+          temp = temp->right;
+        }
+      }
+      return NULL;
+    }
+  }
+};
+void merge(LL arr[], int p, int q, int r)
 {
-    int const subArrayOne = mid - left + 1;
-    int const subArrayTwo = right - mid;
- 
-    pt *leftArray = new pt[subArrayOne],
-         *rightArray = new pt[subArrayTwo];
- 
-    for (int i = 0; i < subArrayOne; i++)
-        leftArray[i] = array[left + i];
-    for (int j = 0; j < subArrayTwo; j++)
-        rightArray[j] = array[mid + 1 + j];
- 
-    int indexOfSubArrayOne = 0, 
-        indexOfSubArrayTwo = 0; 
-    int indexOfMergedArray = left; 
- 
-    while (indexOfSubArrayOne < subArrayOne && indexOfSubArrayTwo < subArrayTwo) {
-        if (cmp(leftArray[indexOfSubArrayOne] , rightArray[indexOfSubArrayTwo])) {
-            array[indexOfMergedArray] = leftArray[indexOfSubArrayOne];
-            indexOfSubArrayOne++;
-        }
-        else {
-            array[indexOfMergedArray] = rightArray[indexOfSubArrayTwo];
-            indexOfSubArrayTwo++;
-        }
-        indexOfMergedArray++;
-    }
 
-    while (indexOfSubArrayOne < subArrayOne) {
-        array[indexOfMergedArray] = leftArray[indexOfSubArrayOne];
-        indexOfSubArrayOne++;
-        indexOfMergedArray++;
-    }
+  // Create L ← A[p..q] and M ← A[q+1..r]
+  int n1 = q - p + 1;
+  int n2 = r - q;
 
-    while (indexOfSubArrayTwo < subArrayTwo) {
-        array[indexOfMergedArray] = rightArray[indexOfSubArrayTwo];
-        indexOfSubArrayTwo++;
-        indexOfMergedArray++;
+  LL L[n1], M[n2];
+
+  for (int i = 0; i < n1; i++)
+    L[i] = arr[p + i];
+  for (int j = 0; j < n2; j++)
+    M[j] = arr[q + 1 + j];
+
+  // Maintain current index of sub-arrays and main array
+  int i, j, k;
+  i = 0;
+  j = 0;
+  k = p;
+
+  // Until we reach either end of either L or M, pick larger among
+  // elements L and M and place them in the correct position at A[p..r]
+  while (i < n1 && j < n2)
+  {
+    if (L[i] >= M[j])
+    {
+      arr[k] = L[i];
+      i++;
     }
+    else
+    {
+      arr[k] = M[j];
+      j++;
+    }
+    k++;
+  }
+
+  // When we run out of elements in either L or M,
+  // pick up the remaining elements and put in A[p..r]
+  while (i < n1)
+  {
+    arr[k] = L[i];
+    i++;
+    k++;
+  }
+
+  while (j < n2)
+  {
+    arr[k] = M[j];
+    j++;
+    k++;
+  }
 }
- 
-void mergeSort(pt array[], int const begin, int const end)
+
+// Divide the array into two subarrays, sort them and merge them
+void mergeSort(LL arr[], int l, int r)
 {
-    if (begin >= end)
-        return; 
- 
-    int mid = begin + (end - begin) / 2;
-    mergeSort(array, begin, mid);
-    mergeSort(array, mid + 1, end);
-    merge(array, begin, mid, end);
+  if (l < r)
+  {
+    // m is the point where the array is divided into two subarrays
+    int m = l + (r - l) / 2;
+
+    mergeSort(arr, l, m);
+    mergeSort(arr, m + 1, r);
+
+    // Merge the sorted subarrays
+    merge(arr, l, m, r);
+  }
 }
- 
 
-int main(){
-    fastio;
-    int t=1; cin>>t; int T=1;
-    while(t--){
-      node* root = NULL;
-      int n,m; cin>>n>>m;
-      pt v[n];
-      LL vv[m];
-      LL ans[m];
-      FOR(i,0,n){
-        cin>>v[i].l>>v[i].r;
-      }
-      FOR(i,0,m) cin>>vv[i];
-      mergeSort(v,0,n-1);
-      int l = n/2-1,r=n/2;
-      while(1){
-        if(l>=0) root = insert(root,pt(v[l].l,v[l].r));
-        if(r<n) root = insert(root,pt(v[r].l,v[r].r));
-        if(l<0 && r>=n) break;
-        l--;r++;
-      }
-    //  inorder(root);
-      FOR(i,0,m){
-        LL x=vv[i];// cin>>x;
-        LL d = 1e18;
-        pt p = pt(1e18, 1e18);
-        search(root,p,d,x);
-        root = deleteNode(root, pt(p.l,p.r));
-        LL k=x-d>=p.l && x-d<=p.r?x-d:x+d;
-        ans[i] = k;
-     //   cout<<k<<" ";
-        if(p.l == p.r) continue;
-        if(p.l == k)
-          root = insert(root,pt(k+1,p.r));
-        else if(p.r==k)
-          root = insert(root,pt(p.l,k-1));
-        else {
-          root = insert(root,pt(p.l,k-1));
-          root = insert(root,pt(k+1,p.r));
-        }
-      //  cout<<i<<"= \n";        
-       // cout<<p.l<<" "<<p.r<<" "<<d<<" "<<k<<";; \n";
+int main()
+{
+  fastio; 
+  int t = 1;
+  cin >> t;
+  int T = 1;
+  while (t--)
+  {
+    fr = 0;
+    AVLTree obj;
+    int n, m;
+    cin >> n >> m;
+    LL *v1, *v2, *vv, *ans;
 
-       // inorder(root); cout<<"\n***\n";
-      }
-      cout<<"Case #"<<T++<<": ";
-      for(int i =0;i<n;i++) cout<<ans[i]<<" "; 
-      cout<<"\n";
+    // v1 = new LL[n];
+    // v2 = new LL[n];
+
+    vv = new LL[m];
+    ans = new LL[m];
+    // FOR(i, 0, n)
+    // {
+    //   cin >> v1[i] >> v2[i];
+    // }
+
+    FOR(i, 0, n)
+    {
+      LL x, y;
+      cin >> x >> y;
+      bool ok = true;
+      //cout << "INSERTING!!!!!!!!!!!!!!!! " << x << " " << y << "\n";
+      obj.root = obj.insert(obj.root, new TreeNode(pt(x, y)), ok);
     }
+    FOR(i, 0, m)
+    cin >> vv[i];
+    mergeSort(vv, 0, m - 1);
+    FOR(i, 0, m)
+    {
+      fr = 1;
+      LL x = vv[i];
+      LL d = 1e18;
+      pt p = pt(1e18, 1e18);
+      obj.search(obj.root, p, d, x);
+      obj.root = obj.deleteNode(obj.root, p);
+      LL k = x - d >= p.l && x - d <= p.r ? x - d : x + d;
+      ans[i] = k;
+      //cout << p.l << " ++++++++++++ " << p.r << " ++++++++++++ " << k << " ++++++++++++ " << d << "\n";
+      if (p.l == p.r)
+        continue;
+      bool ok = 1;
+      if (p.l == k)
+      {
+        obj.root = obj.insert(obj.root, new TreeNode(pt(k + 1, p.r)), ok);
+      }
+      else if (p.r == k)
+      {
+        obj.root = obj.insert(obj.root, new TreeNode(pt(p.l, k - 1)), ok);
+      }
+      else
+      {
+        obj.root = obj.insert(obj.root, new TreeNode(pt(p.l, k - 1)), ok);
+        obj.root = obj.insert(obj.root, new TreeNode(pt(k + 1, p.r)), ok);
+      }
+    }
+    printf("Case #%d: ", T++);
+    for (int i = 0; i < m; i++)
+      printf("%lld ", ans[i]);
+    printf("\n");
+  }
+}
+
 }
