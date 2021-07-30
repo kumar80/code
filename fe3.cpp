@@ -4,8 +4,8 @@ using namespace std;
 #define fastio                    \
     ios_base::sync_with_stdio(0); \
     cin.tie(0)
-#define LL long long
-#define FOR(i, j, k) for (auto i = j; i < k; i++)
+#define LL unsigned long long
+#define FOR(i, j, k) for (int i = j; i < k; i++)
 
 struct pt
 {
@@ -236,14 +236,11 @@ void search(Node *root, pt &key, LL &d, LL x)
         search(root->right, key, d, x);
     }
 }
-void merge(pt arr[], int p, int q, int r)
+void merge(struct pt *arr, int p, int q, int r)
 {
-
     int n1 = q - p + 1;
     int n2 = r - q;
-
-    pt L[n1], M[n2];
-
+    pt *L = new pt[n1], *M = new pt[n2];
     for (int i = 0; i < n1; i++)
         L[i] = arr[p + i];
     for (int j = 0; j < n2; j++)
@@ -253,7 +250,6 @@ void merge(pt arr[], int p, int q, int r)
     i = 0;
     j = 0;
     k = p;
-
     while (i < n1 && j < n2)
     {
         if (L[i].l >= M[j].l)
@@ -268,14 +264,12 @@ void merge(pt arr[], int p, int q, int r)
         }
         k++;
     }
-
     while (i < n1)
     {
         arr[k] = L[i];
         i++;
         k++;
     }
-
     while (j < n2)
     {
         arr[k] = M[j];
@@ -284,7 +278,7 @@ void merge(pt arr[], int p, int q, int r)
     }
 }
 
-void mergeSort(pt arr[], int l, int r)
+void mergeSort(struct pt *arr, int l, int r)
 {
     if (l < r)
     {
@@ -304,25 +298,32 @@ int main()
     {
         Node *root = NULL;
         int n, m;
-        cin >> n >> m;
-        pt v[n];
+        scanf("%d%d",&n,&m);
+       // cin >> n >> m;
         pt vv[m];
-        LL ans[m];
-        FOR(i, 0, n)
+
+        for (int i = 0; i < n; i++)
         {
-            cin >> v[i].l >> v[i].r;
+            LL a, b;
+        scanf("%llu%llu",&a,&b);
+            root = insert(root, pt(a, b));
         }
-        FOR(i, 0, m)
-        cin >> vv[i].l;
-        FOR(i, 0, m)
-        cin >> vv[i].r;
-        FOR(i, 0, n)
+        for (int i = 0; i < m; i++)
         {
-            root = insert(root, v[i]);
+            LL a;
+        scanf("%llu",&a);
+            vv[i] = pt(a, 0);
+        }
+        for (int i = 0; i < m; i++)
+        {
+            LL a;
+        scanf("%llu",&a);
+            vv[i].r = a;
         }
         mergeSort(vv, 0, m - 1);
+        printf("Case #%d: ", T++);
 
-        FOR(i, 0, m)
+        for (int i = 0; i < m; i++)
         {
             LL x = vv[i].r;
             LL d = 1e18;
@@ -330,8 +331,9 @@ int main()
             search(root, p, d, x);
             root = deleteNode(root, p);
             LL k = x - d >= p.l && x - d <= p.r ? x - d : x + d;
+            printf("%llu ", k);
 
-            ans[i] = k;
+            // ans[i] = k;
             if (p.l == p.r)
                 continue;
             if (p.l == k)
@@ -344,9 +346,6 @@ int main()
                 root = insert(root, pt(k + 1, p.r));
             }
         }
-        printf("Case #%d: ", T++);
-        for (int i = 0; i < m; i++)
-            printf("%lld ", ans[i]);
         printf("\n");
     }
 }
