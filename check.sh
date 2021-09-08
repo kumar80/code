@@ -8,7 +8,7 @@
 # g++ wo.cpp
 # ./a.out < in.txt  > sol.txt
 g++ $1
-./a.out < input.txt > out.txt
+./a.out < input.txt # > out.txt
 
 # if [[ $(diff sol.txt out.txt ) ]]; then
 #     echo ***********************DIFFERENT ANSWER***********************
