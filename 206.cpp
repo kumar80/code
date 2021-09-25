@@ -67,50 +67,42 @@ using namespace std;
 
 const long long INF = 1e18;
 const long long MAX = 2e5+10;
-vector<int>adj[30];
-vector<int>vis(30,0);
-vector<int>d;
-void dfs(int i){
-  if(vis[i]) return;
-  vis[i] =1;
-  d.push_back(i);
-  for(auto j : adj[i])
-      dfs(j);
+// https://atcoder.jp/contests/abc206/tasks/abc206_d
+vector<int>adj[MAX];
+vector<int>vis(MAX,0);
+LL dfs(int s, LL cnt, int p){
+  if(vis[s]) return 0;
+  vis[s] =1;
+  for(auto i : adj[s])
+    if(i!=p)
+      cnt+=dfs(i,cnt,s);
+  //cout<<s<<" "<<cnt<<" -- ";
+
+  return 1 + cnt;
 }
-void dfs(int i,LL &n, vector<int>&c){
-  if(i == d.size()) {n++; return;}
-  if(c[d[i]] != -1) return;
-  FOR(col,1,4){
-    c[d[i]] = col;
-    bool ok = true;    
-    for(auto j : adj[d[i]])
-        if(c[j] == col) ok = false;
-    
-    if(!ok) continue;
-    dfs(i+1,n,c);    
-  }
-  c[d[i]] = -1;
-}
-int main(){ 
+int main(){
     fastio;
-    int t=1;/// cin>>t;
+    int t=1; //cin>>t;
     while(t--){
-        int n,m; cin>>n>>m;
-          FOR(j,0,m){
-             int x,y; cin>>x>>y;
-             adj[x].push_back(y);
-             adj[y].push_back(x);
-          }
-         LL ans =1;
-         FOR(i,1,n+1){
-            if(vis[i]) continue;
-            LL cnt=0;
-            d.clear();
-            vector<int>col(30,-1);
-            dfs(i);
-            dfs(0,cnt,col); 
-            ans *= cnt;
-         } 
-         cout<<ans; 
+        int n; cin>>n;
+        int a[n];
+        FOR(i,0,n) cin>>a[i],a[i]=1e6-a[i];
+        FOR(i,0,n/2){
+          if(a[i] == a[n-i-1]) continue;
+          adj[a[i]].push_back(a[n-i-1]);
+          adj[a[n-i-1]].push_back(a[i]);
+          cout<<a[i]<<" "<<a[n-1-i]<<endl;
+          // int x,y; cin>>x>>y;
+          // adj[x].push_back(y);
+          // adj[y].push_back(x);
+        }
+        LL ans = 0;
+        FOR(i,0,n/2){
+          if(vis[a[i]]) continue;
+          LL cnt = dfs(a[i],0,-1)-1;
+      //   cout<<a[i]<<" "<<cnt<<endl;
+           ans+=cnt;
+        } 
+        cout<<ans;
     }
 }

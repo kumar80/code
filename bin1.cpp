@@ -67,50 +67,22 @@ using namespace std;
 
 const long long INF = 1e18;
 const long long MAX = 2e5+10;
-vector<int>adj[30];
-vector<int>vis(30,0);
-vector<int>d;
-void dfs(int i){
-  if(vis[i]) return;
-  vis[i] =1;
-  d.push_back(i);
-  for(auto j : adj[i])
-      dfs(j);
-}
-void dfs(int i,LL &n, vector<int>&c){
-  if(i == d.size()) {n++; return;}
-  if(c[d[i]] != -1) return;
-  FOR(col,1,4){
-    c[d[i]] = col;
-    bool ok = true;    
-    for(auto j : adj[d[i]])
-        if(c[j] == col) ok = false;
-    
-    if(!ok) continue;
-    dfs(i+1,n,c);    
-  }
-  c[d[i]] = -1;
-}
-int main(){ 
+int main(){
     fastio;
-    int t=1;/// cin>>t;
+    int t=1; //cin>>t;
     while(t--){
-        int n,m; cin>>n>>m;
-          FOR(j,0,m){
-             int x,y; cin>>x>>y;
-             adj[x].push_back(y);
-             adj[y].push_back(x);
-          }
-         LL ans =1;
-         FOR(i,1,n+1){
-            if(vis[i]) continue;
-            LL cnt=0;
-            d.clear();
-            vector<int>col(30,-1);
-            dfs(i);
-            dfs(0,cnt,col); 
-            ans *= cnt;
-         } 
-         cout<<ans; 
+        vector<int> v = {1,2,3,5,5,6,7,8,9,10};
+        int f = 4;
+        int l=0,r=9,ans=-1;
+        while(l<=r){
+            int m =(l+r)/2;
+            cout<<m<<"; ";
+            if(v[m]<=f) {
+                l=m+1; ans =m;
+            }else {
+                r=m-1;
+            }
+        }
+        cout<<ans<<endl;
     }
 }

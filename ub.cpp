@@ -67,50 +67,77 @@ using namespace std;
 
 const long long INF = 1e18;
 const long long MAX = 2e5+10;
-vector<int>adj[30];
-vector<int>vis(30,0);
-vector<int>d;
-void dfs(int i){
-  if(vis[i]) return;
-  vis[i] =1;
-  d.push_back(i);
-  for(auto j : adj[i])
-      dfs(j);
+vector<char>sol;
+struct test{
+    string S;
+    string T;
+    int k;
+};
+
+LL sumOdd(LL n){
+    return n*n;    
 }
-void dfs(int i,LL &n, vector<int>&c){
-  if(i == d.size()) {n++; return;}
-  if(c[d[i]] != -1) return;
-  FOR(col,1,4){
-    c[d[i]] = col;
-    bool ok = true;    
-    for(auto j : adj[d[i]])
-        if(c[j] == col) ok = false;
-    
-    if(!ok) continue;
-    dfs(i+1,n,c);    
-  }
-  c[d[i]] = -1;
+LL sumEven(LL n ){
+    return n*(n+1);
 }
-int main(){ 
+
+char findsol(test t){
+    string s; int i=1,j=2,ch=1;
+    while(s.size()<=t.k){
+        if(ch){
+            FOR(k,0,i) s+=t.S;
+            i+=2;
+            ch = 0;
+        }else {
+            FOR(k,0,j) s+=t.T;
+            j+=2;
+            ch = 1;
+        }
+    }
+    return s[t.k-1];    
+}
+
+int main(){
     fastio;
-    int t=1;/// cin>>t;
-    while(t--){
-        int n,m; cin>>n>>m;
-          FOR(j,0,m){
-             int x,y; cin>>x>>y;
-             adj[x].push_back(y);
-             adj[y].push_back(x);
-          }
-         LL ans =1;
-         FOR(i,1,n+1){
-            if(vis[i]) continue;
-            LL cnt=0;
-            d.clear();
-            vector<int>col(30,-1);
-            dfs(i);
-            dfs(0,cnt,col); 
-            ans *= cnt;
-         } 
-         cout<<ans; 
+    vector<test>v; 
+    v.push_back({"abc","def",7});
+    v.push_back({"sdsa","drasdarrrd",9});
+    v.push_back({"sdsasa","dasdaaad",10});
+    v.push_back({"sdsadas","dasdaddfee",11});
+    v.push_back({"abc","deggf",20}); // abcdeggfdeggfabcabc abc
+    v.push_back({"sdstya","dasdadpspps",800});
+    v.push_back({"pipsdsa","owcnczpdasdad",98});
+    v.push_back({"sqssdsa","dopwtyycbasdad",898});
+    v.push_back({"zszdcxsa","dasdfoewriad",801});
+    v.push_back({"scddsa","dasdaoobygdcd",8000});
+    v.push_back({"sdasdsdea","eyetydasdad",788});
+    for(auto r : v){
+         sol.push_back(findsol(r));
+    }
+    int c= v.size()-1;
+    while(c>=0){
+        int k=v[c].k; string S=v[c].S,T=v[c].T; //cin>>S>>T>>k;
+        LL l = 0, r = 1e4;
+        int s = S.size(),t = T.size(),ans = -1;
+        while(l<=r){
+            LL m = (l+r)/2;
+            LL tt = sumOdd((m+1)/2) * s + sumEven( m/2) * t;
+         //   cout<<tt<<" "<<m<<endl;
+            if(tt<=k){
+                ans = m; l=m+1;
+            }else r=m-1;
+        }
+        k-=  sumOdd((ans+1)/2) * s + sumEven( ans/2) * t;
+      //  cout<<ans<<" ";
+        if(ans%2==0){
+        //    cout<<k<<" "<<S<<" ";
+            k+=s-1;
+            cout<<S[k%s];
+        }else {
+            k+=t-1;
+            cout<<T[k%t];
+        }
+        cout<<" "<<sol[c]<<endl;
+        c--;
     }
 }

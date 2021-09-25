@@ -67,50 +67,13 @@ using namespace std;
 
 const long long INF = 1e18;
 const long long MAX = 2e5+10;
-vector<int>adj[30];
-vector<int>vis(30,0);
-vector<int>d;
-void dfs(int i){
-  if(vis[i]) return;
-  vis[i] =1;
-  d.push_back(i);
-  for(auto j : adj[i])
-      dfs(j);
-}
-void dfs(int i,LL &n, vector<int>&c){
-  if(i == d.size()) {n++; return;}
-  if(c[d[i]] != -1) return;
-  FOR(col,1,4){
-    c[d[i]] = col;
-    bool ok = true;    
-    for(auto j : adj[d[i]])
-        if(c[j] == col) ok = false;
-    
-    if(!ok) continue;
-    dfs(i+1,n,c);    
-  }
-  c[d[i]] = -1;
-}
-int main(){ 
+int main(){
     fastio;
-    int t=1;/// cin>>t;
+    int t=1; cin>>t;
     while(t--){
-        int n,m; cin>>n>>m;
-          FOR(j,0,m){
-             int x,y; cin>>x>>y;
-             adj[x].push_back(y);
-             adj[y].push_back(x);
-          }
-         LL ans =1;
-         FOR(i,1,n+1){
-            if(vis[i]) continue;
-            LL cnt=0;
-            d.clear();
-            vector<int>col(30,-1);
-            dfs(i);
-            dfs(0,cnt,col); 
-            ans *= cnt;
-         } 
-         cout<<ans; 
+        int a,b,k; cin>>a>>b>>k;
+        int g  = __gcd(a,b);
+        a/=g; b/=g;
+        
     }
 }

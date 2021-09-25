@@ -67,50 +67,46 @@ using namespace std;
 
 const long long INF = 1e18;
 const long long MAX = 2e5+10;
-vector<int>adj[30];
-vector<int>vis(30,0);
-vector<int>d;
-void dfs(int i){
-  if(vis[i]) return;
-  vis[i] =1;
-  d.push_back(i);
-  for(auto j : adj[i])
-      dfs(j);
-}
-void dfs(int i,LL &n, vector<int>&c){
-  if(i == d.size()) {n++; return;}
-  if(c[d[i]] != -1) return;
-  FOR(col,1,4){
-    c[d[i]] = col;
-    bool ok = true;    
-    for(auto j : adj[d[i]])
-        if(c[j] == col) ok = false;
-    
-    if(!ok) continue;
-    dfs(i+1,n,c);    
+int lsearch(int v, int a[], int l, int r){
+  int ans = INT_MAX;
+  while(l<=r){
+    int m = (l+r)/2;
+    if(a[m]>=v){
+      r = m-1;
+      ans = m;
+    }else l=m+1;
   }
-  c[d[i]] = -1;
+  return ans;
 }
-int main(){ 
+
+int rsearch(int v, int a[], int l, int r){
+  int ans = INT_MAX;
+  while(l<=r){
+    int m= (l+r)/2;
+    if(a[m]<=v){
+      l=m+1;
+      ans = m;
+    }else r = m-1;
+  }
+  return ans;
+}
+
+int main(){
     fastio;
-    int t=1;/// cin>>t;
+    int t=1; cin>>t;
     while(t--){
-        int n,m; cin>>n>>m;
-          FOR(j,0,m){
-             int x,y; cin>>x>>y;
-             adj[x].push_back(y);
-             adj[y].push_back(x);
-          }
-         LL ans =1;
-         FOR(i,1,n+1){
-            if(vis[i]) continue;
-            LL cnt=0;
-            d.clear();
-            vector<int>col(30,-1);
-            dfs(i);
-            dfs(0,cnt,col); 
-            ans *= cnt;
-         } 
-         cout<<ans; 
+        LL n,l,r; cin>>n>>l>>r;
+        int a[n]; FOR(i,0,n) cin>>a[i];
+        sort(a,a+n);
+        LL ans = 0;
+        FOR(i,0,n){
+           int L = l-a[i],R=r-a[i];
+           int i1 = max(i+1,lsearch(L,a,i+1,n-1));
+           int i2 = max(i+1,rsearch(R,a,i+1,n-1));
+          // cout<<i1<<" "<<i2<<"; ";
+           if((i1 !=INT_MAX && i2 !=INT_MAX) &&  (i1!=n   && i2!=n ) && i1<=i2)
+             ans += i2-i1 +1 ;
+        }
+      cout<<ans<<endl;
     }
 }
