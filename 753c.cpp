@@ -19,21 +19,17 @@ int main(){
     fastio;
     int t; cin>>t;
     while(t--){
-        LL x,n; cin>>x>>n;
-        LL o = (n+1)/2;
-        LL e = n-o;
-        if(x&1) { 
-            if(n%4==1) cout<<x+n<<"\n";
-            else if(n%4==2) cout<<x-1<<"\n";
-            else if(n%4==3) cout<<x-1-n<<"\n";
-            else cout<<x<<"\n";
+        int n; cin>>n;
+        LL a[n];
+        FOR(i,0,n) cin>>a[i];
+        if(n==1){
+            cout<<a[0]<<"\n";
+            continue;
         }
-         else  {  
-            if(n%4==1) cout<<x-n<<"\n";
-            else if(n%4==2) cout<<x+1<<"\n";
-            else if(n%4==3) cout<<x+1+n<<"\n";
-            else cout<<x<<"\n";
-         }
- 
+        sort(a,a+n);
+        int i = 0 ;
+        LL ans =a[0];
+        while(i<n-1) ans=max(ans,a[i+1]-a[i]),i++;
+        cout<<ans<<"\n";
     }
 }

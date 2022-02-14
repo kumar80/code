@@ -19,6 +19,11 @@ int main(){
     fastio;
     int t; cin>>t;
     while(t--){
-        
+        string k,s; cin>>k>>s;
+        int m[300];
+        int ans = 0;
+        FOR(i,0,k.size()) m[k[i]] = i;
+        FOR(i,0,s.size()-1) ans+=abs(m[s[i]] - m[s[i+1]]);
+        cout<<ans<<"\n";
     }
 }

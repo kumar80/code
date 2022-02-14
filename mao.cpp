@@ -14,26 +14,19 @@ using namespace std;
 
 const long long INF = 1e18;
 const long long MAX = 2e5+10;
-
 int main(){
     fastio;
-    int t; cin>>t;
+    int t=1;// cin>>t;
     while(t--){
-        LL x,n; cin>>x>>n;
-        LL o = (n+1)/2;
-        LL e = n-o;
-        if(x&1) { 
-            if(n%4==1) cout<<x+n<<"\n";
-            else if(n%4==2) cout<<x-1<<"\n";
-            else if(n%4==3) cout<<x-1-n<<"\n";
-            else cout<<x<<"\n";
-        }
-         else  {  
-            if(n%4==1) cout<<x-n<<"\n";
-            else if(n%4==2) cout<<x+1<<"\n";
-            else if(n%4==3) cout<<x+1+n<<"\n";
-            else cout<<x<<"\n";
-         }
- 
+      int n; cin>>n; int a[n]; FOR(i,0,n) cin>>a[i];
+      int k; cin>>k;
+      int mn = -1, ans=0;
+      FOR(i,0,n){
+          if(mn==-1 && a[i]==0) mn=i;
+          if(mn!=-1 && i-mn+1==k) ans++,mn=-1;
+      }
+      if(mn!=-1)ans++;
+      cout<<ans;
     }
+
 }
